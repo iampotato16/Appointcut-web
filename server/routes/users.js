@@ -10,10 +10,10 @@ const userController = require('../controllers/userControllers');
 // router.get('/edituser/:id', userController.edit);
 // router.post('/edituser/:id', userController.update);
 // router.get('/viewuser/:id', userController.viewall);
-// router.get('/:id', userController.delete);
+// router.get('/:id', userController.delete);/
 
 router.get('/login', userController.viewLogin);
 router.post('/login', userController.login);
 router.get('/file-maintenance', userController.viewFileMaintenance);
 
-module.exports = router;
+module.exports = router;//
