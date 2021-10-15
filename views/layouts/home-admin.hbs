@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="description" content="">
+   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+   <meta name="generator" content="Hugo 0.84.0">
+   <title>{{title}}</title>
+
+   <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sidebars/">
+
+   <!-- Bootstrap core CSS -->
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+   <!-- google fonts -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap" rel="stylesheet">
+
+   <!-- jquery -->
+   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous">
+      </script>
+
+   <!-- Custom styles for this template -->
+   <link href="css/sidebars.css" rel="stylesheet">
+   <link href="css/styles.css" rel="stylesheet">
+</head>
+
+<body class="row no-gutters m-0" style="width: 100%;">
+   {{!-- <div class="row"> --}}
+      {{!-- ==================
+      HOY ICOCOLLAPSE MO TO
+      ================== --}}
+      <aside class="container col-lg-3 vh-100 bg-black sticky-top">
+         <div class="flex-shrink-0 p-3 bg-black">
+            <a href="/" class="d-flex align-items-center text-decoration-none link-custom">
+               <!-- logo is supposed to be here 
+               DECIDE NA KUNG ANO BA PLANO 
+               ALSO, NEED PA BA NUNG ACC SETTING SA BABA
+               need to be figured out para matanggal na inline style -->
+               <i class="bi bi-scissors" style="margin-right:.5rem;"></i>
+               <span class="fs-5 fw-semibold pl-1">Miguel Gonzalez</span>
+            </a>
+            <small class="font-small">Date/Time: <span id="datetime"></span></small>
+            <hr>
+            <ul class="list-unstyled ps-0">
+               <li class="mb-1">
+                  <button class="btn btn-toggle align-items-center collapsed" data-bs-toggle="collapse"
+                     data-bs-target="#home-collapse" aria-expanded="false">
+                     Accounts
+                  </button>
+                  <div class="collapse" id="home-collapse">
+                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="customers.html" class="link-light rounded">Customers</a></li>
+                        <li><a href="barbershops.html" class="link-light rounded">Barbershops</a></li>
+                        <li><a href="barbers.html" class="link-light rounded">Barbers</a></li>
+                        <li><a href="barbershop-apps.html" class="link-light rounded">Barbershop Applications</a></li>
+                     </ul>
+                  </div>
+               </li>
+               <li class="mb-1">
+                  <button class="btn btn-toggle align-items-center collapsed" data-bs-toggle="collapse"
+                     data-bs-target="#dashboard-collapse" aria-expanded="false">
+                     Information Modules
+                  </button>
+                  <div class="collapse" id="dashboard-collapse">
+                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="hair-trends.html" class="link-light rounded">Hair Trends</a></li>
+                        <li><a href="hair-styling.html" class="link-light rounded">Hair Styling Tips</a></li>
+                        <li><a href="hair-preview.html" class="link-light rounded">Haircut Preview</a></li>
+                     </ul>
+                  </div>
+               </li>
+               <li class="mb-1">
+                  <button class="btn align-items-center" id="fm">
+                     <a class="btn-toggle-custom text-decoration-none" href="/file-maintenance">File
+                        Maintenance</a>
+                  </button>
+               </li>
+               <hr>
+               <li class="mb-1">
+                  <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                     data-bs-target="#account-collapse" aria-expanded="false">
+                     Account
+                  </button>
+                  <div class="collapse" id="account-collapse">
+                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-dark rounded">New...</a></li>
+                        <li><a href="#" class="link-dark rounded">Profile</a></li>
+                        <li><a href="#" class="link-dark rounded">Settings</a></li>
+                        <li><a href="#" class="link-dark rounded">Sign out</a></li>
+                     </ul>
+                  </div>
+               </li>
+            </ul>
+         </div>
+      </aside>
+      <main class="col-lg-9 container p-0">
+         <div class="mt-4 p-3 text-decoration-none">
+            <span class="fs-5 fw-semibold">{{title}}</span>
+            <input type="text" name="search" id="search" style="float: right;">
+            <hr>
+            {{{body}}}
+         </div>
+      </main>
+      {{!--
+   </div> --}}
+   <!-- SIDEBAR JS  -->
+   <script src="sidebar.js"></script>
+
+   <!-- BOOTSTRAP JS -->
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"></script>
+
+   <!-- MASONRY JS -->
+   <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
+   <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+   <script src="masonry.js"></script>
+
+   <script>
+      // for date time
+      var dt = new Date();
+      document.getElementById("datetime").innerHTML = (("0" + (dt.getMonth() + 1)).slice(-2)) + "/" + (("0" + dt.getDate()).slice(-2)) + "/" + (dt.getFullYear()) + " " + (("0" + dt.getHours() + 1).slice(-2)) + ":" + (("0" + dt.getMinutes() + 1).slice(-2));
+   </script>
+
+</body>
+
+</html>

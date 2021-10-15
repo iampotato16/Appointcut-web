@@ -1,0 +1,31 @@
+<div>
+   <div class="d-flex justify-content-between align-items-center bg-black px-4 py-3">
+      <span class="h6 m-0 fw-800">USER TYPE</span>
+      <a href="/form-user" class="i-plus" onclick="renderFormUsertype"><i
+            class="bi bi-plus-circle-fill float-right"></i></a>
+   </div>
+   <div class="bg-gray px-4 pb-4 pt-2 mb-3">
+      <table class="table table-hover table-striped table-sm m-0">
+         <thead>
+            <tr>
+               <th scope="col">ID</th>
+               <th scope="col">User Type</th>
+               <th scope="col" style="width: 100px;">Actions</th>
+            </tr>
+         </thead>
+         <tbody>
+            {{#each usersMockDB}}
+            <tr>
+               <td scope="row">{{this.id}}</td>
+               <td>{{this.username}}</td>
+               <td>
+                  <a href="/viewuser/{{this.id}}" type="button" class="bi-fm"><i class="bi bi-eye"></i></a>
+                  <a href="/edituser/{{this.id}}" type="button" class="bi-fm"><i class="bi bi-pencil"></i></a>
+                  <a href="/{{this.id}}" type="button" class="bi-fm"><i class="bi bi-person-x"></i></a>
+               </td>
+            </tr>
+            {{/each}}
+         </tbody>
+      </table>
+   </div>
+</div>

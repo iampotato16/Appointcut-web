@@ -1,0 +1,200 @@
+/* COLORS
+black: 151515
+yellow: f1c644
+white: f5f5f5 */
+html,
+body {
+   font-family: "Montserrat", monospace;
+   font-weight: 300;
+   background-size: cover;
+
+   /* modif */
+   font-size: 1rem;
+   min-height: 100vh;
+   min-height: -webkit-fill-available;
+}
+
+.row{
+   box-sizing: border-box;
+}
+/* added to remove inline css from body
+used in admin pages  */
+.body-container {
+   margin: 0;
+   max-width: 100%;
+}
+
+.reg-file-btn {
+   background-color: #151515;
+   color: #f5f5f5;
+}
+
+/* PAKIRENAME PO PLEASE 
+USED IN SIGNUP */
+.attachment-border {
+   padding: 0.25rem;
+   background-color: #f5f5f5;
+}
+
+/* find bootstrap class for this */
+.header-letter-space {
+   letter-spacing: 3.5px;
+}
+
+/* find bootstrap class for this */
+.font-small {
+   font-size: 0.75rem;
+}
+
+.font-smaller {
+   font-size: 0.7rem;
+}
+
+.bg-black {
+   background-color: #151515;
+   color: #f5f5f5;
+}
+
+.bg-gray{
+   background-color: #e5e5e5;
+}
+.btn-custom-reg-log {
+   background-color: #f1c644;
+   border-color: #f1c644;
+   color: #151515;
+}
+/* container is set to minimum height of 768px or standard browser height size */
+/* .container {
+   min-height: 768px;
+} */
+
+.center-div {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+/* overridden class from bs */
+.card {
+   border: none;
+   border-radius: 0%;
+}
+
+/* new addition, used in signup
+para sa card width */
+#card-signup {
+   max-width: 83.33%;
+}
+
+/* new addition used in signup 
+para sa card body */
+#card-body-signup {
+   padding: 2rem 9rem;
+}
+
+.card-cus {
+   width: 784px;
+   height: 463px;
+   border: none;
+   background-color: white;
+}
+
+.card-col {
+   height: 463px;
+}
+
+/* used in signup
+change to rem  */
+.form-group {
+   height: 295px;
+}
+
+#login-logo {
+   display: block;
+   width: 50%;
+}
+
+/* used in signup, bagong lagay */
+#addImageDiv {
+   width: 5rem;
+   height: 5rem;
+   background: #f1c644;
+   border-radius: 50%;
+}
+
+/* used in signup, bagong lagay */
+#cameraDiv {
+   width: 1.75rem;
+   height: 1.75rem;
+   background: black;
+   border-radius: 50%;
+   position: absolute;
+   z-index: 1;
+   right: 0;
+   bottom: 0;
+}
+
+/* =============BOOTSTRAP============== */
+.form-signin {
+   width: 100%;
+   max-width: 280px;
+   padding: 15px;
+   margin: 0 auto;
+}
+
+/* .form-signin .checkbox {
+  font-weight: 400;
+} */
+
+.form-control {
+   position: relative;
+   box-sizing: border-box;
+   height: auto;
+   padding: 10px;
+   color: black;
+}
+
+/* BAGONG DAGDAG */
+/* for testing only, need pa ayusin, 
+used in registration */
+
+/* ginamit sa gridssss */
+ 
+.bi-fm{
+   color: #151515;
+   padding: 0 5px;
+}
+
+.bi-fm:hover{
+   color: #f1c644;
+}
+
+
+.fw-800 {
+   font-weight: 800;
+}
+#displayPic {
+   color: black;
+   font-weight: 800;
+}
+
+#displayPic:hover {
+   color: blue;
+}
+
+@media only screen and (min-width: 992px) {
+   #xxr1 {
+      padding-right: 0.25rem;
+   }
+
+   #xxl1 {
+      padding-left: 0.25rem;
+   }
+   #xxr2 {
+      padding-right: 0.25rem;
+   }
+
+   #xxl2 {
+      padding-left: 0.25rem;
+   }
+}

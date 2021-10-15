@@ -1,0 +1,30 @@
+<div>
+   <div class="d-flex justify-content-between align-items-center bg-black px-4 py-3">
+      <span class="h6 m-0 fw-800">BARANGGAY</span>
+      <a href="" class="i-plus"><i class="bi bi-plus-circle-fill float-right"></i></a>
+   </div>
+   <div class="bg-gray px-4 pb-4 pt-2 mb-3">
+      <table class="table table-hover table-striped table-sm m-0">
+         <thead>
+            <tr>
+               <th scope="col">ID</th>
+               <th scope="col">Baranggay</th>
+               <th scope="col" style="width: 100px">Actions</th>
+            </tr>
+         </thead>
+         <tbody>
+            {{#each parameter}}
+            <tr>
+               <td scope="row">{{this.BarangayID}}</td>
+               <td>{{this.Name}}</td>
+               <td>
+                  <a href="/viewuser/{{this.BarangayID}}" type="button"><i class="bi bi-eye bi-fm"></i></a>
+                  <a href="/edituser/{{this.BarangayID}}" type="button"><i class="bi bi-pencil bi-fm"></i></a>
+                  <a href="/{{this.BarangayID}}" type="button"><i class="bi bi-person-x bi-fm"></i></a>
+               </td>
+            </tr>
+            {{/each}}
+         </tbody>
+      </table>
+   </div>
+</div>

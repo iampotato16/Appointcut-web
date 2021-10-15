@@ -1,0 +1,264 @@
+<div>
+   <div class="d-flex justify-content-between align-items-center bg-black px-4 py-3">
+      <span class="h6 m-0 fw-800">TITLE</span>
+      <a href="" class="i-plus" onclick="renderFormUsertype"><i class="bi bi-plus-circle-fill float-right"></i></a>
+   </div>
+   <div class="bg-gray px-4 pb-4 mb-3">
+
+      {{!-- GRID FOR USER TYPE --}}
+
+      {{#if (isCalled usersMockDB)}}
+      <table class="table table-hover table-striped m-0">
+         <thead>
+            <tr>
+               <th scope="col">ID</th>
+               <th scope="col">Name</th>
+               <th scope="col">Actions</th>
+               <th scope="col">Actions</th>
+            </tr>
+         </thead>
+         <tbody>
+
+            {{#each usersMockDB}}
+            <tr>
+               <td scope="row">{{this.id}}</td>
+               <td>{{this.username}}</td>
+               <td>
+                  <a href="/viewuser/{{this.id}}" type="button"><i class="bi bi-eye"></i>View</a>
+                  <a href="/edituser/{{this.id}}" type="button"><i class="bi bi-pencil"></i>Edit</a>
+                  <a href="/{{this.id}}" type="button"><i class="bi bi-person-x"></i>Delete</a>
+               </td>
+            </tr>
+            {{/each}}
+
+         </tbody>
+      </table>
+      {{/if}}
+
+      {{!-- GRID FOR CATEGORY --}}
+      {{#if (isCalled rowDataCategory)}}
+
+      <table class="table table-hover table-striped m-0">
+         <thead>
+            <tr>
+               <th scope="col">ID</th>
+               <th scope="col">Name</th>
+               <th scope="col">Actions</th>
+            </tr>
+         </thead>
+         <tbody>
+            {{#each rowDataCategory}}
+            <tr>
+               <td scope="row">{{this.id}}</td>
+               <td>{{this.username}}</td>
+               <td>
+                  <a href="/viewuser/{{this.id}}" type="button"><i class="bi bi-eye"></i>View</a>
+                  <a href="/edituser/{{this.id}}" type="button"><i class="bi bi-pencil"></i>Edit</a>
+                  <a href="/{{this.id}}" type="button"><i class="bi bi-person-x"></i>Delete</a>
+               </td>
+            </tr>
+            {{/each}}
+         </tbody>
+      </table>
+
+      {{/if}}
+
+      {{!-- GRID FOR rowDataServices --}}
+      {{#if rowDataServices}}
+      {{#each rowDataServices}}
+      <table class="table table-hover table-striped m-0">
+         <thead>
+            <tr>
+               <th scope="col">ID</th>
+               <th scope="col">Name</th>
+               <th scope="col">Actions</th>
+            </tr>
+         </thead>
+         <tbody>
+
+            <tr>
+               <td scope="row">{{this.id}}</td>
+               <td>{{this.username}}</td>
+               <td>
+                  <a href="/viewuser/{{this.id}}" type="button"><i class="bi bi-eye"></i>View</a>
+                  <a href="/edituser/{{this.id}}" type="button"><i class="bi bi-pencil"></i>Edit</a>
+                  <a href="/{{this.id}}" type="button"><i class="bi bi-person-x"></i>Delete</a>
+               </td>
+            </tr>
+
+         </tbody>
+      </table>
+      {{/each}}
+      {{/if}}
+
+      {{!-- GRID FOR rowDataServices --}}
+      {{#if rowDataServices}}
+      {{#each rowDataServices}}
+      <table class="table table-hover table-striped m-0">
+         <thead>
+            <tr>
+               <th scope="col">ID</th>
+               <th scope="col">Name</th>
+               <th scope="col">Actions</th>
+            </tr>
+         </thead>
+         <tbody>
+
+            <tr>
+               <td scope="row">{{this.id}}</td>
+               <td>{{this.username}}</td>
+               <td>
+                  <a href="/viewuser/{{this.id}}" type="button"><i class="bi bi-eye"></i>View</a>
+                  <a href="/edituser/{{this.id}}" type="button"><i class="bi bi-pencil"></i>Edit</a>
+                  <a href="/{{this.id}}" type="button"><i class="bi bi-person-x"></i>Delete</a>
+               </td>
+            </tr>
+
+         </tbody>
+      </table>
+      {{/each}}
+      {{/if}}
+
+      {{!-- GRID FOR rowDataSpecialization --}}
+      {{#if rowDataSpecialization}}
+      {{#each rowDataSpecialization}}
+      <table class="table table-hover table-striped m-0">
+         <thead>
+            <tr>
+               <th scope="col">ID</th>
+               <th scope="col">Name</th>
+               <th scope="col">Actions</th>
+            </tr>
+         </thead>
+         <tbody>
+
+            <tr>
+               <td scope="row">{{this.id}}</td>
+               <td>{{this.username}}</td>
+               <td>
+                  <a href="/viewuser/{{this.id}}" type="button"><i class="bi bi-eye"></i>View</a>
+                  <a href="/edituser/{{this.id}}" type="button"><i class="bi bi-pencil"></i>Edit</a>
+                  <a href="/{{this.id}}" type="button"><i class="bi bi-person-x"></i>Delete</a>
+               </td>
+            </tr>
+
+         </tbody>
+      </table>
+      {{/each}}
+      {{/if}}
+
+      {{!-- GRID FOR rowDataHaircuts --}}
+      {{#if rowDataHaircuts}}
+      {{#each rowDataHaircuts}}
+      <table class="table table-hover table-striped m-0">
+         <thead>
+            <tr>
+               <th scope="col">ID</th>
+               <th scope="col">Name</th>
+               <th scope="col">Actions</th>
+            </tr>
+         </thead>
+         <tbody>
+
+            <tr>
+               <td scope="row">{{this.id}}</td>
+               <td>{{this.username}}</td>
+               <td>
+                  <a href="/viewuser/{{this.id}}" type="button"><i class="bi bi-eye"></i>View</a>
+                  <a href="/edituser/{{this.id}}" type="button"><i class="bi bi-pencil"></i>Edit</a>
+                  <a href="/{{this.id}}" type="button"><i class="bi bi-person-x"></i>Delete</a>
+               </td>
+            </tr>
+
+         </tbody>
+      </table>
+      {{/each}}
+      {{/if}}
+
+      {{!-- GRID FOR rowDataFaceShape --}}
+      {{#if rowDataFaceShape}}
+      {{#each rowDataFaceShape}}
+      <table class="table table-hover table-striped m-0">
+         <thead>
+            <tr>
+               <th scope="col">ID</th>
+               <th scope="col">Name</th>
+               <th scope="col">Actions</th>
+            </tr>
+         </thead>
+         <tbody>
+
+            <tr>
+               <td scope="row">{{this.id}}</td>
+               <td>{{this.username}}</td>
+               <td>
+                  <a href="/viewuser/{{this.id}}" type="button"><i class="bi bi-eye"></i>View</a>
+                  <a href="/edituser/{{this.id}}" type="button"><i class="bi bi-pencil"></i>Edit</a>
+                  <a href="/{{this.id}}" type="button"><i class="bi bi-person-x"></i>Delete</a>
+               </td>
+            </tr>
+
+         </tbody>
+      </table>
+      {{/each}}
+      {{/if}}
+
+      {{!-- GRID FOR rowDataCity --}}
+      {{#if rowDataCity}}
+      {{#each rowDataCity}}
+      <table class="table table-hover table-striped m-0">
+         <thead>
+            <tr>
+               <th scope="col">ID</th>
+               <th scope="col">Name</th>
+               <th scope="col">Actions</th>
+            </tr>
+         </thead>
+         <tbody>
+
+            <tr>
+               <td scope="row">{{this.id}}</td>
+               <td>{{this.username}}</td>
+               <td>
+                  <a href="/viewuser/{{this.id}}" type="button"><i class="bi bi-eye"></i>View</a>
+                  <a href="/edituser/{{this.id}}" type="button"><i class="bi bi-pencil"></i>Edit</a>
+                  <a href="/{{this.id}}" type="button"><i class="bi bi-person-x"></i>Delete</a>
+               </td>
+            </tr>
+
+         </tbody>
+      </table>
+      {{/each}}
+      {{/if}}
+
+      {{!-- GRID FOR rowDataBrgy --}}
+      {{#if rowDataBrgy}}
+      {{#each rowDataBrgy}}
+      <table class="table table-hover table-striped m-0">
+         <thead>
+            <tr>
+               <th scope="col">ID</th>
+               <th scope="col">Name</th>
+               <th scope="col">Actions</th>
+            </tr>
+         </thead>
+         <tbody>
+
+            <tr>
+               <td scope="row">{{this.id}}</td>
+               <td>{{this.username}}</td>
+               <td>
+                  <a href="/viewuser/{{this.id}}" type="button"><i class="bi bi-eye"></i>View</a>
+                  <a href="/edituser/{{this.id}}" type="button"><i class="bi bi-pencil"></i>Edit</a>
+                  <a href="/{{this.id}}" type="button"><i class="bi bi-person-x"></i>Delete</a>
+               </td>
+            </tr>
+
+         </tbody>
+      </table>
+      {{/each}}
+      {{/if}}
+
+
+   </div>
+</div>
