@@ -16,5 +16,6 @@ router.get('/login', userController.viewLogin);
 router.post('/login', userController.login);
 router.get('/file-maintenance', userController.viewFileMaintenance);
 router.post('/addBrgy', userController.addBrgy);
+router.get('/:id', userController.removeBrgy);
 
 module.exports = router;//

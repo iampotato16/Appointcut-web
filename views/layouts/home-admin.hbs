@@ -118,7 +118,9 @@
       {{!--
    </div> --}}
    <!-- SIDEBAR JS  -->
-   <script src="sidebar.js"></script>
+
+   {{!--
+   <script src="sidebar.js"></script> --}}
 
    <!-- BOOTSTRAP JS -->
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -128,17 +130,16 @@
    <!-- MASONRY JS -->
    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+
+   {{!--
    <script src="../../masonry.js"></script>
 
-   <script src="../../index.js"></script>
+   <script src="../../index.js"></script> --}}
 
    <script>
       function addBrgy() {
          var element = document.getElementById('displayFormBrgy')
          toggleAdd(element);
-         //document.getElementById('main').style.filter = "brightness(85%) blur(3px)"
-         //document.getElementById('aside').style.filter = "brightness(85%) blur(3px)"
-
       }
 
       function toggleAdd(element) {

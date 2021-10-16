@@ -69,22 +69,22 @@ exports.viewFileMaintenance = (req, res) => {
          rowBrgy = message
          pCategory.then((message) => {
             rowCategory = message
-            console.log(rowCategory)
+            //console.log(rowCategory)
             pCity.then((message) => {
                rowCity = message
-               console.log(rowCity)
+               //console.log(rowCity)
                pFaceShape.then((message) => {
                   rowFaceshape = message
-                  console.log(rowFaceshape)
+                  //console.log(rowFaceshape)
                   pHaircuts.then((message) => {
                      rowHaircuts = message
-                     console.log(rowHaircuts)
+                     //console.log(rowHaircuts)
                      pServices.then((message) => {
                         rowServices = message
-                        console.log(rowServices)
+                        //console.log(rowServices)
                         pSpecialization.then((message) => {
                            rowSpecialization = message
-                           console.log(rowSpecialization)
+                           //console.log(rowSpecialization)
                            res.render('file-maintenance', { layout: 'home-admin', title, rowBrgy, rowCategory, rowCity, rowFaceshape, rowHaircuts, rowServices, rowSpecialization });
                         })
                      })
@@ -111,4 +111,45 @@ exports.addBrgy = (req, res) => {
    });
    res.redirect('/file-maintenance');
    location.reload();
+}
+
+exports.delete = (req, res) => {
+
+   // Delete a record
+
+   // User the connection
+   // connection.query('DELETE FROM user WHERE id = ?', [req.params.id], (err, rows) => {
+
+   //   if(!err) {
+   //     res.redirect('/');
+   //   } else {
+   //     console.log(err);
+   //   }
+   //   console.log('The data from user table: \n', rows);
+
+   // });
+
+   // Hide a record
+
+   connection.query('UPDATE user SET status = ? WHERE id = ?', ['removed', req.params.id], (err, rows) => {
+      if (!err) {
+         let removedUser = encodeURIComponent('User successeflly removed.');
+         res.redirect('/?removed=' + removedUser);
+      } else {
+         console.log(err);
+      }
+      console.log('The data from beer table are: \n', rows);
+   });
+}
+
+exports.removeBrgy = (req, res) => {
+   var id = req.params.id;
+   console.log(id);
+   connection.query('DELETE FROM barangay WHERE BarangayID = ?', [id], (err, rows) => {
+      if (!err) {
+         res.redirect('/file-maintenance');
+      } else {
+         console.log(err);
+      }
+   });
 }
