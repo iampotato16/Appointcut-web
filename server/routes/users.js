@@ -15,5 +15,6 @@ const userController = require('../controllers/userControllers');
 router.get('/login', userController.viewLogin);
 router.post('/login', userController.login);
 router.get('/file-maintenance', userController.viewFileMaintenance);
+router.post('/addBrgy', userController.addBrgy);
 
 module.exports = router;//

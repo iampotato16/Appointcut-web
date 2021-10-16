@@ -48,38 +48,14 @@ exports.login = async (req, res) => {
    }
 }
 
-// var trowBrgy = [
-//    { 'BarangayID': '1', 'Name': 'West Triangle' },
-//    { 'BarangayID': '2', 'Name': 'San Bartolome' },
-//    { 'BarangayID': '3', 'Name': 'Batasan' },
-//    { 'BarangayID': '4', 'Name': 'Tandang Sora' }
-// ];
-
-
-
-// function getBarangay(){
-//    getAllFrom("barangay",rowBrgy)
-//    if (!rowBrgy){
-//       console.log("Barangay undefined, retrying")
-//       setTimeout(function(){
-//          getBarangay()
-//       },2000);
-//       console.log("Barangay after timeout: " + rowBrgy)
-//    }
-//    console.log("Continuing from getb")
-// }
-
-
-
-
-async function getAllFrom(table){
-   var query = 'SELECT * FROM ' +table
-   var rows =  await connection.query(query)
+async function getAllFrom(table) {
+   var query = 'SELECT * FROM ' + table
+   var rows = await connection.query(query)
    return rows[0]
 }
 exports.viewFileMaintenance = (req, res) => {
    var title = 'File Maintenance';
-   
+
    var rowBrgy, rowCategory, rowCity, rowFaceshape, rowHaircuts, rowServices, rowSpecialization;
    var pBarangay = getAllFrom("barangay")
    var pCategory = getAllFrom("category")
@@ -89,37 +65,50 @@ exports.viewFileMaintenance = (req, res) => {
    var pServices = getAllFrom("services")
    var pSpecialization = getAllFrom("specialization")
    pBarangay
-   .then((message) =>{
-      rowBrgy = message
-   pCategory.then((message)=>{
-      rowCategory = message
-         console.log(rowCategory)
-   pCity.then((message) => {
-      rowCity = message
-      console.log(rowCity)
-   pFaceShape.then((message)=>{
-      rowFaceshape = message
-      console.log(rowFaceshape)
-   pHaircuts.then((message)=>{
-      rowHaircuts = message
-      console.log(rowHaircuts)
-   pServices.then((message) => {
-      rowServices = message
-      console.log(rowServices)
-   pSpecialization.then((message)=>{
-      rowSpecialization = message
-      console.log(rowSpecialization)
-      res.render('file-maintenance', { layout: 'home-admin', title, rowBrgy, rowCategory, rowCity, rowFaceshape, rowHaircuts, rowServices, rowSpecialization });
-   })
-   })
-   })
-   })
-   })
-   })
-   })
-   .catch((message)=>{
-      console.log(message)
-   })
+      .then((message) => {
+         rowBrgy = message
+         pCategory.then((message) => {
+            rowCategory = message
+            console.log(rowCategory)
+            pCity.then((message) => {
+               rowCity = message
+               console.log(rowCity)
+               pFaceShape.then((message) => {
+                  rowFaceshape = message
+                  console.log(rowFaceshape)
+                  pHaircuts.then((message) => {
+                     rowHaircuts = message
+                     console.log(rowHaircuts)
+                     pServices.then((message) => {
+                        rowServices = message
+                        console.log(rowServices)
+                        pSpecialization.then((message) => {
+                           rowSpecialization = message
+                           console.log(rowSpecialization)
+                           res.render('file-maintenance', { layout: 'home-admin', title, rowBrgy, rowCategory, rowCity, rowFaceshape, rowHaircuts, rowServices, rowSpecialization });
+                        })
+                     })
+                  })
+               })
+            })
+         })
+      })
+      .catch((message) => {
+         console.log(message)
+      })
 }
 
+exports.addBrgy = (req, res) => {
+   var newBrgy = req.body.inputBrgy;
+   connection.query('INSERT INTO barangay SET name = ?', [newBrgy], (err, rows) => {
+      // When done with the connection, release it
+      if (!err) {
+         console.log('addedd successfully')
 
+      } else {
+         console.log(err);
+      }
+   });
+   res.redirect('/file-maintenance');
+   location.reload();
+}
