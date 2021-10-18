@@ -99,57 +99,34 @@ exports.viewFileMaintenance = (req, res) => {
 }
 
 exports.addBrgy = (req, res) => {
-   var newBrgy = req.body.inputBrgy;
+   var newBrgy = req.body.inputAddBrgy;
    connection.query('INSERT INTO barangay SET name = ?', [newBrgy], (err, rows) => {
       // When done with the connection, release it
       if (!err) {
-         console.log('addedd successfully')
-
       } else {
          console.log(err);
       }
    });
    res.redirect('/file-maintenance');
-   location.reload();
 }
 
-exports.delete = (req, res) => {
-
-   // Delete a record
-
-   // User the connection
-   // connection.query('DELETE FROM user WHERE id = ?', [req.params.id], (err, rows) => {
-
-   //   if(!err) {
-   //     res.redirect('/');
-   //   } else {
-   //     console.log(err);
-   //   }
-   //   console.log('The data from user table: \n', rows);
-
-   // });
-
-   // Hide a record
-
-   connection.query('UPDATE user SET status = ? WHERE id = ?', ['removed', req.params.id], (err, rows) => {
-      if (!err) {
-         let removedUser = encodeURIComponent('User successeflly removed.');
-         res.redirect('/?removed=' + removedUser);
-      } else {
-         console.log(err);
-      }
-      console.log('The data from beer table are: \n', rows);
-   });
+exports.removeBrgy = (req, res, err) => {
+   try {
+      connection.query('DELETE FROM barangay WHERE BarangayID = ?', [req.params.id], () => { });
+      res.redirect('/file-maintenance');
+   }
+   catch (err) {
+      throw err;
+   }
 }
 
-exports.removeBrgy = (req, res) => {
-   var id = req.params.id;
-   console.log(id);
-   connection.query('DELETE FROM barangay WHERE BarangayID = ?', [id], (err, rows) => {
+exports.editBrgy = (req, res) => {
+   var updatedBrgy = req.body.inputEditBrgy;
+   connection.query('UPDATE barangay SET name = ? WHERE BarangayID = ?', [updatedBrgy, req.params.id], (err, rows) => {
       if (!err) {
-         res.redirect('/file-maintenance');
       } else {
          console.log(err);
       }
    });
+   res.redirect('/file-maintenance');
 }
