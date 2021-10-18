@@ -15,6 +15,8 @@ app.use(express.json()); // New
 
 // Static Files
 app.use(express.static('public'));
+// app.use(express.static('scripts'));
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
 // Templating Engine
 app.engine('hbs', expressHbs({ extname: '.hbs' }));
@@ -23,7 +25,6 @@ app.set('view engine', 'hbs');
 //ROUTES
 const routes = require('./server/routes/users');
 app.use('/', routes);
-
 
 
 
