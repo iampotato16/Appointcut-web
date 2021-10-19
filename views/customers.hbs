@@ -1,100 +1,88 @@
-<div class="row grid">
-   <div class="grid-item">
-      
+{{!-- header with add button --}}
+<div class="bg-black px-4 py-3 d-flex justify-content-between">
+   <span class="h6 m-0 fw-800">Customers</span>
+   <a href="javascript:;" id="btnAddCustomer" class="i-plus">
+      <i class="bi bi-plus-circle-fill float-right"></i>
+   </a>
+</div>
 
-      <div id="cust">
-   <div class="bg-black px-4 py-3">
-      <div class="d-flex justify-content-between align-items-center">
-         <span class="h6 m-0 fw-800">Customers</span>
-         {{!-- BUTTON TO DISPLAY ADD CUSTOMERS FORM --}}
-         <a href="javascript:;" class="i-plus" onclick="displayAdd(addCustomer)"><i
-               class="bi bi-plus-circle-fill float-right"></i></a>
+
+
+{{!-- Add form Modal --}}
+<div id="mdlAddCustomer">
+
+   {{!-- modal content --}}
+   <div class="bg-black" id="mdlcntAddCustomer">
+      {{!-- close button --}}
+      <div id="closeAddCustomer">
+         &times;<br />
       </div>
-
-      {{!-- ADD Customer FORM --}}
-      <div id="addCustomer" style="display: none;" class="bg-black">
-         <form class="row g-0 pt-2" action="/customers" method="POST">
-            <div class="col-9 g-0">
-               <input type="text" class="form-control font-small rounded-0 mb-3" id="inputAddCustomer" name="inputAddCustomer"
-                  placeholder="Customer">
-            </div>
-            <div class="col-3 g-0" style="padding-left: 1rem;">
-               <button class="btn btn-dark font-small w-100 rounded-0 " type="submit" style="height: 40px;">Add</button>
+      {{!-- modal body --}}
+      <div class="h6 fw-800 mdlbdAddCustomer">
+         <form class="pull-right" action="/customers" method="POST">
+            <div class="container">
+               {{!-- Given Name --}}
+               <div class="row pb-1">
+                  <div class="col-4"><label class="float-end" name="GivenName">Given Name: </label></div>
+                  <div class="col-sm"><input  type="text" value="{{this.GivenName}}" name="GivenName" /></div>
+               </div>
+               {{!-- Family Name --}}
+               <div class="row pb-1">
+                  <div class="col-4"><label class="float-end" name="FamilyName">Family Name: </label></div>
+                  <div class="col-sm"><input  type="text" value="{{this.FamilyName}}" name="FamilyName" /></div>
+               </div>
+               {{!-- E-Mail --}}
+               <div class="row pb-1">
+                  <div class="col-4"><label class="float-end" name="Email">E-Mail: </label></div>
+                  <div class="col-sm"><input type="text" value="{{this.Email}}" name="Email" /></div>
+               </div>
+               {{!-- Password --}}
+               <div class="row pb-1">
+                  <div class="col-4"><label class="float-end" name="Password">Password: </label></div>
+                  <div class="col-sm"><input type="text" value="{{this.Password}}" name="Password" /></div>
+               </div>
+               {{!-- Contact Number --}}
+               <div class="row pb-1">
+                  <div class="col-4"><label class="float-end" name="Contact">Contact Number: </label></div>
+                  <div class="col-sm"><input type="text" value="{{this.Contact}}" name="Contact" /></div>
+               </div>
+               {{!-- Is Disabled --}}
+               <div class="row pb-1">
+                  <div class="col-4"><label class="float-end" name="Disable">Disable: </label></div>
+                  <div class="col-sm"><input type="checkbox" value="{{this.Disabled}}" name="Disabled" /></div>
+               </div>
+               {{!-- Submit Button --}}
+               <div class="row pb-1">
+                  <div class="col-4">{{!--Blank space--}}</div> 
+                  <div class="col-sm"><input class="float-end" type="submit" value="Submit" /></div>
+               </div>
             </div>
          </form>
+
+            
+         
       </div>
    </div>
-
-   <div class="bg-gray px-4 pb-4 pt-2 mb-3">
-      <table class="table table-hover table-striped table-sm m-0">
-         <thead>
-            <tr>
-               <th scope="col">ID</th>
-               <th scope="col">Customer</th>
-               <th scope="col">E-Mail</th>
-               <th scope="col">Contact</th>
-               <th scope="col">Guest?</th>
-               <th scope="col">Disabled?</th>
-               <th scope="col" style="width: 100px">Actions</th>
-            </tr>
-         </thead>
-         <tbody>
-            {{#each parameter}}
-            <tr>
-               <td scope="row">{{this.CustomerID}}</td>
-               <td id="cust{{this.CustomerID}}">
-
-                  {{!-- CUSTOMER NAME --}}
-                  <span id="custName{{this.CustomerID}}">{{this.GivenName}} {{this.FamilyName}}</span>
-
-                  {{!-- SHOW TEXT FIELD WHEN UPDATING Customer NAME --}}
-                  <form action="/editCust/{{this.CustomerID}}" method="POST" id="editCustName{{this.CustomerID}}"
-                     style="display: none;">
-                     <input type="text" name="inputEditCustFName" id="inputEditCustName">
-                     <input type="text" name="inputEditCustGName" id="inputEditCustName">
-                  </form>
-
-               </td>
-
-               <td id="cust">
-                  {{!-- CUSTOMER E-Mail --}}
-                  <span id="custEmail{{this.CustomerID}}">{{this.E-Mail}}</span>
-
-                  {{!-- SHOW TEXT FIELD WHEN UPDATING Customer E-Mail --}}
-                  <form action="/editCust/{{this.CustomerID}}" method="POST" id="editCustEmail{{this.CustomerID}}"
-                     style="display: none;">
-                     <input type="text" name="inputEditCustEmail" id="inputEditCustEmail">
-                  </form>
-               </td>
-               <td>
-
-                  {{!-- DEFAULT ICONS --}}
-                  <div id="custIcons{{this.CustomerID}}">
-                     <a type="button" id="{{this.CustomerID}}"
-                        onclick="hideElements(custName{{this.CustomerID}},custEmail{{this.CustomerID}});showElements(editCustName{{this.CustomerID}},editCustEmail{{this.CustomerID}})"><i
-                           class=" bi bi-pencil bi-fm"></i></a>
-                     <a href="/{{this.CustomerID}}" type="button"><i class="bi bi-x bi-fm"></i></a>
-                  </div>
-
-                  {{!-- SHOW ICONS WHEN EDITING BRGY --}}
-                  <div id="editCustIcons{{this.CustomerID}}" style="display: none;">
-                     <a type="button" onclick="document.getElementById('editCustValue{{this.CustomerID}}').submit()"><i
-                           class=" bi bi-check bi-fm"></i></a>
-                     <a href="/{{this.CustomerID}}" type="button"
-                        onclick="displayEdit(id, custValue{{this.CustomerID}}, editCustValue{{this.CustomerID}}, custIcons{{this.CustomerID}}, editCustIcons{{this.CustomerID}})"><i
-                           class="bi bi-x bi-fm"></i></a>
-                  </div>
-
-               </td>
-            </tr>
-            {{/each}}
-         </tbody>
-      </table>
-   </div>
 </div>
 
-{{!-- href="/editCust/{{this.CustomerID}}" --}}
 
 
-   </div>
-</div>
+
+{{!-- Modal Script --}}
+<script>
+   var modal = document.getElementById("mdlAddCustomer");
+   var btn = document.getElementById("btnAddCustomer");
+   var span = document.getElementById("closeAddCustomer");
+
+   btn.onclick = () => {
+      modal.style.display = "block";
+   }
+   span.onclick = () => {
+      modal.style.display = "none";
+   }
+   window.onclick = () => {
+      if (event.target == modal) {
+         modal.style.display = "none";
+      }
+   }
+</script>

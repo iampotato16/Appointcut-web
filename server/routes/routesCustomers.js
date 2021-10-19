@@ -2,32 +2,24 @@ const acu = require('../../AppointCutUtils')
 const express = require('express')
 const router = express.Router()
 
+const title = "Customers"
 
-
-router.get('/', async (req,res)=>{
+router.route('/')
+    .get(async (req, res) => {
         await acu.startConnection();
         const rows = await acu.getAllFrom('tblCustomers')
-        .catch(err=>{
-            console.error("Error getting all from customer:" + err)
-        });
-        res.render('customers', { layout: 'home-admin',title});
-
-})
+            .catch(err => {
+                console.error("Error getting all from customer:" + err)
+            });
+        console.log(JSON.stringify(rows[0]))
+        res.render('customers', { layout: 'home-admin', title , rows});
+    })
+    .post((req, res) => {
+        var addInput = req.body;
+        console.log("Received post request at customerPost with request: ", [addInput]);
+        res.redirect('/customers');
+    })
 
 module.exports = router;
 
 
-const title = "Customers"
-// exports.customers = async (req,res) =>{
-//     await acu.startConnection();
-//     const rows = await acu.getAllFrom('tblCustomers')
-//     .catch(err=>{
-//         console.error("Error getting all from customer:" + err)
-//     });
-//     res.render('customers', { layout: 'home-admin',title});
-// }
-// exports.customersPost = (req,res) =>{
-//     var addInput = req.body.inputAddCustomer;
-//     console.log("Received post request at customerPost with request: ",[addInput]);
-//     res.render('customers', { layout: 'home-admin'});
-// }
