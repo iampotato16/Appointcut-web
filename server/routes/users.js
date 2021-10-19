@@ -11,8 +11,7 @@ router.get('/file-maintenance', userController.viewFileMaintenance);
 
 //BRGY
 router.post('/addBrgy', userController.addBrgy);
-router.get('/:id', userController.removeBrgy);
 router.post('/editBrgy/:id', userController.editBrgy);
-
+router.get('/:id', userController.removeBrgy);
 
 module.exports = router;//
