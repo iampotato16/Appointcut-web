@@ -1,3 +1,4 @@
+const express = require('express');
 const mysql2 = require('mysql2/promise');
 const { json } = require('express');
 const { get } = require('../routes/users');
@@ -11,15 +12,10 @@ let connection = mysql2.createPool({
    database: process.env.DB_NAME
 });
 
+//LOGIN
 exports.viewLogin = (req, res) => {
    var title = "Login in to AppointCut"
    res.render('login', { layout: 'main', title });
-}
-
-//sample user data
-const user = {
-   username: 'Leila',
-   password: 'sumPassword'
 }
 
 exports.login = async (req, res) => {
@@ -37,6 +33,13 @@ async function getAllFrom(table) {
    var rows = await connection.query(query)
    return rows[0]
 }
+
+async function getAllFromServices() {
+   var query = 'SELECT Services.ServicesID, Services.Name, Category.Name as CategoryID FROM Services INNER JOIN Category ON Services.CategoryID = Category.CategoryID'
+   var rows = await connection.query(query)
+   return rows[0]
+}
+
 exports.viewFileMaintenance = (req, res) => {
    var title = 'File Maintenance';
 
@@ -46,7 +49,7 @@ exports.viewFileMaintenance = (req, res) => {
    var pCity = getAllFrom("city")
    var pFaceShape = getAllFrom("faceshape")
    var pHaircuts = getAllFrom("haircuts")
-   var pServices = getAllFrom("services")
+   var pServices = getAllFromServices()
    var pSpecialization = getAllFrom("specialization")
    pBarangay
       .then((message) => {
@@ -69,7 +72,7 @@ exports.viewFileMaintenance = (req, res) => {
                         pSpecialization.then((message) => {
                            rowSpecialization = message
                            //console.log(rowSpecialization)
-                           res.render('file-maintenance', { layout: 'home-admin', title, rowBrgy, rowCategory, rowCity, rowFaceshape, rowHaircuts, rowServices, rowSpecialization });
+                           res.render('file-maintenance', { layout: 'home-admin', title, rowBrgy, rowCategory, rowCity, rowFaceshape, rowHaircuts, rowServices, rowSpecialization })
                         })
                      })
                   })
@@ -110,6 +113,7 @@ exports.addCategory = (req, res) => {
    connection.query('INSERT INTO category SET Name = ?', [newCategory])
       .catch(err => { console.log(err) })
       .then(mess => { res.redirect('/file-maintenance') });
+
 }
 
 exports.removeCategory = (req, res) => {
@@ -229,3 +233,25 @@ exports.editUserType = (req, res) => {
       .catch(err => { console.log(err) })
       .then(mess => { res.redirect('/file-maintenance') });
 }
+
+//SERVICES
+exports.addServices = (req, res) => {
+   var newServices = req.body.inputAddServices;
+   connection.query('INSERT INTO Services SET name = ?', [newServices])
+      .catch(err => { console.log(err) })
+      .then(mess => { res.redirect('/file-maintenance') });
+}
+
+exports.removeServices = (req, res) => {
+   connection.query('DELETE FROM Services WHERE ServicesID = ?', [req.params.id])
+      .catch(err => { console.log(err) })
+      .then(mess => { res.redirect('/file-maintenance') });
+}
+
+exports.editServices = (req, res) => {
+   var updatedServices = req.body.inputEdiServices;
+   connection.query('UPDATE Services SET name = ? WHERE ServicesID = ?', [updatedServices, req.params.id])
+      .catch(err => { console.log(err) })
+      .then(mess => { res.redirect('/file-maintenance') });
+}
+
