@@ -40,7 +40,7 @@
                   <span id="brgyValue{{this.BarangayID}}">{{this.Name}}</span>
 
                   {{!-- SHOW TEXT FIELD WHEN UPDATING BARANGAY NAME --}}
-                  <form action="/editBrgy/{{this.BarangayID}}" method="POST" id="editBrgyValue{{this.BarangayID}}"
+                  <form action="/editBrgy{{this.BarangayID}}" method="POST" id="editBrgyValue{{this.BarangayID}}"
                      style="display: none;">
                      <input type="text" name="inputEditBrgy" id="inputEditBrgy">
                   </form>
@@ -55,14 +55,14 @@
                      <a type="button" id="{{this.BarangayID}}"
                         onclick="displayEdit(id, brgyValue{{this.BarangayID}}, editBrgyValue{{this.BarangayID}}, brgyIcons{{this.BarangayID}}, editBrgyIcons{{this.BarangayID}})"><i
                            class=" bi bi-pencil bi-fm"></i></a>
-                     <a href="/{{this.BarangayID}}" type="button"><i class="bi bi-x bi-fm"></i></a>
+                     <a href="/removeBrgy{{this.BarangayID}}" type="button"><i class="bi bi-x bi-fm"></i></a>
                   </div>
 
                   {{!-- SHOW ICONS WHEN EDITING BRGY --}}
                   <div id="editBrgyIcons{{this.BarangayID}}" style="display: none;">
                      <a type="button" onclick="document.getElementById('editBrgyValue{{this.BarangayID}}').submit()"><i
                            class=" bi bi-check bi-fm"></i></a>
-                     <a href="/{{this.BarangayID}}" type="button"
+                     <a href="" type="button"
                         onclick="displayEdit(id, brgyValue{{this.BarangayID}}, editBrgyValue{{this.BarangayID}}, brgyIcons{{this.BarangayID}}, editBrgyIcons{{this.BarangayID}})"><i
                            class="bi bi-x bi-fm"></i></a>
                   </div>

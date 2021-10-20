@@ -1,8 +1,26 @@
-<div>
-   <div class="d-flex justify-content-between align-items-center bg-black px-4 py-3">
-      <span class="h6 m-0 fw-800">CITY</span>
-      <a href="" class="i-plus"><i class="bi bi-plus-circle-fill float-right"></i></a>
+<div id="city">
+   <div class="bg-black px-4 py-3">
+      <div class="d-flex justify-content-between align-items-center">
+         <span class="h6 m-0 fw-800">CITY</span>
+         {{!-- BUTTON TO DISPLAY ADD CITY FORM --}}
+         <a href="#city" class="i-plus" onclick="displayAdd(addCity)"><i
+               class="bi bi-plus-circle-fill float-right"></i></a>
+      </div>
+
+      {{!-- ADD CITY FORM --}}
+      <div id="addCity" style="display: none;" class="bg-black">
+         <form class="row g-0 pt-2" action="/addCity" method="POST">
+            <div class="col-9 g-0">
+               <input type="text" class="form-control font-small rounded-0 mb-3" id="inputAddCity" name="inputAddCity"
+                  placeholder="City">
+            </div>
+            <div class="col-3 g-0" style="padding-left: 1rem;">
+               <button class="btn btn-dark font-small w-100 rounded-0 " type="submit" style="height: 40px;">Add</button>
+            </div>
+         </form>
+      </div>
    </div>
+
    <div class="bg-gray px-4 pb-4 pt-2 mb-3">
       <table class="table table-hover table-striped table-sm m-0">
          <thead>
@@ -16,11 +34,39 @@
             {{#each parameter}}
             <tr>
                <td scope="row">{{this.CityID}}</td>
-               <td>{{this.Name}}</td>
+               <td id="city{{this.CityID}}">
+
+                  {{!-- BITY NAME --}}
+                  <span id="cityValue{{this.CityID}}">{{this.Name}}</span>
+
+                  {{!-- SHOW TEXT FIELD WHEN UPDATING CITY NAME --}}
+                  <form action="/editCity{{this.CityID}}" method="POST" id="editCityValue{{this.CityID}}"
+                     style="display: none;">
+                     <input type="text" name="inputEditCity" id="inputEditCity">
+                  </form>
+
+               </td>
                <td>
-                  <a href="/viewuser/{{this.id}}" type="button"><i class="bi bi-eye bi-fm"></i></a>
-                  <a href="/edituser/{{this.id}}" type="button"><i class="bi bi-pencil bi-fm"></i></a>
-                  <a href="/{{this.id}}" type="button"><i class="bi bi-person-x bi-fm"></i></a>
+
+                  {{!-- DEFAULT ICONS --}}
+                  <div id="cityIcons{{this.CityID}}">
+                     {{!-- <a href=" /viewBrgy/{{this.CityID}}" type="button"><i class="bi bi-eye bi-fm"></i></a>
+                     --}}
+                     <a type="button" id="{{this.CityID}}"
+                        onclick="displayEdit(id, cityValue{{this.CityID}}, editCityValue{{this.CityID}}, cityIcons{{this.CityID}}, editCityIcons{{this.CityID}})"><i
+                           class=" bi bi-pencil bi-fm"></i></a>
+                     <a href="/removeCity{{this.CityID}}" type="button"><i class="bi bi-x bi-fm"></i></a>
+                  </div>
+
+                  {{!-- SHOW ICONS WHEN EDITING FACE SHAPE --}}
+                  <div id="editCityIcons{{this.CityID}}" style="display: none;">
+                     <a type="button" onclick="document.getElementById('editCityValue{{this.CityID}}').submit()"><i
+                           class=" bi bi-check bi-fm"></i></a>
+                     <a href="" type="button"
+                        onclick="displayEdit(id, cityValue{{this.CityID}}, editCityValue{{this.CityID}}, cityIcons{{this.CityID}}, editCityIcons{{this.CityID}})"><i
+                           class="bi bi-x bi-fm"></i></a>
+                  </div>
+
                </td>
             </tr>
             {{/each}}
