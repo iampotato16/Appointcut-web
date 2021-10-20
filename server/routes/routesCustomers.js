@@ -11,7 +11,7 @@ router.route('/')
             .catch(err => {
                 console.error("Error getting all from customer:" + err)
             });
-        console.log(JSON.stringify(rows[0]))
+        console.log(rows)
         res.render('customers', { layout: 'home-admin', title , rows});
     })
     .post((req, res) => {

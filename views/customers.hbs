@@ -5,69 +5,103 @@
       <i class="bi bi-plus-circle-fill float-right"></i>
    </a>
 </div>
-
-
-
-{{!-- Add form Modal --}}
-<div id="mdlAddCustomer">
-
-   {{!-- modal content --}}
-   <div class="bg-black" id="mdlcntAddCustomer">
-      {{!-- close button --}}
-      <div id="closeAddCustomer">
-         &times;<br />
-      </div>
-      {{!-- modal body --}}
-      <div class="h6 fw-800 mdlbdAddCustomer">
-         <form class="pull-right" action="/customers" method="POST">
-            <div class="container">
-               {{!-- Given Name --}}
-               <div class="row pb-1">
-                  <div class="col-4"><label class="float-end" name="GivenName">Given Name: </label></div>
-                  <div class="col-sm"><input  type="text" value="{{this.GivenName}}" name="GivenName" /></div>
-               </div>
-               {{!-- Family Name --}}
-               <div class="row pb-1">
-                  <div class="col-4"><label class="float-end" name="FamilyName">Family Name: </label></div>
-                  <div class="col-sm"><input  type="text" value="{{this.FamilyName}}" name="FamilyName" /></div>
-               </div>
-               {{!-- E-Mail --}}
-               <div class="row pb-1">
-                  <div class="col-4"><label class="float-end" name="Email">E-Mail: </label></div>
-                  <div class="col-sm"><input type="text" value="{{this.Email}}" name="Email" /></div>
-               </div>
-               {{!-- Password --}}
-               <div class="row pb-1">
-                  <div class="col-4"><label class="float-end" name="Password">Password: </label></div>
-                  <div class="col-sm"><input type="text" value="{{this.Password}}" name="Password" /></div>
-               </div>
-               {{!-- Contact Number --}}
-               <div class="row pb-1">
-                  <div class="col-4"><label class="float-end" name="Contact">Contact Number: </label></div>
-                  <div class="col-sm"><input type="text" value="{{this.Contact}}" name="Contact" /></div>
-               </div>
-               {{!-- Is Disabled --}}
-               <div class="row pb-1">
-                  <div class="col-4"><label class="float-end" name="Disable">Disable: </label></div>
-                  <div class="col-sm"><input type="checkbox" value="{{this.Disabled}}" name="Disabled" /></div>
-               </div>
-               {{!-- Submit Button --}}
-               <div class="row pb-1">
-                  <div class="col-4">{{!--Blank space--}}</div> 
-                  <div class="col-sm"><input class="float-end" type="submit" value="Submit" /></div>
-               </div>
-            </div>
-         </form>
-
-            
-         
-      </div>
-   </div>
+{{!-- Table Contents --}}
+<div class="bg-gray px-4 pb-4 pt-2 mb-3">
+   <table class="table table-hover table-striped table-sm m-0">
+      <thead>
+         {{!-- Table Headers --}}
+         <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Given Name</th>
+            <th scope="col">Family Name</th>
+            <th scope="col">E-Mail</th>
+            <th scope="col">Contact</th>
+            <th scope="col">Guest</th>
+            <th scope="col" style="width: 100px">Edit</th>
+         </tr>
+      </thead>
+      <tbody>
+         {{#each rows}}
+         <tr>
+            <td>{{this.ID}}</td>
+            <td>{{this.GivenName}}</td>
+            <td>{{this.FamilyName}}</td>
+            <td>{{this.Email}}</td>
+            <td>{{this.Contact}}</td>
+            <td>
+               {{#if IsGuest}}
+                  True
+               {{else}}
+                  False
+               {{/if}}
+            </td>
+            {{!-- TODO: Add Functionality to button --}}
+            <td><button>Edit</button></td>
+         </tr>
+         {{/each}}
+      </tbody>
+   </table>
 </div>
 
 
-
-
+{{!-- TODO: implement bootstrap modal instead --}}
+{{!-- Add form Modal --}}
+<div id="mdlAddCustomer">
+   <div class="container">
+      <div class="row">
+         {{!-- modal content --}}
+         <div class="col"></div>
+         <div class="bg-black col-7" id="mdlcntAddCustomer">
+            {{!-- close button --}}
+            <div id="closeAddCustomer">
+               &times;<br />
+            </div>
+            {{!-- modal body --}}
+            <div class="h6 fw-800 mdlbdAddCustomer">
+               <form class="pull-right" action="/customers" method="POST">
+                  <div class="container">
+                     {{!-- Given Name --}}
+                     <div class="row pb-1">
+                        <div class="col-4"><label class="float-end" name="GivenName">Given Name: </label></div>
+                        <div class="col-sm"><input type="text" value="{{this.GivenName}}" name="GivenName" /></div>
+                     </div>
+                     {{!-- Family Name --}}
+                     <div class="row pb-1">
+                        <div class="col-4"><label class="float-end" name="FamilyName">Family Name: </label></div>
+                        <div class="col-sm"><input type="text" value="{{this.FamilyName}}" name="FamilyName" /></div>
+                     </div>
+                     {{!-- E-Mail --}}
+                     <div class="row pb-1">
+                        <div class="col-4"><label class="float-end" name="Email">E-Mail: </label></div>
+                        <div class="col-sm"><input type="text" value="{{this.Email}}" name="Email" /></div>
+                     </div>
+                     {{!-- Password --}}
+                     <div class="row pb-1">
+                        <div class="col-4"><label class="float-end" name="Password">Password: </label></div>
+                        <div class="col-sm"><input type="text" value="{{this.Password}}" name="Password" /></div>
+                     </div>
+                     {{!-- Contact Number --}}
+                     <div class="row pb-1">
+                        <div class="col-4"><label class="float-end" name="Contact">Contact Number: </label></div>
+                        <div class="col-sm"><input type="text" value="{{this.Contact}}" name="Contact" /></div>
+                     </div>
+                     {{!-- Is Disabled --}}
+                     <div class="row pb-1">
+                        <div class="col-4"><label class="float-end" name="Disable">Disable: </label></div>
+                        <div class="col-sm"><input type="checkbox" value="{{this.Disabled}}" name="Disabled" /></div>
+                     </div>
+                     {{!-- Submit Button --}}
+                     <div class="row pb-1">
+                        <div class="col-4">{{!--Blank space--}}</div>
+                        <div class="col-sm"><input class="float-end" type="submit" value="Submit" /></div>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
 {{!-- Modal Script --}}
 <script>
    var modal = document.getElementById("mdlAddCustomer");
@@ -81,6 +115,7 @@
       modal.style.display = "none";
    }
    window.onclick = () => {
+      console.log(event.target)
       if (event.target == modal) {
          modal.style.display = "none";
       }
