@@ -40,49 +40,17 @@ async function getAllFromServices() {
    return rows[0]
 }
 
-exports.viewFileMaintenance = (req, res) => {
+exports.viewFileMaintenance = async (req, res) => {
    var title = 'File Maintenance';
+   var rowBrgy = await getAllFrom("barangay")
+   var rowCategory = await getAllFrom("category")
+   var rowCity = await getAllFrom("city")
+   var rowFaceshape = await getAllFrom("faceshape")
+   var rowHaircuts = await getAllFrom("haircuts")
+   var rowServices = await getAllFrom("services")
+   var rowSpecialization = await getAllFrom("specialization")
 
-   var rowBrgy, rowCategory, rowCity, rowFaceshape, rowHaircuts, rowServices, rowSpecialization;
-   var pBarangay = getAllFrom("barangay")
-   var pCategory = getAllFrom("category")
-   var pCity = getAllFrom("city")
-   var pFaceShape = getAllFrom("faceshape")
-   var pHaircuts = getAllFrom("haircuts")
-   var pServices = getAllFromServices()
-   var pSpecialization = getAllFrom("specialization")
-   pBarangay
-      .then((message) => {
-         rowBrgy = message
-         pCategory.then((message) => {
-            rowCategory = message
-            //console.log(rowCategory)
-            pCity.then((message) => {
-               rowCity = message
-               //console.log(rowCity)
-               pFaceShape.then((message) => {
-                  rowFaceshape = message
-                  // console.log(rowFaceshape)
-                  pHaircuts.then((message) => {
-                     rowHaircuts = message
-                     //console.log(rowHaircuts)
-                     pServices.then((message) => {
-                        rowServices = message
-                        //console.log(rowServices)
-                        pSpecialization.then((message) => {
-                           rowSpecialization = message
-                           //console.log(rowSpecialization)
-                           res.render('file-maintenance', { layout: 'home-admin', title, rowBrgy, rowCategory, rowCity, rowFaceshape, rowHaircuts, rowServices, rowSpecialization })
-                        })
-                     })
-                  })
-               })
-            })
-         })
-      })
-      .catch((message) => {
-         console.log(message)
-      })
+   res.render('file-maintenance', { layout: 'home-admin', title, rowBrgy, rowCategory, rowCity, rowFaceshape, rowHaircuts, rowServices, rowSpecialization });
 }
 
 //BARANGAY

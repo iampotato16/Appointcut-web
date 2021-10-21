@@ -23,5 +23,5 @@ const routes = require('./server/routes/users');
 app.use('/', routes);
 
 app.listen(port, () => {
-   console.log('Gumagana sa ikatatlong libong port')
+   console.log('Gumagana sa ikatatlong libong daungan')
 })
