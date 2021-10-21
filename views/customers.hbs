@@ -29,20 +29,8 @@
             <td class="customerInfo-{{this.ID}} align-middle">{{this.FamilyName}}</td>
             <td class="customerInfo-{{this.ID}} align-middle">{{this.Email}}</td>
             <td class="customerInfo-{{this.ID}} align-middle">{{this.Contact}}</td>
-            <td class="customerInfo-{{this.ID}} align-middle">
-               {{#if IsGuest}}
-                  True
-               {{else}}
-                  False
-               {{/if}}
-            </td>
-            <td class="customerInfo-{{this.ID}} align-middle">
-               {{#if IsDisabled}}
-                  True
-               {{else}}
-                  False
-               {{/if}}
-            </td>
+            <td class="customerInfo-{{this.ID}} align-middle">{{#if IsGuest}}True{{else}}False{{/if}}</td>
+            <td class="customerInfo-{{this.ID}} align-middle">{{#if IsDisabled}}True{{else}}False{{/if}}</td>
             {{!-- TODO: Add Functionality to button --}}
             <td><button class="edtAddCustomer btn btn-dark" id="AddCustomer-{{this.ID}}">Edit</button></td>
          </tr>
@@ -66,8 +54,13 @@
             </div>
             {{!-- modal body --}}
             <div class="h6 fw-800 mdlbdAddCustomer">
-               <form class="pull-right" action="/customers" method="POST">
+               <form class="pull-right" id="modalForm" action="/customers" method="POST">
                   <div class="container">
+                     {{!-- ID (for editing) --}}
+                     <div class="row pb-1" id="idDisplay" style="display: none;">
+                        <div class="col-4 d-flex align-items-center justify-content-end"><label name="Name">ID: </label></div>
+                        <div class="col-sm"><input type="text" class="addCustomerText form-control" value="{{this.GivenName}}" name="ID" readonly/></div>
+                     </div>
                      {{!-- Given Name --}}
                      <div class="row pb-1">
                         <div class="col-4 d-flex align-items-center justify-content-end"><label name="GivenName">Given Name: </label></div>
@@ -86,7 +79,7 @@
                      {{!-- Password --}}
                      <div class="row pb-1">
                         <div class="col-4 d-flex align-items-center justify-content-end"><label  name="Password">Password: </label></div>
-                        <div class="col-sm"><input type="password" class="addCustomerText form-control" value="{{this.Password}}" name="Password" /></div>
+                        <div class="col-sm"><input type="password" class="addCustomerPass form-control" value="{{this.Password}}" name="Password" /></div>
                      </div>
                      {{!-- Contact Number --}}
                      <div class="row pb-1">
@@ -96,24 +89,28 @@
                      {{!-- Is Guest --}}
                      <div class="row pb-1">
                         <div class="col-4 d-flex align-items-center justify-content-end"><label  name="Guest">Guest: </label></div>
-                        <div class="col-sm"><input type="checkbox" {{#if this.Guest}}checked{{/if}} class="form-check-input addCustomerCheck" name="Guest"></div>
+                        <div class="col-sm"><input type="checkbox" {{#if this.Guest}}checked{{/if}} class="form-check-input addCustomerCheck" name="Guest" value="guest"></div>
                      </div>
                      {{!-- Is Disabled --}}
                      <div class="row pb-1">  
                         <div class="col-4 d-flex align-items-center justify-content-end"><label  name="Disable">Disable: </label></div>
-                        <div class="col-sm"><input type="checkbox" {{#if this.Disabled}}checked{{/if}} class="form-check-input addCustomerCheck" name="Disabled"/></div>
+                        <div class="col-sm"><input type="checkbox" {{#if this.Disabled}}checked{{/if}} class="form-check-input addCustomerCheck" name="Disabled" value="disabled"/></div>
                      </div>
                      {{!-- Submit Button --}}
-                     <div class="row pb-1 add-buttons">
-                        <div class="col-4 d-flex align-items-center justify-content-end">{{!--Blank space--}}</div>
+                     <div class="row pb-1" id="addButtons">
+                        <div class="col-10 d-flex align-items-center justify-content-end">{{!--Blank space--}}</div>
                         <div class="col-sm d-flex align-items-center justify-content-end"><input class="btn btn-light"  type="submit" value="Submit" /></div>
                      </div>
                      {{!-- Edit Button --}}
-                     <div class="row pb-1 edit-buttons" style="display: none;">
-                        <div class="col-4 d-flex align-items-center justify-content-end">{{!--Blank space--}}</div>
-                        <div class="col-sm d-flex align-items-center justify-content-end">
-                           <input  type="submit" value="Edit" />
-                           <input  type="submit" value="Cancel" />
+                     <div class="row pb-1" id="editButtons" style="display: none;">
+                        <div class="col-8 d-flex align-items-center justify-content-end">{{!--Blank space--}}</div>
+                        {{!-- Edit Submit --}}
+                        <div class="col-2 d-flex align-items-center justify-content-end">
+                           <input  type="submit" id="editSubmit" class="btn btn-light mr-2" value="Edit" />
+                        </div>
+                        {{!-- Edit Cancel --}}
+                        <div class="col-2 d-flex align-items-center justify-content-end">
+                           <input  type="button" id="editCancel" class="btn btn-light" value="Cancel" />
                         </div>
                      </div>
                   </div>
@@ -124,68 +121,4 @@
    </div>
 </div>
 
-{{!-- Modal Script --}}
-<script>
-   var modal = document.getElementById("mdlAddCustomer");
-   var btn = document.getElementById("btnAddCustomer");
-   var span = document.getElementById("closeAddCustomer");
-   
-
-
-   function showModal(){
-      modal.style.display = "block";
-   }
-   function hideModal(){
-      modal.style.display = "none";
-   }
-   function modalEditMode(id){
-      //get the fields
-      const modalInputTextFields = document.getElementsByClassName("addCustomerText")
-      const modalInputCheckbox = document.getElementsByClassName("addCustomerCheck")
-
-      //get row details
-      const rowFields = document.getElementsByClassName(`customerInfo-${id}`);
-      const rowData = [];
-      for(i = 0;i<rowFields.length;i++){
-         rowData.push(rowFields[i].textContent);
-      }
-      rowData.forEach(item=>{console.log(item);});
-      
-      //initialize fields with row details, assuming everything is in order
-
-      //get add buttons
-      //hide add buttons
-      //get edit buttons
-      //show edit buttons
-   }
-
-   btn.onclick = () => {
-      showModal();
-   }
-   span.onclick = () => {
-      hideModal();
-   }
-   window.onclick = () => {
-      if (event.target == modal) {
-         hideModal();
-      }
-   }
-
-
-   //edit script
-   //set onclick listener
-   const editButtons = document.getElementsByClassName("edtAddCustomer");
-   for(let index = 0;index< editButtons.length;index++){
-      let rowID = editButtons[index].id;
-      editButtons[index].addEventListener("click",editRow)
-   }
-   function editRow(ev){
-      console.log(ev.id);
-      //get row id
-      let rowID = this.id.split("-")[1]
-      console.log(rowID);
-
-      //show modal in edit mode
-      modalEditMode(rowID);
-   }
-</script>
+<script src="/scripts/customers.js"></script>
