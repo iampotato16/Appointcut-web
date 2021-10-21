@@ -1,7 +1,7 @@
 var modal = document.getElementById("modal");
-var btn = document.getElementById("btnAddCustomer");
+var btn = document.getElementById("btnAddShop");
 var span = document.getElementById("modalClose");
-const editButtons = document.getElementsByClassName("edtAddCustomer");
+const editButtons = document.getElementsByClassName("edtAddShop");
 const editCancel = document.getElementById("editCancel");
 
 
@@ -19,11 +19,11 @@ function hideModal() {
 */
 function modalEditMode(id) {
     //row details
-    const rowFields = document.getElementsByClassName(`customerInfo-${id}`);
+    const rowFields = document.getElementsByClassName(`shopInfo-${id}`);
     let rowData = [];
     //the fields
-    const addCustomerText = document.getElementsByClassName("addCustomerText");
-    const addCustomerCheck = document.getElementsByClassName("addCustomerCheck");
+    const addShopText = document.getElementsByClassName("addShopText");
+    const addShopCheck = document.getElementsByClassName("addShopCheck");
 
     const idDisplay = document.getElementById("idDisplay");
     const addButtons = document.getElementById("addButtons");
@@ -32,7 +32,7 @@ function modalEditMode(id) {
 
 
     //redirect form action
-    modalForm.action = "/customers/edit";
+    modalForm.action = "/shops/edit";
 
     //extract field data
     for (i = 0; i < rowFields.length; i++) {
@@ -41,13 +41,13 @@ function modalEditMode(id) {
 
     //initialize fields with row details, assuming everything is in order
     //textbox
-    for (index = 0; index < addCustomerText.length; index++) {
-        addCustomerText[index].value = rowData.shift()
+    for (index = 0; index < addShopText.length; index++) {
+        addShopText[index].value = rowData.shift()
     }
     //checkbox
-    for (index = 0; index < addCustomerCheck.length; index++) {
+    for (index = 0; index < addShopCheck.length; index++) {
         let isChecked = rowData.shift() === "True";
-        addCustomerCheck[index].checked = isChecked;
+        addShopCheck[index].checked = isChecked;
     }
 
     //configure the displays
@@ -59,21 +59,21 @@ function modalEditMode(id) {
 
 function modalAddMode() {
     const modalForm = document.getElementById("modalForm")
-    const addCustomerText = document.getElementsByClassName("addCustomerText")
-    const addCustomerCheck = document.getElementsByClassName("addCustomerCheck")
+    const addShopText = document.getElementsByClassName("addShopText")
+    const addShopCheck = document.getElementsByClassName("addShopCheck")
     const idDisplay = document.getElementById("idDisplay");
     const editButtons = document.getElementById("editButtons");
     const addButtons = document.getElementById("addButtons");
 
 
     //redirect form action
-    modalForm.action = "/customers"
+    modalForm.action = "/shops"
     //clear inputs
-    for (index = 0; index < addCustomerText.length; index++) {
-        addCustomerText[index].value = "";
+    for (index = 0; index < addShopText.length; index++) {
+        addShopText[index].value = "";
     }
-    for (index = 0; index < addCustomerCheck.length; index++) {
-        addCustomerCheck[index].checked = false;
+    for (index = 0; index < addShopCheck.length; index++) {
+        addShopCheck[index].checked = false;
     }
     //hide id display
     idDisplay.style.display = "none";
