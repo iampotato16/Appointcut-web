@@ -2,6 +2,7 @@
 var dt = new Date();
 document.getElementById("datetime").innerHTML = (("0" + (dt.getMonth() + 1)).slice(-2)) + "/" + (("0" + dt.getDate()).slice(-2)) + "/" + (dt.getFullYear()) + " " + (("0" + dt.getHours() + 1).slice(-2)) + ":" + (("0" + dt.getMinutes() + 1).slice(-2));
 
+//file maintenance 
 function displayAdd(id) {
    toggleDisplayAdd(id)
    msnry.layout();
@@ -14,7 +15,6 @@ function displayEdit(id, value, editValue, icons, editIcons) {
 //over ride for services
 function displayEditServices(value, editValue, value2, editValue2, icons, editIcons) {
    toggleDisplayEditServices(value, value2, icons, editValue, editValue2, editIcons);
-}
 
 function toggleDisplayAdd(element) {
    if (element.style.display == 'none') {

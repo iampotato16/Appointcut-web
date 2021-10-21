@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.json()); // New
+app.use(express.json());
 
 // Static Files
 app.use(express.static('public'));
@@ -17,6 +17,10 @@ app.use(express.static('public'));
 // Templating Engine
 app.engine('hbs', expressHbs({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
+
+//Customers Maintenance
+const ucCustomers = require('./server/routes/routesCustomers');
+app.use('/customers',ucCustomers);
 
 //ROUTES
 const routes = require('./server/routes/users');
