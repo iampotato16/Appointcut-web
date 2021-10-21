@@ -1,27 +1,73 @@
-<div>
-   <div class="d-flex justify-content-between align-items-center bg-black px-4 py-3">
-      <span class="h6 m-0 fw-800">USER TYPE</span>
-      <a href="/form-user" class="i-plus" onclick="renderFormUsertype"><i
-            class="bi bi-plus-circle-fill float-right"></i></a>
+<div id="userType">
+   <div class="bg-black px-4 py-3">
+      <div class="d-flex justify-content-between align-items-center">
+         <span class="h6 m-0 fw-800">USER TYPE</span>
+         {{!-- BUTTON TO DISPLAY ADD USER TYPE FORM --}}
+         <a href="#userType" class="i-plus" onclick="displayAdd(addUserType)"><i
+               class="bi bi-plus-circle-fill float-right"></i></a>
+      </div>
+
+      {{!-- ADD USER TYPE FORM --}}
+      <div id="addUserType" style="display: none;" class="bg-black">
+         <form class="row g-0 pt-2" action="/addUserType" method="POST">
+            <div class="col-9 g-0">
+               <input type="text" class="form-control font-small rounded-0 mb-3" id="inputAddUserType"
+                  name="inputAddUserType" placeholder="UserType">
+            </div>
+            <div class="col-3 g-0" style="padding-left: 1rem;">
+               <button class="btn btn-dark font-small w-100 rounded-0 " type="submit" style="height: 40px;">Add</button>
+            </div>
+         </form>
+      </div>
    </div>
+
    <div class="bg-gray px-4 pb-4 pt-2 mb-3">
       <table class="table table-hover table-striped table-sm m-0">
          <thead>
             <tr>
                <th scope="col">ID</th>
                <th scope="col">User Type</th>
-               <th scope="col" style="width: 100px;">Actions</th>
+               <th scope="col" style="width: 70px">Actions</th>
             </tr>
          </thead>
          <tbody>
-            {{#each usersMockDB}}
+            {{#each rowUsertype}}
             <tr>
-               <td scope="row">{{this.id}}</td>
-               <td>{{this.username}}</td>
+               <td scope="row">{{this.userTypeID}}</td>
+               <td id="userType{{this.userTypeID}}">
+
+                  {{!-- BITY NAME --}}
+                  <span id="userTypeValue{{this.userTypeID}}">{{this.Name}}</span>
+
+                  {{!-- SHOW TEXT FIELD WHEN UPDATING CITY NAME --}}
+                  <form action="/editUserType{{this.userTypeID}}" method="POST"
+                     id="editUserTypeValue{{this.userTypeID}}" style="display: none;">
+                     <input type="text" name="inputEditUserType" id="inputEditUserType">
+                  </form>
+
+               </td>
                <td>
-                  <a href="/viewuser/{{this.id}}" type="button" class="bi-fm"><i class="bi bi-eye"></i></a>
-                  <a href="/edituser/{{this.id}}" type="button" class="bi-fm"><i class="bi bi-pencil"></i></a>
-                  <a href="/{{this.id}}" type="button" class="bi-fm"><i class="bi bi-person-x"></i></a>
+
+                  {{!-- DEFAULT ICONS --}}
+                  <div id="userTypeIcons{{this.userTypeID}}">
+                     {{!-- <a href=" /viewBrgy/{{this.userTypeID}}" type="button"><i class="bi bi-eye bi-fm"></i></a>
+                     --}}
+                     <a type="button" id="{{this.userTypeID}}"
+                        onclick="displayEdit(id, userTypeValue{{this.userTypeID}}, editUserTypeValue{{this.userTypeID}}, userTypeIcons{{this.userTypeID}}, editUserTypeIcons{{this.userTypeID}})"><i
+                           class=" bi bi-pencil bi-fm"></i></a>
+                     <a href="/removeUserType{{this.userTypeID}}" type="button"><i class="bi bi-x bi-fm"></i></a>
+                  </div>
+
+                  {{!-- SHOW ICONS WHEN EDITING FACE SHAPE --}}
+                  <div id="editUserTypeIcons{{this.userTypeID}}" style="display: none;">
+                     <a type="button"
+                        onclick="document.getElementById('editUserTypeValue{{this.userTypeID}}').submit()"><i
+                           class=" bi bi-check bi-fm"></i></a>
+                     <a href="" type="button"
+                        onclick="displayEdit(id, UserTypeValue{{this.userTypeID}}, editUserTypeValue{{this.userTypeID}}, UserTypeIcons{{this.userTypeID}}, editUserTypeIcons{{this.userTypeID}})"><i
+                           class="bi bi-x bi-fm"></i></a>
+                  </div>
+
                </td>
             </tr>
             {{/each}}
