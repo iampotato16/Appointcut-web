@@ -11,7 +11,6 @@ router.route('/')
             .catch(err => {
                 console.error("Error getting all from customer:" + err)
             });
-        console.log(rows)
         res.render('customers', { layout: 'home-admin', title , rows});
     })
     .post((req, res) => {
@@ -19,6 +18,7 @@ router.route('/')
         console.log("Received post request at customerPost with request: ", [addInput]);
         res.redirect('/customers');
     })
+
 
 module.exports = router;
 
