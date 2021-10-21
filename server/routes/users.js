@@ -39,6 +39,11 @@ router.post('/addHaircut', userController.addHaircut);
 router.get('/removeHaircut:id', userController.removeHaircut);
 router.post('/editHaircut:id', userController.editHaircut);
 
+//SERVICES
+router.post('/addServices', userController.addServices);
+router.get('/removeServices:id', userController.removeServices);
+router.post('/editServices:id', userController.editServices);
+
 //USERTYPE -- nakacomment kasi di pa nagagawa 
 // router.post('/addUserType', userController.addUserType);
 // router.get('/removeUserType:id', userController.removeUserType);

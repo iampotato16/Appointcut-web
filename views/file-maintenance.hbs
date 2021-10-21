@@ -1,26 +1,26 @@
 <div class="row grid">
-   <div class="col-lg-6 grid-item">
+   {{!-- <div class="col-lg-6 grid-item">
       {{> usertype-grid parameter=rowUserType}}
+   </div> --}}
+   <div class="col-lg-6 grid-item">
+      {{> category-grid}}
    </div>
    <div class="col-lg-6 grid-item">
-      {{> category-grid parameter=rowCategory}}
+      {{> services-grid}}
    </div>
    <div class="col-lg-6 grid-item">
-      {{> services-grid parameter=rowServices}}
+      {{> specialization-grid}}
    </div>
    <div class="col-lg-6 grid-item">
-      {{> specialization-grid parameter=rowSpecialization}}
+      {{> haircuts-grid}}
    </div>
    <div class="col-lg-6 grid-item">
-      {{> haircuts-grid parameter=rowHaircuts}}
+      {{> faceshape-grid}}
    </div>
    <div class="col-lg-6 grid-item">
-      {{> faceshape-grid parameter=rowFaceshape}}
+      {{> city-grid}}
    </div>
    <div class="col-lg-6 grid-item">
-      {{> city-grid parameter=rowCity}}
-   </div>
-   <div class="col-lg-6 grid-item">
-      {{> brgy-grid parameter=rowBrgy}}
+      {{> brgy-grid}}
    </div>
 </div>

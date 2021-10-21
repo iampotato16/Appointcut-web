@@ -12,9 +12,8 @@ function displayEdit(id, value, editValue, icons, editIcons) {
 }
 
 //over ride for services
-function displayEditServices(id, value, editValue, value2, editValue2, icons, editIcons) {
-   console.log(id);
-   toggleDisplayEdit(value, value2, icons, editValue, editValue2, editIcons);
+function displayEditServices(value, editValue, value2, editValue2, icons, editIcons) {
+   toggleDisplayEditServices(value, value2, icons, editValue, editValue2, editIcons);
 }
 
 function toggleDisplayAdd(element) {
@@ -25,19 +24,6 @@ function toggleDisplayAdd(element) {
       element.style.display = 'none';
    }
 }
-
-//over ride for services
-function toggleDisplayServices(element1, element2) {
-   if (element1.style.display == 'none') {
-      element1.style.display = 'block';
-      element2.style.display = 'block';
-   }
-   else {
-      element1.style.display = 'none';
-      element2.style.display = 'none';
-   }
-}
-
 
 function toggleDisplayEdit(value, icons, valueEdit, iconsEdit) {
    if (value.style.display == 'none') {
@@ -56,7 +42,7 @@ function toggleDisplayEdit(value, icons, valueEdit, iconsEdit) {
 
 //over ride for services
 function toggleDisplayEditServices(value, value2, icons, valueEdit, valueEdit2, iconsEdit) {
-   if (value.style.display == 'none') {
+   if (value.style.display == 'none' && value2.style.display == 'none') {
       value.style.display = 'block';
       value2.style.display = 'block';
       icons.style.display = 'block';
@@ -73,4 +59,3 @@ function toggleDisplayEditServices(value, value2, icons, valueEdit, valueEdit2, 
       iconsEdit.style.display = 'block';
    }
 }
-

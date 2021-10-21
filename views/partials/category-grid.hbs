@@ -31,15 +31,15 @@
             </tr>
          </thead>
          <tbody>
-            {{#each parameter}}
+            {{#each rowCategory}}
             <tr>
                <td scope="row">{{this.CategoryID}}</td>
                <td id="category{{this.CategoryID}}">
 
-                  {{!-- BARANGGAY NAME --}}
+                  {{!-- CATEGORY NAME --}}
                   <span id="categoryValue{{this.CategoryID}}">{{this.Name}}</span>
 
-                  {{!-- SHOW TEXT FIELD WHEN UPDATING BARANGAY NAME --}}
+                  {{!-- SHOW TEXT FIELD WHEN UPDATING CATEGORY NAME --}}
                   <form action="/editCategory{{this.CategoryID}}" method="POST"
                      id="editCategoryValue{{this.CategoryID}}" style="display: none;">
                      <input type="text" name="inputEditCategory" id="inputEditCategory">

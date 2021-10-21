@@ -35,7 +35,7 @@ async function getAllFrom(table) {
 }
 
 async function getAllFromServices() {
-   var query = 'SELECT Services.ServicesID, Services.Name, Category.Name as CategoryID FROM Services INNER JOIN Category ON Services.CategoryID = Category.CategoryID'
+   var query = 'SELECT Services.ServicesID, Services.Name, Category.Name as Category FROM Services INNER JOIN Category ON Services.CategoryID = Category.CategoryID'
    var rows = await connection.query(query)
    return rows[0]
 }
@@ -47,10 +47,12 @@ exports.viewFileMaintenance = async (req, res) => {
    var rowCity = await getAllFrom("city")
    var rowFaceshape = await getAllFrom("faceshape")
    var rowHaircuts = await getAllFrom("haircuts")
-   var rowServices = await getAllFrom("services")
+   var rowServices = await getAllFromServices("services")
    var rowSpecialization = await getAllFrom("specialization")
 
-   res.render('file-maintenance', { layout: 'home-admin', title, rowBrgy, rowCategory, rowCity, rowFaceshape, rowHaircuts, rowServices, rowSpecialization });
+   res.render('file-maintenance', {
+      layout: 'home-admin', title, rowBrgy, rowCategory, rowCity, rowFaceshape, rowHaircuts, rowServices, rowSpecialization
+   });
 }
 
 //BARANGAY
@@ -203,11 +205,13 @@ exports.editUserType = (req, res) => {
 }
 
 //SERVICES
-exports.addServices = (req, res) => {
+exports.addServices = async (req, res) => {
    var newServices = req.body.inputAddServices;
-   connection.query('INSERT INTO Services SET name = ?', [newServices])
+   var newCategoryServ = req.body.inputAddCategory;
+   connection.query('INSERT INTO services SET name = ?, categoryID = ?', [newServices, newCategoryServ])
       .catch(err => { console.log(err) })
       .then(mess => { res.redirect('/file-maintenance') });
+
 }
 
 exports.removeServices = (req, res) => {
@@ -217,8 +221,9 @@ exports.removeServices = (req, res) => {
 }
 
 exports.editServices = (req, res) => {
-   var updatedServices = req.body.inputEdiServices;
-   connection.query('UPDATE Services SET name = ? WHERE ServicesID = ?', [updatedServices, req.params.id])
+   var updatedServices = req.body.inputEditServices;
+   var updatedCategoryServ = req.body.inputEditCategory;
+   connection.query('UPDATE Services SET name = ?, categoryID = ? WHERE ServicesID = ?', [updatedServices, updatedCategoryServ, req.params.id])
       .catch(err => { console.log(err) })
       .then(mess => { res.redirect('/file-maintenance') });
 }
