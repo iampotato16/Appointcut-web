@@ -15,6 +15,27 @@ function displayEdit(id, value, editValue, icons, editIcons) {
    toggleDisplayEdit(value, icons, editValue, editIcons);
 }
 
+/**
+ * Sets all elements' display as 'none'
+ * @param elems the elements to be hidden
+*/
+function hideElements(...elems){
+   elems.forEach(el =>{
+      el.style.display = 'none';
+   })
+}
+
+
+/**
+ * Sets all elements' display as 'block'
+ * @param elems the elements to be shown
+*/
+function showElements(...elems){
+   elems.forEach(el =>{
+      el.style.display = 'block';
+   })
+}
+
 function toggleDisplayAdd(element) {
    if (element.style.display == 'none') {
       element.style.display = 'block';
