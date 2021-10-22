@@ -3,7 +3,7 @@
       <div class="d-flex justify-content-between align-items-center">
          <span class="h6 m-0 fw-800">BARANGAY</span>
          {{!-- BUTTON TO DISPLAY ADD BARANGAY FORM --}}
-         <a href="javascript:;" class="i-plus" id="Barangay-add">
+         <a href="#brgy" class="i-plus" onclick="displayAdd(addBrgy)">
             <i class="bi bi-plus-circle-fill float-right"></i>
          </a>
       </div>
@@ -34,11 +34,11 @@
          <tbody>
             {{#each rowBrgy}}
             <tr>
-               <td scope="row" id="Barangay-ID-{{this.BarangayID}}">{{this.BarangayID}}</td>
+               <td scope="row">{{this.BarangayID}}</td>
                <td id="brgy{{this.BarangayID}}">
 
                   {{!-- BARANGGAY NAME --}}
-                  <span id="Barangay-Barangay-{{this.BarangayID}}">{{this.Name}}</span>
+                  <span id="brgyValue{{this.BarangayID}}">{{this.Name}}</span>
 
                   {{!-- SHOW TEXT FIELD WHEN UPDATING BARANGAY NAME --}}
                   <form action="/editBrgy{{this.BarangayID}}" method="POST" id="editBrgyValue{{this.BarangayID}}"
@@ -53,8 +53,9 @@
                   <div id="brgyIcons{{this.BarangayID}}">
                      {{!-- <a href=" /viewBrgy/{{this.BarangayID}}" type="button"><i class="bi bi-eye bi-fm"></i></a>
                      --}}
-                     <a type="button" id="Barangay-{{this.BarangayID}}" class="edit-Barangay">
-                        <i class=" bi bi-pencil bi-fm"></i></a>
+                     <a type="button" id="{{this.BarangayID}}"
+                        onclick="displayEdit(id, brgyValue{{this.BarangayID}}, editBrgyValue{{this.BarangayID}}, brgyIcons{{this.BarangayID}}, editBrgyIcons{{this.BarangayID}})"><i
+                           class=" bi bi-pencil bi-fm"></i></a>
                      <a href="/removeBrgy{{this.BarangayID}}" type="button"><i class="bi bi-x bi-fm"></i></a>
                   </div>
 
@@ -75,4 +76,3 @@
    </div>
 </div>
  
-{{>modal-dialogbox modalInfo=barangayModal}}
