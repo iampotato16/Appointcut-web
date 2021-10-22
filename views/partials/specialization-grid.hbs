@@ -1,26 +1,74 @@
-<div>
-   <div class="d-flex justify-content-between align-items-center bg-black px-4 py-3">
-      <span class="h6 m-0 fw-800">SPECIALIZATION</span>
-      <a href="" class="i-plus"><i class="bi bi-plus-circle-fill float-right"></i></a>
+<div id="spec">
+   <div class="bg-black px-4 py-3">
+      <div class="d-flex justify-content-between align-items-center">
+         <span class="h6 m-0 fw-800">SPECIALIZATION</span>
+         {{!-- BUTTON TO DISPLAY ADD SPEC FORM --}}
+         <a href="#spec" class="i-plus" onclick="displayAdd(addSpec)"><i
+               class="bi bi-plus-circle-fill float-right"></i></a>
+      </div>
+
+      {{!-- ADD SPEC FORM --}}
+      <div id="addSpec" style="display: none;" class="bg-black">
+         <form class="row g-0 pt-2" action="/addSpec" method="POST">
+            <div class="col-9 g-0">
+               <input type="text" class="form-control font-small rounded-0 mb-3" id="inputAddSpec" name="inputAddSpec"
+                  placeholder="Specialization">
+            </div>
+            <div class="col-3 g-0" style="padding-left: 1rem;">
+               <button class="btn btn-dark font-small w-100 rounded-0 " type="submit" style="height: 40px;">Add</button>
+            </div>
+         </form>
+      </div>
    </div>
+
    <div class="bg-gray px-4 pb-4 pt-2 mb-3">
       <table class="table table-hover table-striped table-sm m-0">
          <thead>
             <tr>
                <th scope="col">ID</th>
                <th scope="col">Specialization</th>
-               <th scope="col" style="width: 100px">Actions</th>
+               <th scope="col" style="width: 70px">Actions</th>
             </tr>
          </thead>
          <tbody>
-            {{#each parameter}}
+            {{#each rowSpecialization}}
             <tr>
                <td scope="row">{{this.SpecializationID}}</td>
-               <td>{{this.Name}}</td>
+               <td id="spec{{this.SpecializationID}}">
+
+                  {{!-- SPEC NAME --}}
+                  <span id="specValue{{this.SpecializationID}}">{{this.Name}}</span>
+
+                  {{!-- SHOW TEXT FIELD WHEN UPDATING SPEC NAME --}}
+                  <form action="/editSpec{{this.SpecializationID}}" method="POST"
+                     id="editSpecValue{{this.SpecializationID}}" style="display: none;">
+                     <input type="text" name="inputEditSpec" id="inputEditSpec">
+                  </form>
+
+               </td>
                <td>
-                  <a href="/viewuser/{{this.id}}" type="button"><i class="bi bi-eye bi-fm"></i></a>
-                  <a href="/edituser/{{this.id}}" type="button"><i class="bi bi-pencil bi-fm"></i></a>
-                  <a href="/{{this.id}}" type="button"><i class="bi bi-person-x bi-fm"></i></a>
+
+                  {{!-- DEFAULT ICONS --}}
+                  <div id="specIcons{{this.SpecializationID}}">
+                     {{!-- <a href=" /viewBrgy/{{this.SpecializationID}}" type="button"><i
+                           class="bi bi-eye bi-fm"></i></a>
+                     --}}
+                     <a type="button" id="{{this.SpecializationID}}"
+                        onclick="displayEdit(id, specValue{{this.SpecializationID}}, editSpecValue{{this.SpecializationID}}, specIcons{{this.SpecializationID}}, editSpecIcons{{this.SpecializationID}})"><i
+                           class=" bi bi-pencil bi-fm"></i></a>
+                     <a href="/removeSpec{{this.SpecializationID}}" type="button"><i class="bi bi-x bi-fm"></i></a>
+                  </div>
+
+                  {{!-- SHOW ICONS WHEN EDITING SPEC --}}
+                  <div id="editSpecIcons{{this.SpecializationID}}" style="display: none;">
+                     <a type="button"
+                        onclick="document.getElementById('editSpecValue{{this.SpecializationID}}').submit()"><i
+                           class=" bi bi-check bi-fm"></i></a>
+                     <a href="" type="button"
+                        onclick="displayEdit(id, specValue{{this.SpecializationID}}, editSpecValue{{this.SpecializationID}}, specIcons{{this.SpecializationID}}, editSpecIcons{{this.SpecializationID}})"><i
+                           class="bi bi-x bi-fm"></i></a>
+                  </div>
+
                </td>
             </tr>
             {{/each}}
