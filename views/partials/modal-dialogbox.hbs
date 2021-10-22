@@ -59,10 +59,10 @@
 </div>
 
 <script>
-    var modal = document.getElementById("modal");
-    var btn = document.getElementById("btnModalAdd");
-    var span = document.getElementById("modalClose");
     let table = "{{modalInfo.tableName}}"
+    var modal = document.getElementById("modal");
+    var btn = document.getElementById(`${table}-add`);
+    var span = document.getElementById("modalClose");
     let addAction = "{{modalInfo.addAction}}";
     let editAction = "{{modalInfo.editAction}}";
 
