@@ -2,6 +2,8 @@ const express = require('express');
 const mysql2 = require('mysql2/promise');
 const { json } = require('express');
 const { get } = require('../routes/users');
+const acu = require('../../AppointCutUtils');
+const ModalConstructor = acu.ModalConstructor;
 
 // Connection Pool
 let connection = mysql2.createPool({
@@ -50,14 +52,23 @@ exports.viewFileMaintenance = async (req, res) => {
    var rowServices = await getAllFromServices("services")
    var rowSpecialization = await getAllFrom("specialization")
 
+   var brgyMC = new ModalConstructor("Barangay");
+   brgyMC.setAddAction("/addBrgy")
+   brgyMC.setEditAction("/editBrgy")
+   brgyMC.addField("ID",ModalConstructor.TYPE_TEXT,"",ModalConstructor.VISIBILITY_EDIT,"readonly");
+   brgyMC.addField("Barangay",ModalConstructor.TYPE_TEXT)
+   
+   let barangayModal = brgyMC.construct();
+
    res.render('file-maintenance', {
-      layout: 'home-admin', title, rowBrgy, rowCategory, rowCity, rowFaceshape, rowHaircuts, rowServices, rowSpecialization
+      layout: 'home-admin', title, rowBrgy, rowCategory,barangayModal, rowCity, rowFaceshape, rowHaircuts, rowServices, rowSpecialization
    });
 }
 
 //BARANGAY
 exports.addBrgy = (req, res) => {
-   var newBrgy = req.body.inputAddBrgy;
+   console.log(JSON.stringify(req.body));
+   var newBrgy = req.body.Barangay;
    connection.query('INSERT INTO barangay SET name = ?', [newBrgy])
       .catch(err => { console.log(err) })
       .then(mess => { res.redirect('/file-maintenance') });
@@ -70,8 +81,10 @@ exports.removeBrgy = (req, res) => {
 }
 
 exports.editBrgy = (req, res) => {
-   var updatedBrgy = req.body.inputEditBrgy;
-   connection.query('UPDATE barangay SET name = ? WHERE BarangayID = ?', [updatedBrgy, req.params.id])
+   
+   var updatedBrgy = req.body.Barangay;
+   var updatedID = req.body.ID;
+   connection.query('UPDATE barangay SET name = ? WHERE BarangayID = ?', [updatedBrgy, updatedID])
       .catch(err => { console.log(err) })
       .then(mess => { res.redirect('/file-maintenance') });
 }

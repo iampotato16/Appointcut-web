@@ -12,7 +12,7 @@ router.get('/file-maintenance', userController.viewFileMaintenance);
 //BRGY
 router.post('/addBrgy', userController.addBrgy);
 router.get('/removeBrgy:id', userController.removeBrgy);
-router.post('/editBrgy:id', userController.editBrgy);
+router.post('/editBrgy', userController.editBrgy);
 
 //CATEGORY
 router.post('/addCategory', userController.addCategory);

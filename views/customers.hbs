@@ -31,7 +31,7 @@
             <td id="Customers-Contact-{{this.ID}}" class="align-middle">{{this.Contact}}</td>
             <td id="Customers-Guest-{{this.ID}}" class="align-middle">{{#if IsGuest}}True{{else}}False{{/if}}</td>
             <td id="Customers-Disabled-{{this.ID}}" class="align-middle">{{#if IsDisabled}}True{{else}}False{{/if}}</td>
-            <td><button class="edit-{{../customerModal.tableName}} btn btn-dark" id="AddCustomer-{{this.ID}}">Edit</button></td>
+            <td><button class="edit-{{../customerModal.tableName}} btn btn-dark" id="Customer-{{this.ID}}">Edit</button></td>
          </tr>
          {{/each}}
       </tbody>
