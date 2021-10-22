@@ -19,9 +19,12 @@ app.engine('hbs', expressHbs({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
 
 //Customers Maintenance
-const ucCustomers = require('./server/routes/routesCustomers');
-app.use('/customers',ucCustomers);
 
+const routesCustomers = require('./server/routes/routesCustomers');
+app.use('/customers',routesCustomers);
+//Shops Maintenance
+const routesShops = require('./server/routes/routesShops');
+app.use('/shops',routesShops);
 //ROUTES
 const routes = require('./server/routes/users');
 app.use('/', routes);

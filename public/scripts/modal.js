@@ -1,10 +1,15 @@
-var modal = document.getElementById("mdlAddCustomer");
-var btn = document.getElementById("btnAddCustomer");
-var span = document.getElementById("closeAddCustomer");
-const editButtons = document.getElementsByClassName("edtAddCustomer");
+var modal = document.getElementById("modal");
+var btn = document.getElementById("btnModalAdd");
+var span = document.getElementById("modalClose");
+const editButtons = document.getElementsByClassName("editCustomer");
 const editCancel = document.getElementById("editCancel");
+const modalForm = document.getElementById("modalForm")
+const editFields = document.getElementsByClassName("edit-visibility");
+const addFields = document.getElementsByClassName("add-visibility");
+const addVisibleButtons = document.getElementById("addButtons");
+const editVisibleButtons = document.getElementById(`edit-confirm-${table}`);
 
-
+console.log(table)
 
 function showModal() {
     modal.style.display = "block";
@@ -21,14 +26,7 @@ function modalEditMode(id) {
     //row details
     const rowFields = document.getElementsByClassName(`customerInfo-${id}`);
     let rowData = [];
-    //the fields
-    const addCustomerText = document.getElementsByClassName("addCustomerText");
-    const addCustomerCheck = document.getElementsByClassName("addCustomerCheck");
 
-    const idDisplay = document.getElementById("idDisplay");
-    const addButtons = document.getElementById("addButtons");
-    const editButtons = document.getElementById("editButtons");
-    const modalForm = document.getElementById("modalForm");
 
 
     //redirect form action
@@ -51,36 +49,43 @@ function modalEditMode(id) {
     }
 
     //configure the displays
-    idDisplay.style.display = "flex";
-    addButtons.style.display = "none";
-    editButtons.style.display = "flex";
+    //show edit fields
+    for(index =0; index < editFields.length;index++){
+        editFields[index].style.display = "flex";
+
+    }
+    //hide add fields
+    for(index =0; index < addFields.length;index++){
+        addFields[index].style.display = "none";
+    }
+    addVisibleButtons.style.display = "none";
+    editVisibleButtons.style.display = "flex";
     showModal();
 }
 
 function modalAddMode() {
-    const modalForm = document.getElementById("modalForm")
-    const addCustomerText = document.getElementsByClassName("addCustomerText")
-    const addCustomerCheck = document.getElementsByClassName("addCustomerCheck")
-    const idDisplay = document.getElementById("idDisplay");
-    const editButtons = document.getElementById("editButtons");
-    const addButtons = document.getElementById("addButtons");
 
 
     //redirect form action
     modalForm.action = "/customers"
     //clear inputs
-    for (index = 0; index < addCustomerText.length; index++) {
-        addCustomerText[index].value = "";
+    for (index = 0; index < editFields.length; index++) {
+        if(editFields.type == "text") editFields[index].value = "";
+        else if (editFields.type == "checkbox") editFields[index].checked = "false";
     }
-    for (index = 0; index < addCustomerCheck.length; index++) {
-        addCustomerCheck[index].checked = false;
+    //hide edit fields
+    for(index =0; index < editFields.length;index++){
+        editFields[index].style.display = "none";
+
     }
-    //hide id display
-    idDisplay.style.display = "none";
+    //show add fields
+    for(index =0; index < addFields.length;index++){
+        addFields[index].style.display = "flex";
+    }
     //hide edit buttons
-    editButtons.style.display = "none";
+    editVisibleButtons.style.display = "none";
     //show add buttons
-    addButtons.style.display = "flex";
+    addVisibleButtons.style.display = "flex";
     //show modal
     showModal();
 }
