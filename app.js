@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const expressHbs = require('express-handlebars');
-const mysql2 = require('mysql2');
 
 require('dotenv').config();
 
@@ -9,6 +8,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
+
 app.use(express.json());
 
 // Static Files
@@ -18,8 +18,8 @@ app.use(express.static('public'));
 app.engine('hbs', expressHbs({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
 
-
 //Customers Maintenance
+
 const routesCustomers = require('./server/routes/routesCustomers');
 app.use('/customers',routesCustomers);
 //Shops Maintenance
@@ -29,8 +29,6 @@ app.use('/shops',routesShops);
 const routes = require('./server/routes/users');
 app.use('/', routes);
 
-
-
 app.listen(port, () => {
-   console.log('Gumagana sa ikatatlong libong port')
+   console.log('Gumagana sa ikatatlong libong daungan')
 })

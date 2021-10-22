@@ -1,26 +1,73 @@
-<div>
-   <div class="d-flex justify-content-between align-items-center bg-black px-4 py-3">
-      <span class="h6 m-0 fw-800">HAIRCUTS</span>
-      <a href="" class="i-plus"><i class="bi bi-plus-circle-fill float-right"></i></a>
+<div id="haircut">
+   <div class="bg-black px-4 py-3">
+      <div class="d-flex justify-content-between align-items-center">
+         <span class="h6 m-0 fw-800">HAIRCUTS</span>
+         {{!-- BUTTON TO DISPLAY ADD HAIRCUT FORM --}}
+         <a href="#haircut" class="i-plus" onclick="displayAdd(addHaircut)"><i
+               class="bi bi-plus-circle-fill float-right"></i></a>
+      </div>
+
+      {{!-- ADD HAIRCUT FORM --}}
+      <div id="addHaircut" style="display: none;" class="bg-black">
+         <form class="row g-0 pt-2" action="/addHaircut" method="POST">
+            <div class="col-9 g-0">
+               <input type="text" class="form-control font-small rounded-0 mb-3" id="inputAddHaircut"
+                  name="inputAddHaircut" placeholder="Haircut">
+            </div>
+            <div class="col-3 g-0" style="padding-left: 1rem;">
+               <button class="btn btn-dark font-small w-100 rounded-0 " type="submit" style="height: 40px;">Add</button>
+            </div>
+         </form>
+      </div>
    </div>
+
    <div class="bg-gray px-4 pb-4 pt-2 mb-3">
-      <table class="table table-hover table-striped table-sm table-responsive m-0">
+      <table class="table table-hover table-striped table-sm m-0">
          <thead>
             <tr>
                <th scope="col">ID</th>
-               <th scope="col">Haircuts</th>
-               <th scope="col" style="width: 100px">Actions</th>
+               <th scope="col">Haircut</th>
+               <th scope="col" style="width: 70px">Actions</th>
             </tr>
          </thead>
          <tbody>
-            {{#each parameter}}
+            {{#each rowHaircuts}}
             <tr>
                <td scope="row">{{this.HaircutsID}}</td>
-               <td>{{this.Name}}</td>
+               <td id="haircut{{this.HaircutsID}}">
+
+                  {{!-- BITY NAME --}}
+                  <span id="haircutValue{{this.HaircutsID}}">{{this.Name}}</span>
+
+                  {{!-- SHOW TEXT FIELD WHEN UPDATING HAIRCUT NAME --}}
+                  <form action="/editHaircut{{this.HaircutsID}}" method="POST" id="editHaircutValue{{this.HaircutsID}}"
+                     style="display: none;">
+                     <input type="text" name="inputEditHaircut" id="inputEditHaircut">
+                  </form>
+
+               </td>
                <td>
-                  <a href="/viewuser/{{this.id}}" type="button"><i class="bi bi-eye bi-fm"></i></a>
-                  <a href="/edituser/{{this.id}}" type="button"><i class="bi bi-pencil bi-fm"></i></a>
-                  <a href="/{{this.id}}" type="button"><i class="bi bi-person-x bi-fm"></i></a>
+
+                  {{!-- DEFAULT ICONS --}}
+                  <div id="haircutIcons{{this.HaircutsID}}">
+                     {{!-- <a href=" /viewBrgy/{{this.HaircutsID}}" type="button"><i class="bi bi-eye bi-fm"></i></a>
+                     --}}
+                     <a type="button" id="{{this.HaircutsID}}"
+                        onclick="displayEdit(id, haircutValue{{this.HaircutsID}}, editHaircutValue{{this.HaircutsID}}, haircutIcons{{this.HaircutsID}}, editHaircutIcons{{this.HaircutsID}})"><i
+                           class=" bi bi-pencil bi-fm"></i></a>
+                     <a href="/removeHaircut{{this.HaircutsID}}" type="button"><i class="bi bi-x bi-fm"></i></a>
+                  </div>
+
+                  {{!-- SHOW ICONS WHEN EDITING FACE SHAPE --}}
+                  <div id="editHaircutIcons{{this.HaircutsID}}" style="display: none;">
+                     <a type="button"
+                        onclick="document.getElementById('editHaircutValue{{this.HaircutsID}}').submit()"><i
+                           class=" bi bi-check bi-fm"></i></a>
+                     <a href="" type="button"
+                        onclick="displayEdit(id, haircutValue{{this.HaircutsID}}, editHaircutValue{{this.HaircutsID}}, haircutIcons{{this.HaircutsID}}, editHaircutIcons{{this.HaircutsID}})"><i
+                           class="bi bi-x bi-fm"></i></a>
+                  </div>
+
                </td>
             </tr>
             {{/each}}
