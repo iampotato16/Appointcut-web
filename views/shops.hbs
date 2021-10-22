@@ -1,7 +1,7 @@
 {{!-- header with add button --}}
 <div class="bg-black px-4 py-3 d-flex justify-content-between">
    <span class="h6 m-0 fw-800">Shops</span>
-   <a href="javascript:;" id="btnModalAdd" class="i-plus">
+   <a href="javascript:;" id="Shops-add" class="i-plus">
       <i class="bi bi-plus-circle-fill float-right"></i>
    </a>
 </div>
@@ -12,32 +12,33 @@
          {{!-- Table Headers --}}
          <tr>
             <th scope="col">ID</th>
-            <th scope="col">Given Name</th>
-            <th scope="col">Family Name</th>
-            <th scope="col">E-Mail</th>
-            <th scope="col">Contact</th>
-            <th scope="col">Guest</th>
-            <th scope="col">Disabled</th>
+            <th scope="col">Shop Name</th>
+            <th scope="col">Owner ID</th>
             <th scope="col" style="width: 100px">Edit</th>
          </tr>
       </thead>
       <tbody>
          {{#each rows}}
          <tr class="align-items-center">
-            <td class="shopInfo-{{this.ID}} align-middle">{{this.ID}}</td>
-            <td class="shopInfo-{{this.ID}} align-middle">{{this.GivenName}}</td>
-            <td class="shopInfo-{{this.ID}} align-middle">{{this.FamilyName}}</td>
-            <td class="shopInfo-{{this.ID}} align-middle">{{this.Email}}</td>
-            <td class="shopInfo-{{this.ID}} align-middle">{{this.Contact}}</td>
-            <td class="shopInfo-{{this.ID}} align-middle">{{#if IsGuest}}True{{else}}False{{/if}}</td>
-            <td class="shopInfo-{{this.ID}} align-middle">{{#if IsDisabled}}True{{else}}False{{/if}}</td>
-            {{!-- TODO: Add Functionality to button --}}
-            <td><button class="edtAddShop btn btn-dark" id="AddShop-{{this.ID}}">Edit</button></td>
+            <td id="Shops-ID-{{this.ID}}" class="align-middle">{{this.ID}}</td>
+            <td id="Shops-ShopName-{{this.ID}}" class="align-middle">{{this.shopName}}</td>
+            <td id="Shops-OwnerID-{{this.ID}}" class="align-middle">{{this.ownerID}}</td>
+
+
+            <td id="Shops-Longitude-{{this.ID}}" style="display: none;" class="align-middle">{{this.longitude}}</td>
+            <td id="Shops-Latitude-{{this.ID}}" style="display: none;" class="align-middle">{{this.latitude}}</td>
+            <td id="Shops-Address-{{this.ID}}" style="display: none;" class="align-middle">{{this.address}}</td>
+            <td id="Shops-Contact-{{this.ID}}" style="display: none;" class="align-middle">{{this.contact}}</td>
+            <td id="Shops-E-mail-{{this.ID}}" style="display: none;" class="align-middle">{{this.email}}</td>
+            <td id="Shops-BarangayID-{{this.ID}}" style="display: none;" class="align-middle">{{this.barangayID}}</td>
+            <td id="Shops-CityID-{{this.ID}}" style="display: none;" class="align-middle">{{this.cityID}}</td>
+
+
+            <td><button class="edit-{{../shopsModal.tableName}} btn btn-dark" id="Shops-{{this.ID}}">Edit</button></td>
          </tr>
          {{/each}}
       </tbody>
    </table>
 </div>
 
-
-{{>modal-dialogbox field=someFields}}
+{{>modal-dialogbox modalInfo=shopsModal}}
