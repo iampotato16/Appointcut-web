@@ -1,0 +1,203 @@
+{{!-- TODO: implement bootstrap modal instead --}}
+{{!-- Add form Modal --}}
+<div id="modal">
+    <div class="container">
+        <div class="row">
+            {{!-- modal content --}}
+            <div class="col"></div>
+            <div class="bg-black col-7" id="modalContent">
+                <span class="h6 m-0 fw-800">{{modalInfo.tableName}}</span>
+                {{!-- close button --}}
+                <div id="modalClose">
+                    &times;<br />
+                </div>
+                {{!-- modal body --}}
+                <div class="h6 fw-800 mdlbdAddCustomer">
+                    <form class="pull-right" id="modalForm" action="/customers" method="POST">
+                        <div class="container">
+
+                            {{#each modalInfo.fieldsArray}}
+                            <div class="row pb-1 {{this.visibility}}">
+                                <div class="col-4 d-flex align-items-center justify-content-end">
+                                    <label name="{{this.name}}">{{this.name}}:</label>
+                                </div>
+                                <div class="col-sm">
+                                    <input class="{{../modalInfo.tableName}}-field" type="{{this.type}}" value="{{this.value}}" name="{{this.name}}"
+                                        {{this.addOn}} />
+                                </div>
+                            </div>
+                            {{/each}}
+
+
+
+                            {{!-- Submit Button --}}
+                            <div class="row pb-1" id="addButtons">
+                                <div class="col-10 d-flex align-items-center justify-content-end">{{!--Blank space--}}
+                                </div>
+                                <div class="col-sm d-flex align-items-center justify-content-end"><input
+                                        class="btn btn-light" type="submit" value="Submit" /></div>
+                            </div>
+                            {{!-- Edit Button --}}
+                            <div class="row pb-1 hide-in-add" id="edit-confirm-{{modalInfo.tableName}}" style="display: none;">
+                                <div class="col-8 d-flex align-items-center justify-content-end">{{!--Blank space--}}
+                                </div>
+                                {{!-- Edit Submit --}}
+                                <div class="col-2 d-flex align-items-center justify-content-end">
+                                    <input type="submit" id="editSubmit" class="btn btn-light mr-2" value="Edit" />
+                                </div>
+                                {{!-- Edit Cancel --}}
+                                <div class="col-2 d-flex align-items-center justify-content-end">
+                                    <input type="button" id="editCancel" class="btn btn-light" value="Cancel" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var modal = document.getElementById("modal");
+    var btn = document.getElementById("btnModalAdd");
+    var span = document.getElementById("modalClose");
+    let table = "{{modalInfo.tableName}}"
+    let addAction = "{{modalInfo.addAction}}";
+    let editAction = "{{modalInfo.editAction}}";
+
+    const editButtons = document.getElementsByClassName(`edit-${table}`);
+    const editCancel = document.getElementById("editCancel");
+    const modalForm = document.getElementById("modalForm")
+    const editFields = document.getElementsByClassName("edit-visibility");
+    const addFields = document.getElementsByClassName("add-visibility");
+    const addVisibleButtons = document.getElementById("addButtons");
+    const editVisibleButtons = document.getElementById(`edit-confirm-${table}`);
+    let fields = document.getElementsByClassName("{{modalInfo.tableName}}-field")
+
+    //Regex to remove spaces (/\s+/g)
+
+    function showModal() {
+        modal.style.display = "block";
+    }
+    function hideModal() {
+        modal.style.display = "none";
+    }
+
+    /**
+    *Displays modal dialog with proper fields displayed in filled
+    *@param id id of row to be edited
+    */
+    function modalEditMode(id) {
+        //row details
+        const rowFields = document.getElementsByClassName(`customerInfo-${id}`);
+        let rowData = [];
+
+
+
+        //redirect form action
+        modalForm.action = editAction;
+
+        //extract field data
+        for (i = 0; i < rowFields.length; i++) {
+            rowData.push(rowFields[i].textContent);
+        }
+
+        //initialize fields with row details, assuming everything is in order
+        //get all the modal fields
+        
+
+        for(index = 0;index < fields.length; index++){
+            let fieldName = (fields[index].name).replace(/\s+/g, '');
+            let displayID = `${table}-${fieldName}-${id}`;
+            console.log(displayID);
+
+            let displayField = document.getElementById(displayID);
+            if(displayField){
+                let value = displayField.textContent;
+                if(fields[index].type=="checkbox"){
+                    if(value =="True")fields[index].checked = true;
+                    else fields[index].checked = false;
+                }else{
+                console.log(value);
+                fields[index].value = value;
+                }
+            }
+        }
+
+
+        //configure the displays
+        //show edit fields
+        for (index = 0; index < editFields.length; index++) {
+            editFields[index].style.display = "flex";
+
+        }
+        //hide add fields
+        for (index = 0; index < addFields.length; index++) {
+            addFields[index].style.display = "none";
+        }
+        addVisibleButtons.style.display = "none";
+        editVisibleButtons.style.display = "flex";
+        showModal();
+    }
+
+    /**Displays modal dialog with proper fields displayed in filled */
+    function modalAddMode() {
+
+
+        //redirect form action
+        modalForm.action = addAction
+        //clear inputs
+        for (index = 0; index < fields.length; index++) {
+            if (fields[index].type == "text") fields[index].value = "";
+            else if (fields[index].type == "password") fields[index].value = "";
+            else if (fields[index].type == "email") fields[index].value = "";
+            else if (fields[index].type == "checkbox") fields[index].checked = false;
+        }
+        //hide edit fields
+        for (index = 0; index < editFields.length; index++) {
+            editFields[index].style.display = "none";
+
+        }
+        //show add fields
+        for (index = 0; index < addFields.length; index++) {
+            addFields[index].style.display = "flex";
+        }
+        //hide edit buttons
+        editVisibleButtons.style.display = "none";
+        //show add buttons
+        addVisibleButtons.style.display = "flex";
+        //show modal
+        showModal();
+    }
+
+    function editRow(ev) {
+        let rowID = this.id.split("-")[1]
+        //show modal in edit mode
+        modalEditMode(rowID);
+    }
+
+
+
+    //set onclick listener
+    //edit buttons of rows
+    for (let index = 0; index < editButtons.length; index++) {
+        let rowID = editButtons[index].id;
+        editButtons[index].addEventListener("click", editRow)
+    }
+    editCancel.addEventListener("click", hideModal);
+    //add button
+    btn.onclick = () => {
+        modalAddMode();
+    }
+    //close modal button
+    span.onclick = () => {
+        hideModal();
+    }
+    //close modal when clicking outside
+    window.onclick = () => {
+        if (event.target == modal) {
+            hideModal();
+        }
+    }
+</script>

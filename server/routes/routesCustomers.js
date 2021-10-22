@@ -1,4 +1,5 @@
 const acu = require('../../AppointCutUtils')
+const ModalConstructor = acu.ModalConstructor
 const express = require('express')
 const router = express.Router()
 
@@ -11,7 +12,21 @@ router.route('/')
             .catch(err => {
                 console.error("Error getting all from customer:" + err)
             });
-        res.render('customers', { layout: 'home-admin', title , rows});
+        
+        let mc = new ModalConstructor(title);
+        mc.setAddAction("/customers");
+        mc.setEditAction("/customers/edit")
+        mc.addField("ID",ModalConstructor.TYPE_TEXT,"",ModalConstructor.VISIBILITY_EDIT,"readonly")
+        mc.addField("Given Name",ModalConstructor.TYPE_TEXT);
+        mc.addField("Family Name",ModalConstructor.TYPE_TEXT);
+        mc.addField("E-Mail",ModalConstructor.TYPE_EMAIL);
+        mc.addField("Contact",ModalConstructor.TYPE_TEXT);
+        mc.addField("Password",ModalConstructor.TYPE_PASSWORD);
+        mc.addField("Guest",ModalConstructor.TYPE_CHECKBOX,"","true");
+        mc.addField("Disabled",ModalConstructor.TYPE_CHECKBOX,);
+        let customerModal = mc.construct();
+            
+        res.render('customers', { layout: 'home-admin', title , rows, customerModal});
     })
     .post((req, res) => {
         var addInput = req.body;

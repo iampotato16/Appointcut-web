@@ -1,7 +1,7 @@
 {{!-- header with add button --}}
 <div class="bg-black px-4 py-3 d-flex justify-content-between">
    <span class="h6 m-0 fw-800">Shops</span>
-   <a href="javascript:;" id="btnAddShop" class="i-plus">
+   <a href="javascript:;" id="btnModalAdd" class="i-plus">
       <i class="bi bi-plus-circle-fill float-right"></i>
    </a>
 </div>
@@ -40,85 +40,4 @@
 </div>
 
 
-{{!-- TODO: implement bootstrap modal instead --}}
-{{!-- Add form Modal --}}
-<div id="modal">
-   <div class="container">
-      <div class="row">
-         {{!-- modal content --}}
-         <div class="col"></div>
-         <div class="bg-black col-7" id="modalContent">
-            {{!-- close button --}}
-            <div id="modalClose">
-               &times;<br />
-            </div>
-            {{!-- modal body --}}
-            <div class="h6 fw-800 mdlbdAddShop">
-               <form class="pull-right" id="modalForm" action="/shops" method="POST">
-                  <div class="container">
-                     {{!-- ID (for editing) --}}
-                     <div class="row pb-1" id="idDisplay" style="display: none;">
-                        <div class="col-4 d-flex align-items-center justify-content-end"><label name="Name">ID: </label></div>
-                        <div class="col-sm"><input type="text" class="addShopText form-control" value="{{this.GivenName}}" name="ID" readonly/></div>
-                     </div>
-                     {{!-- Given Name --}}
-                     <div class="row pb-1">
-                        <div class="col-4 d-flex align-items-center justify-content-end"><label name="GivenName">Given Name: </label></div>
-                        <div class="col-sm"><input type="text" class="addShopText form-control" value="{{this.GivenName}}" name="GivenName" /></div>
-                     </div>
-                     {{!-- Family Name --}}
-                     <div class="row pb-1">
-                        <div class="col-4 d-flex align-items-center justify-content-end"><label  name="FamilyName">Family Name: </label></div>
-                        <div class="col-sm"><input type="text" class="addShopText form-control" value="{{this.FamilyName}}" name="FamilyName" /></div>
-                     </div>
-                     {{!-- E-Mail --}}
-                     <div class="row pb-1">
-                        <div class="col-4 d-flex align-items-center justify-content-end"><label  name="Email">E-Mail: </label></div>
-                        <div class="col-sm"><input type="email" class="addShopText form-control" value="{{this.Email}}" name="Email" /></div>
-                     </div>
-                     {{!-- Password --}}
-                     <div class="row pb-1">
-                        <div class="col-4 d-flex align-items-center justify-content-end"><label  name="Password">Password: </label></div>
-                        <div class="col-sm"><input type="password" class="addShopPass form-control" value="{{this.Password}}" name="Password" /></div>
-                     </div>
-                     {{!-- Contact Number --}}
-                     <div class="row pb-1">
-                        <div class="col-4 d-flex align-items-center justify-content-end"><label  name="Contact">Contact Number: </label></div>
-                        <div class="col-sm"><input type="text" class="addShopText form-control" value="{{this.Contact}}" name="Contact" /></div>
-                     </div>
-                     {{!-- Is Guest --}}
-                     <div class="row pb-1">
-                        <div class="col-4 d-flex align-items-center justify-content-end"><label  name="Guest">Guest: </label></div>
-                        <div class="col-sm"><input type="checkbox" {{#if this.Guest}}checked{{/if}} class="form-check-input addShopCheck" name="Guest" value="guest"></div>
-                     </div>
-                     {{!-- Is Disabled --}}
-                     <div class="row pb-1">  
-                        <div class="col-4 d-flex align-items-center justify-content-end"><label  name="Disable">Disable: </label></div>
-                        <div class="col-sm"><input type="checkbox" {{#if this.Disabled}}checked{{/if}} class="form-check-input addShopCheck" name="Disabled" value="disabled"/></div>
-                     </div>
-                     {{!-- Submit Button --}}
-                     <div class="row pb-1" id="addButtons">
-                        <div class="col-10 d-flex align-items-center justify-content-end">{{!--Blank space--}}</div>
-                        <div class="col-sm d-flex align-items-center justify-content-end"><input class="btn btn-light"  type="submit" value="Submit" /></div>
-                     </div>
-                     {{!-- Edit Button --}}
-                     <div class="row pb-1" id="editButtons" style="display: none;">
-                        <div class="col-8 d-flex align-items-center justify-content-end">{{!--Blank space--}}</div>
-                        {{!-- Edit Submit --}}
-                        <div class="col-2 d-flex align-items-center justify-content-end">
-                           <input  type="submit" id="editSubmit" class="btn btn-light mr-2" value="Edit" />
-                        </div>
-                        {{!-- Edit Cancel --}}
-                        <div class="col-2 d-flex align-items-center justify-content-end">
-                           <input  type="button" id="editCancel" class="btn btn-light" value="Cancel" />
-                        </div>
-                     </div>
-                  </div>
-               </form>
-            </div>
-         </div>
-      </div>
-   </div>
-</div>
-
-<script src="/scripts/shops.js"></script>
+{{>modal-dialogbox field=someFields}}
