@@ -15,7 +15,7 @@ function displayEdit(id, value, editValue, icons, editIcons) {
 //over ride for services
 function displayEditServices(value, editValue, value2, editValue2, icons, editIcons) {
    toggleDisplayEditServices(value, value2, icons, editValue, editValue2, editIcons);
-
+}
 function toggleDisplayAdd(element) {
    if (element.style.display == 'none') {
       element.style.display = 'block';
