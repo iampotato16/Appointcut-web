@@ -9,7 +9,7 @@
 
       {{!-- ADD HAIRCUT FORM --}}
       <div id="addHaircut" style="display: none;" class="bg-black">
-         <form class="row g-0 pt-2" action="/addHaircut" method="POST">
+         <form class="row g-0 pt-2" action="/fileMaintenance/addHaircut" method="POST">
             <div class="col-9 g-0">
                <input type="text" class="form-control font-small rounded-0 mb-3" id="inputAddHaircut"
                   name="inputAddHaircut" placeholder="Haircut">
@@ -40,8 +40,8 @@
                   <span id="haircutValue{{this.HaircutsID}}">{{this.Name}}</span>
 
                   {{!-- SHOW TEXT FIELD WHEN UPDATING HAIRCUT NAME --}}
-                  <form action="/editHaircut{{this.HaircutsID}}" method="POST" id="editHaircutValue{{this.HaircutsID}}"
-                     style="display: none;">
+                  <form action="/fileMaintenance/editHaircut{{this.HaircutsID}}" method="POST"
+                     id="editHaircutValue{{this.HaircutsID}}" style="display: none;">
                      <input type="text" name="inputEditHaircut" id="inputEditHaircut">
                   </form>
 
@@ -55,7 +55,8 @@
                      <a type="button" id="{{this.HaircutsID}}"
                         onclick="displayEdit(id, haircutValue{{this.HaircutsID}}, editHaircutValue{{this.HaircutsID}}, haircutIcons{{this.HaircutsID}}, editHaircutIcons{{this.HaircutsID}})"><i
                            class=" bi bi-pencil bi-fm"></i></a>
-                     <a href="/removeHaircut{{this.HaircutsID}}" type="button"><i class="bi bi-x bi-fm"></i></a>
+                     <a href="/fileMaintenance/removeHaircut{{this.HaircutsID}}" type="button"><i
+                           class="bi bi-x bi-fm"></i></a>
                   </div>
 
                   {{!-- SHOW ICONS WHEN EDITING FACE SHAPE --}}

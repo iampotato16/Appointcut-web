@@ -10,7 +10,7 @@
 
       {{!-- ADD BARANGAY FORM --}}
       <div id="addBrgy" style="display: none;" class="bg-black">
-         <form class="row g-0 pt-2" action="/addBrgy" method="POST">
+         <form class="row g-0 pt-2" action="/fileMaintenance/addBrgy" method="POST">
             <div class="col-9 g-0">
                <input type="text" class="form-control font-small rounded-0 mb-3" id="inputAddBrgy" name="inputAddBrgy"
                   placeholder="Baranggay">
@@ -41,8 +41,8 @@
                   <span id="brgyValue{{this.BarangayID}}">{{this.Name}}</span>
 
                   {{!-- SHOW TEXT FIELD WHEN UPDATING BARANGAY NAME --}}
-                  <form action="/editBrgy{{this.BarangayID}}" method="POST" id="editBrgyValue{{this.BarangayID}}"
-                     style="display: none;">
+                  <form action="/fileMaintenance/editBrgy{{this.BarangayID}}" method="POST"
+                     id="editBrgyValue{{this.BarangayID}}" style="display: none;">
                      <input type="text" name="inputEditBrgy" id="inputEditBrgy">
                   </form>
 
@@ -56,7 +56,8 @@
                      <a type="button" id="{{this.BarangayID}}"
                         onclick="displayEdit(id, brgyValue{{this.BarangayID}}, editBrgyValue{{this.BarangayID}}, brgyIcons{{this.BarangayID}}, editBrgyIcons{{this.BarangayID}})"><i
                            class=" bi bi-pencil bi-fm"></i></a>
-                     <a href="/removeBrgy{{this.BarangayID}}" type="button"><i class="bi bi-x bi-fm"></i></a>
+                     <a href="/fileMaintenance/removeBrgy{{this.BarangayID}}" type="button"><i
+                           class="bi bi-x bi-fm"></i></a>
                   </div>
 
                   {{!-- SHOW ICONS WHEN EDITING BRGY --}}
@@ -75,4 +76,3 @@
       </table>
    </div>
 </div>
- 

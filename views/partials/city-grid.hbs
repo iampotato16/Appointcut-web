@@ -9,7 +9,7 @@
 
       {{!-- ADD CITY FORM --}}
       <div id="addCity" style="display: none;" class="bg-black">
-         <form class="row g-0 pt-2" action="/addCity" method="POST">
+         <form class="row g-0 pt-2" action="/fileMaintenance/addCity" method="POST">
             <div class="col-9 g-0">
                <input type="text" class="form-control font-small rounded-0 mb-3" id="inputAddCity" name="inputAddCity"
                   placeholder="City">
@@ -40,8 +40,8 @@
                   <span id="cityValue{{this.CityID}}">{{this.Name}}</span>
 
                   {{!-- SHOW TEXT FIELD WHEN UPDATING CITY NAME --}}
-                  <form action="/editCity{{this.CityID}}" method="POST" id="editCityValue{{this.CityID}}"
-                     style="display: none;">
+                  <form action="/fileMaintenance/editCity{{this.CityID}}" method="POST"
+                     id="editCityValue{{this.CityID}}" style="display: none;">
                      <input type="text" name="inputEditCity" id="inputEditCity">
                   </form>
 
@@ -55,7 +55,8 @@
                      <a type="button" id="{{this.CityID}}"
                         onclick="displayEdit(id, cityValue{{this.CityID}}, editCityValue{{this.CityID}}, cityIcons{{this.CityID}}, editCityIcons{{this.CityID}})"><i
                            class=" bi bi-pencil bi-fm"></i></a>
-                     <a href="/removeCity{{this.CityID}}" type="button"><i class="bi bi-x bi-fm"></i></a>
+                     <a href="/fileMaintenance/removeCity{{this.CityID}}" type="button"><i
+                           class="bi bi-x bi-fm"></i></a>
                   </div>
 
                   {{!-- SHOW ICONS WHEN EDITING FACE SHAPE --}}

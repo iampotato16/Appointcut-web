@@ -1,18 +1,33 @@
-<div class="row justify-content-center p-5">
-   <form action="/login" method="POST" class="margin-auto" style="width: 400px;">
-      <h1 class="text-center">Log in</h1>
-      <div class="mb-3">
-         {{!-- <label for="exampleFormControlInput1" class="form-label">Username</label> --}}
-         <input type="text" class="form-control" id="exampleFormControlInput1" name="username" placeholder="Username">
-      </div>
-      <div class="mb-3">
-         {{!-- <label for="exampleFormControlInput1" class="form-label">Password</label> --}}
-         <input type="password" class="form-control" id="exampleFormControlInput1" name="password"
-            placeholder="Password">
-      </div>
-      <div class="d-grid">
-         <button class="btn btn-dark" type="submit">Log In</button>
-      </div>
+<div style="background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url('images/bg.jpg');"
+   class="vw-100 vh-100 center-div">
+   <div class="container center-div">
+      <div class="card">
+         <div class="row no-gutters">
+            <div class="col-sm-6 card-col center-div">
+               <div class="text-center">
+                  <img src="images/logo.png" class="m-auto" id="login-logo">
+                  <small class="text-muted">Barbershop Mo To</small>
+               </div>
+            </div>
+            <div class="col-sm-6 card-col center-div bg-black">
+               <div class="card-body">
+                  <form class="form-signin text-center" action="/login" method="POST">
+                     <h1 class="h1 font-weight-bold header-letter-space">WELCOME</h1>
+                     <small class="form-text text-muted mb-3">Sign in to your account</small>
+                     <input name="email" type="email" id="inputEmail" class="form-control font-small mb-3 rounded-0"
+                        placeholder="Email Address" required autofocus>
+                     <input name="password" type="password" id="inputPassword" class="form-control font-small rounded-0"
+                        placeholder="Password" required>
 
-   </form>
+                     <a href=""><small class="form-text text-muted mt-0 mb-3 text-right">Forgot Password?</small></a>
+                     <button
+                        class="btn btn-lg btn-primary btn-block btn-custom-reg-log font-weight-bold font-small rounded-0"
+                        type="submit">SIGN IN</button>
+                     <a href="/signup"><small class="form-text text-muted">Not a member? Sign up now</small></a>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
 </div>

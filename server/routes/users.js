@@ -49,4 +49,4 @@ router.post('/editServices:id', userController.editServices);
 // router.get('/removeUserType:id', userController.removeUserType);
 // router.post('/editUserType:id', userController.editUserType);
 
-module.exports = router;//
+module.exports = router;

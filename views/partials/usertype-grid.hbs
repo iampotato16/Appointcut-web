@@ -9,7 +9,7 @@
 
       {{!-- ADD USER TYPE FORM --}}
       <div id="addUserType" style="display: none;" class="bg-black">
-         <form class="row g-0 pt-2" action="/addUserType" method="POST">
+         <form class="row g-0 pt-2" action="/fileMaintenance/addUserType" method="POST">
             <div class="col-9 g-0">
                <input type="text" class="form-control font-small rounded-0 mb-3" id="inputAddUserType"
                   name="inputAddUserType" placeholder="UserType">
@@ -40,7 +40,7 @@
                   <span id="userTypeValue{{this.userTypeID}}">{{this.Name}}</span>
 
                   {{!-- SHOW TEXT FIELD WHEN UPDATING CITY NAME --}}
-                  <form action="/editUserType{{this.userTypeID}}" method="POST"
+                  <form action="/fileMaintenance/editUserType{{this.userTypeID}}" method="POST"
                      id="editUserTypeValue{{this.userTypeID}}" style="display: none;">
                      <input type="text" name="inputEditUserType" id="inputEditUserType">
                   </form>
@@ -55,7 +55,8 @@
                      <a type="button" id="{{this.userTypeID}}"
                         onclick="displayEdit(id, userTypeValue{{this.userTypeID}}, editUserTypeValue{{this.userTypeID}}, userTypeIcons{{this.userTypeID}}, editUserTypeIcons{{this.userTypeID}})"><i
                            class=" bi bi-pencil bi-fm"></i></a>
-                     <a href="/removeUserType{{this.userTypeID}}" type="button"><i class="bi bi-x bi-fm"></i></a>
+                     <a href="/fileMaintenance/removeUserType{{this.userTypeID}}" type="button"><i
+                           class="bi bi-x bi-fm"></i></a>
                   </div>
 
                   {{!-- SHOW ICONS WHEN EDITING FACE SHAPE --}}

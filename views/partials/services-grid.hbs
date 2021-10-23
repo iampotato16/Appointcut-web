@@ -9,7 +9,7 @@
 
       {{!-- ADD SERVICES FORM --}}
       <div id="addServices" style="display: none;" class="bg-black">
-         <form class="row g-0 pt-2" action="/addServices" method="POST">
+         <form class="row g-0 pt-2" action="/fileMaintenance/addServices" method="POST">
             <div class="col-5 g-2">
                <input type="text" class="form-control font-small rounded-0 mb-3" id="inputAddServices"
                   name="inputAddServices" placeholder="Services">
@@ -44,7 +44,8 @@
             {{#each rowServices}}
             <tr>
                <td scope="row">{{this.ServicesID}}</td>
-               <form action="/editServices{{this.ServicesID}}" method="POST" id="editValue{{this.ServicesID}}">
+               <form action="/fileMaintenance/editServices{{this.ServicesID}}" method="POST"
+                  id="editValue{{this.ServicesID}}">
                   <td id="services{{this.ServicesID}}">
                      {{!-- SERVICES NAME --}}
                      <span id="servicesValue{{this.ServicesID}}">{{this.Name}}</span>
@@ -81,7 +82,8 @@
                      <a type="button" id="{{this.ServicesID}}"
                         onclick="displayEditServices(servicesValue{{this.ServicesID}}, editServicesValue{{this.ServicesID}}, servicesCatValue{{this.ServicesID}}, editServicesCatValue{{this.ServicesID}}, servicesIcons{{this.ServicesID}}, editServicesIcons{{this.ServicesID}})"><i
                            class=" bi bi-pencil bi-fm"></i></a>
-                     <a href="/removeServices{{this.ServicesID}}" type="button"><i class="bi bi-x bi-fm"></i></a>
+                     <a href="/fileMaintenance/removeServices{{this.ServicesID}}" type="button"><i
+                           class="bi bi-x bi-fm"></i></a>
                   </div>
 
                   {{!-- SHOW ICONS WHEN EDITING Services --}}

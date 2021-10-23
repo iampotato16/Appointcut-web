@@ -9,7 +9,7 @@
 
       {{!-- ADD CATEGORY FORM --}}
       <div id="addCategory" style="display: none;" class="bg-black">
-         <form class="row g-0 pt-2" action="/addCategory" method="POST">
+         <form class="row g-0 pt-2" action="/fileMaintenance/addCategory" method="POST">
             <div class="col-9 g-0">
                <input type="text" class="form-control font-small rounded-0 mb-3" id="inputAddCategory"
                   name="inputAddCategory" placeholder="Category">
@@ -40,7 +40,7 @@
                   <span id="categoryValue{{this.CategoryID}}">{{this.Name}}</span>
 
                   {{!-- SHOW TEXT FIELD WHEN UPDATING CATEGORY NAME --}}
-                  <form action="/editCategory{{this.CategoryID}}" method="POST"
+                  <form action="/fileMaintenance/editCategory{{this.CategoryID}}" method="POST"
                      id="editCategoryValue{{this.CategoryID}}" style="display: none;">
                      <input type="text" name="inputEditCategory" id="inputEditCategory">
                   </form>
@@ -55,7 +55,8 @@
                      <a type="button" id="{{this.CategoryID}}"
                         onclick="displayEdit(id, categoryValue{{this.CategoryID}}, editCategoryValue{{this.CategoryID}}, categoryIcons{{this.CategoryID}}, editCategoryIcons{{this.CategoryID}})"><i
                            class=" bi bi-pencil bi-fm"></i></a>
-                     <a href="/removeCategory{{this.CategoryID}}" type="button"><i class="bi bi-x bi-fm"></i></a>
+                     <a href="/fileMaintenance/removeCategory{{this.CategoryID}}" type="button"><i
+                           class="bi bi-x bi-fm"></i></a>
                   </div>
 
                   {{!-- SHOW ICONS WHEN EDITING CATEGORY --}}
