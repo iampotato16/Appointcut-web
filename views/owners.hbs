@@ -22,12 +22,12 @@
       <tbody>
          {{#each rows}}
          <tr class="align-items-center">
-            <td id="Owners-ID-{{this.ID}}" class="align-middle">{{this.ID}}</td>
-            <td id="Owners-GivenName-{{this.ID}}" class="align-middle">{{this.givenName}}</td>
-            <td id="Owners-FamilyName-{{this.ID}}" class="align-middle">{{this.familyName}}</td>
-            <td id="Owners-E-Mail-{{this.ID}}" class="align-middle">{{this.email}}</td>
-            <td id="Owners-Contact-{{this.ID}}" class="align-middle">{{this.contact}}</td>
-            <td><button class="edit-{{../ownerModal.tableName}} btn btn-dark" id="AddCustomer-{{this.ID}}">Edit</button></td>
+            <td id="Owners-OwnerID-{{this.OwnerID}}" class="align-middle">{{this.OwnerID}}</td>
+            <td id="Owners-givenName-{{this.OwnerID}}" class="align-middle">{{this.givenName}}</td>
+            <td id="Owners-familyName-{{this.OwnerID}}" class="align-middle">{{this.familyName}}</td>
+            <td id="Owners-e-mail-{{this.OwnerID}}" class="align-middle">{{this.email}}</td>
+            <td id="Owners-contact-{{this.OwnerID}}" class="align-middle">{{this.contact}}</td>
+            <td><button class="edit-{{../ownerModal.tableName}} btn btn-dark" id="AddCustomer-{{this.OwnerID}}">Edit</button></td>
          </tr>
          {{/each}}
       </tbody>

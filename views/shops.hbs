@@ -20,21 +20,21 @@
       <tbody>
          {{#each rows}}
          <tr class="align-items-center">
-            <td id="Shops-ID-{{this.ID}}" class="align-middle">{{this.ID}}</td>
-            <td id="Shops-ShopName-{{this.ID}}" class="align-middle">{{this.shopName}}</td>
-            <td id="Shops-OwnerID-{{this.ID}}" class="align-middle">{{this.ownerID}}</td>
+            <td id="Shops-ShopID-{{this.ShopID}}" class="align-middle">{{this.ShopID}}</td>
+            <td id="Shops-ShopName-{{this.ShopID}}" class="align-middle">{{this.shopName}}</td>
+            <td id="Shops-OwnerID-{{this.ShopID}}" class="align-middle">{{this.OwnerID}}</td>
 
 
-            <td id="Shops-Longitude-{{this.ID}}" style="display: none;" class="align-middle">{{this.longitude}}</td>
-            <td id="Shops-Latitude-{{this.ID}}" style="display: none;" class="align-middle">{{this.latitude}}</td>
-            <td id="Shops-Address-{{this.ID}}" style="display: none;" class="align-middle">{{this.address}}</td>
-            <td id="Shops-Contact-{{this.ID}}" style="display: none;" class="align-middle">{{this.contact}}</td>
-            <td id="Shops-E-mail-{{this.ID}}" style="display: none;" class="align-middle">{{this.email}}</td>
-            <td id="Shops-BarangayID-{{this.ID}}" style="display: none;" class="align-middle">{{this.barangayID}}</td>
-            <td id="Shops-CityID-{{this.ID}}" style="display: none;" class="align-middle">{{this.cityID}}</td>
+            <td id="Shops-Longitude-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.longtitude}}</td>
+            <td id="Shops-Latitude-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.latitude}}</td>
+            <td id="Shops-Address-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.address}}</td>
+            <td id="Shops-Contact-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.contact}}</td>
+            <td id="Shops-E-mail-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.email}}</td>
+            <td id="Shops-BarangayID-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.BarangayID}}</td>
+            <td id="Shops-CityID-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.CityID}}</td>
 
 
-            <td><button class="edit-{{../shopsModal.tableName}} btn btn-dark" id="Shops-{{this.ID}}">Edit</button></td>
+            <td><button class="edit-{{../shopsModal.tableName}} btn btn-dark" id="Shops-{{this.ShopID}}">Edit</button></td>
          </tr>
          {{/each}}
       </tbody>

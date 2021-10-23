@@ -7,28 +7,28 @@ const title = "Shops"
 
 router.route('/')
  .get(async (req,res)=>{
-    // await acu.startConnection();
-    // const rows = await acu.getAllFrom('tblshop')
-    //     .catch(err => {
-    //         console.error("Error getting all from customer:" + err)
-    //     });
-    const rows = [{
-        "ID":1,
-        "ownerID":12,
-        "shopName":"Ang Bohok",
-        "longitude":12.42,
-        "latitude":135.63,
-        "address":"Your moms house",
-        "contact":"099912412",
-        "email":"mamamo@gmail.com",
-        "barangayID":2,
-        "cityID":3
-    }]
+    await acu.startConnection();
+    const rows = await acu.getAllFrom('tblshop')
+        .catch(err => {
+            console.error("Error getting all from customer:" + err)
+        });
+    // const rows = [{
+    //     "ID":1,
+    //     "ownerID":12,
+    //     "shopName":"Ang Bohok",
+    //     "longitude":12.42,
+    //     "latitude":135.63,
+    //     "address":"Your moms house",
+    //     "contact":"099912412",
+    //     "email":"mamamo@gmail.com",
+    //     "barangayID":2,
+    //     "cityID":3
+    // }]
 
     const mc = new ModalConstructor(title);
     mc.setAddAction('/shops');
     mc.setEditAction('/shops/edit');
-    mc.addField("ID",ModalConstructor.TYPE_TEXT,"",ModalConstructor.VISIBILITY_EDIT,"readonly")
+    mc.addField("Shop ID",ModalConstructor.TYPE_TEXT,"",ModalConstructor.VISIBILITY_EDIT,"readonly")
     mc.addField("Shop Name",ModalConstructor.TYPE_TEXT);
     mc.addField("Owner ID",ModalConstructor.TYPE_TEXT);
     mc.addField("Longitude",ModalConstructor.TYPE_TEXT);
