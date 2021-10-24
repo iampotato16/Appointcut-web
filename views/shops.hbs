@@ -1,3 +1,10 @@
+<div class="mb-2">
+   <button type="button" class="btn btn-dark">Shops</button>
+   <a href="/shops/ownership">
+      <button type="button" hre class="btn btn-outline-dark">Ownerships</button>
+   </a>
+</div>
+
 {{!-- header with add button --}}
 <div class="bg-black px-4 py-3 d-flex justify-content-between">
    <span class="h6 m-0 fw-800">Shops</span>
@@ -25,16 +32,19 @@
             <td id="Shops-OwnerID-{{this.ShopID}}" class="align-middle">{{this.OwnerID}}</td>
 
 
-            <td id="Shops-Longitude-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.longtitude}}</td>
+            <td id="Shops-Longitude-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.longtitude}}
+            </td>
             <td id="Shops-Latitude-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.latitude}}</td>
             <td id="Shops-Address-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.address}}</td>
             <td id="Shops-Contact-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.contact}}</td>
             <td id="Shops-E-mail-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.email}}</td>
-            <td id="Shops-BarangayID-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.BarangayID}}</td>
+            <td id="Shops-BarangayID-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.BarangayID}}
+            </td>
             <td id="Shops-CityID-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.CityID}}</td>
 
 
-            <td><button class="edit-{{../shopsModal.tableName}} btn btn-dark" id="Shops-{{this.ShopID}}">Edit</button></td>
+            <td><button class="edit-{{../shopsModal.tableName}} btn btn-dark" id="Shops-{{this.ShopID}}">Edit</button>
+            </td>
          </tr>
          {{/each}}
       </tbody>
