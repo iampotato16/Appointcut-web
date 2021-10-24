@@ -33,7 +33,7 @@ router.route('/')
 
     const ownerModal = mc.construct();
     // res.json(rows)
-    res.render('owners',{layout:'home-admin',rows, ownerModal})
+    res.render('owners',{layout:'home-admin',title,rows, ownerModal})
 })
 .post((req,res) => {
     res.json(req.body)

@@ -3,10 +3,12 @@ const express = require('express')
 const router = express.Router()
 const ModalConstructor = acu.ModalConstructor;
 
-const title = "Shops"
+
 
 router.route('/')
+
  .get(async (req,res)=>{
+    let title = "Shops"
     await acu.startConnection();
     const rows = await acu.getAllFrom('tblshop')
         .catch(err => {
@@ -49,6 +51,35 @@ router.route('/')
 
 router.post("/edit", (req,res) =>{
     res.json(req.body)
+})
+
+router.route('/ownership')
+.get((req,res) => {
+    let title = "Ownership"
+    const rows = [{
+        "id":1,
+        "ownerID":12,
+        "shopID":16,
+    }]
+
+    const mc = new ModalConstructor(title);
+    mc.setAddAction('/shops/ownership');
+    mc.setEditAction('/shops/ownership/edit');
+    mc.addField("ID",ModalConstructor.TYPE_TEXT,"",ModalConstructor.VISIBILITY_EDIT,"readonly");
+    mc.addField("Owner ID",ModalConstructor.TYPE_TEXT);
+    mc.addField("Shop ID",ModalConstructor.TYPE_TEXT);
+    const ownershipModal = mc.construct();
+
+    res.render('ownerships',{layout:'home-admin',title,rows,ownershipModal});
+})
+.post((req,res) =>{
+    console.log("Post request received at ownership")
+    res.json(req.body);
+})
+
+router.post("/ownership/edit", (req, res) => {
+    console.log("Post request received at ownership edit")
+    res.json(req.body);
 })
 
 module.exports = router;
