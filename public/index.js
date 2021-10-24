@@ -1,8 +1,35 @@
+highlight();
+
 // for date time
 var dt = new Date();
 document.getElementById("datetime").innerHTML = (("0" + (dt.getMonth() + 1)).slice(-2)) + "/" + (("0" + dt.getDate()).slice(-2)) + "/" + (dt.getFullYear()) + " " + (("0" + dt.getHours() + 1).slice(-2)) + ":" + (("0" + dt.getMinutes() + 1).slice(-2));
 
-//file maintenance 
+//HIGHLIGHT FILE MAINTENANCE IN SIDEBAR 
+function highlight() {
+   function emphasize(collapse, link) {
+      document.getElementById('bt-' + collapse + '-collapse').setAttribute('aria-expanded', 'true')
+      document.getElementById(collapse + '-collapse').setAttribute('class', 'show')
+      document.getElementById(link).setAttribute('class', 'focus rounded')
+   }
+
+   var loc = window.location.href;
+   //HIGHLIGHT FILE MAINTENANCE 
+   if (/fileMaintenance/.test(loc)) { document.getElementById('fm-link').style.color = '#f1c644' }
+
+   //HIGHLIGHT ACCOUNTS 
+   else if (/customers/.test(loc)) { emphasize('accounts', 'customers') }
+   else if (/owners/.test(loc)) { emphasize('accounts', 'owners') }
+   else if (/shops/.test(loc)) { emphasize('accounts', 'shops') }
+   else if (/employees/.test(loc)) { emphasize('accounts', 'employees') }
+   else if (/barbershopApplications/.test(loc)) { emphasize('accounts', 'barbershopApplications') }
+
+   //HIGHLIGHT INFORMATION MODULES
+   else if (/hairTrends/.test(loc)) { emphasize('information', 'hairTrends') }
+   else if (/hairStylingTips/.test(loc)) { emphasize('information', 'hairStylingTips') }
+   else if (/haircutPreview/.test(loc)) { emphasize('information', 'haircutPreview') }
+}
+
+//FILE MAINTENANCE DISPLAY FUNCTIONS
 function displayAdd(id) {
    toggleDisplayAdd(id)
    msnry.layout();
