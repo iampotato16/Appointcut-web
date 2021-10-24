@@ -49,10 +49,42 @@ router.route('/')
         console.log("Received post request at customerPost with request: ", [addInput]);
         res.redirect('/employees');
     })
+
 router.post('/edit',(req,res)=>{
     const reqString = JSON.stringify(req.body);
     res.send(`Edit post receieved with request ${reqString}`)
 })
+
+router.route('/specializations')
+    .get(async (req, res) => {
+        const title = "Specializations"
+        await acu.startConnection();
+        // const rows = await acu.getAllFrom('tblEmployees')
+        //     .catch(err => {
+        //         console.error("Error getting all from customer:" + err)
+        //     });
+
+        const rows = [{
+            ID:1,
+            shopServiceID:"14",
+            employeeID:"2"
+        }]
+        
+        let mc = new ModalConstructor(title);
+        mc.setAddAction("/employees");
+        mc.setEditAction("/employees/edit")
+        mc.addField("ID",ModalConstructor.TYPE_TEXT,"",ModalConstructor.VISIBILITY_EDIT,"readonly")
+        mc.addField("Shop Service",ModalConstructor.TYPE_TEXT);
+        mc.addField("Employee",ModalConstructor.TYPE_TEXT);
+        let specializationModal = mc.construct();
+            
+        res.render('specializations', { layout: 'home-admin', title , rows, specializationModal});
+    })
+    .post((req, res) => {
+        var addInput = req.body;
+        console.log("Received post request at customerPost with request: ", [addInput]);
+        res.redirect('/employees/specializations');
+    })
 
 module.exports = router;
 
