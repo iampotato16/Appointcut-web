@@ -19,7 +19,7 @@ app.engine('hbs', expressHbs({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
 
 
-//Owners Maintenance
+//Employee Maintenance
 const routesEmployees = require('./server/routes/routesEmployees')
 app.use('/employees', routesEmployees);
 
@@ -46,6 +46,10 @@ app.use('/login', routesLogin);
 //Sign Up
 const routesSignup = require('./server/routes/routesSignup');
 app.use('/signup', routesSignup);
+
+//Barber Apps Maintenance
+const routesBarberApps = require('./server/routes/routesBarberApps');
+app.use('/barberApps', routesBarberApps);
 
 app.listen(port, () => {
    console.log('Gumagana sa ikatatlong libong daungan')

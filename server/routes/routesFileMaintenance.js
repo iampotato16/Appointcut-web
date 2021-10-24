@@ -27,7 +27,7 @@ function deleteData(dataName, req, res) {
 }
 
 function editData(dataName, input, req, res) {
-   connection.query('UPDATE ' + dataName + ' SET name = ? WHERE ' + dataName + 'ID = ?', [input, req.params.id])
+   connection.query('UPDATE tbl' + dataName + ' SET name = ? WHERE ' + dataName + 'ID = ?', [input, req.params.id])
       .catch(err => { console.log(err) })
       .then(mess => { res.redirect('/fileMaintenance') });
 }
