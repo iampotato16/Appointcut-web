@@ -18,6 +18,11 @@ app.use(express.static('public'));
 app.engine('hbs', expressHbs({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
 
+
+//Owners Maintenance
+const routesEmployees = require('./server/routes/routesEmployees')
+app.use('/employees', routesEmployees);
+
 //Owners Maintenance
 const routesOwners = require('./server/routes/routesOwners')
 app.use('/owners', routesOwners);
