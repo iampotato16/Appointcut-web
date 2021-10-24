@@ -1,0 +1,56 @@
+<div class="mb-2">
+   <button type="button" class="btn btn-dark">Employees</button>
+   <a href="/employees/specializations">
+      <button type="button" hre class="btn btn-outline-dark">Specializations</button>
+   </a>
+</div>
+
+
+{{!-- header with add button --}}
+<div class="bg-black px-4 py-3 d-flex justify-content-between">
+   <span class="h6 m-0 fw-800">Employees</span>
+   <a href="javascript:;" id="Employee-add" class="i-plus">
+      <i class="bi bi-plus-circle-fill float-right"></i>
+   </a>
+</div>
+{{!-- Table Contents --}}
+<div class="bg-gray px-4 pb-4 pt-2 mb-3">
+   <table class="table table-hover table-striped table-sm m-0">
+      <thead>
+         {{!-- Table Headers --}}
+         <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Given Name</th>
+            <th scope="col">Family Name</th>
+            <th scope="col">Employee Type</th>
+            <th scope="col">Shop ID</th>
+            <th scope="col" style="width: 100px">Edit</th>
+         </tr>
+      </thead>
+      <tbody>
+         {{#each rows}}
+         <tr class="align-items-center">
+            <td id="Employee-ID-{{this.ID}}" class="align-middle">{{this.ID}}</td>
+            <td id="Employee-Username-{{this.ID}}" class="align-middle">{{this.username}}</td>
+            <td id="Employee-GivenName-{{this.ID}}" class="align-middle">{{this.givenName}}</td>
+            <td id="Employee-FamilyName-{{this.ID}}" class="align-middle">{{this.familyName}}</td>
+            <td id="Employee-EmployeeType-{{this.ID}}" class="align-middle">{{this.EmployeeTypeID}}</td>
+            <td id="Employee-Shop-{{this.ID}}" class="align-middle">{{this.shopID}}</td>
+
+
+
+            <td id="Employee-SalaryValue-{{this.ID}}" class="align-middle d-none">{{this.salaryTypeValue}}</td>
+            <td id="Employee-SalaryType-{{this.ID}}" class="align-middle d-none">{{this.salaryTypeID}}</td>
+            <td id="Employee-Balance-{{this.ID}}" class="align-middle d-none">{{this.balance}}</td>
+
+
+
+            <td><button class="edit-{{../employeeModal.tableName}} btn btn-dark" id="Employee-{{this.ID}}">Edit</button></td>
+         </tr>
+         {{/each}}
+      </tbody>
+   </table>
+</div>
+
+{{>modal-dialogbox modalInfo=employeeModal}}
