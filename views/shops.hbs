@@ -1,17 +1,18 @@
 <div class="mb-2">
    <button type="button" class="btn btn-dark">Shops</button>
-   <a href="/shops/ownership">
+   <a href="/shops/ownerShip">
       <button type="button" hre class="btn btn-outline-dark">Ownerships</button>
    </a>
 </div>
 
 {{!-- header with add button --}}
 <div class="bg-black px-4 py-3 d-flex justify-content-between">
-   <span class="h6 m-0 fw-800">Shops</span>
+   <span class="h6 m-0 fw-800 align-self-center">Shops</span>
    <a href="javascript:;" id="Shops-add" class="i-plus">
-      <i class="bi bi-plus-circle-fill float-right"></i>
+      <i class="bi bi-plus-circle-fill float-right" style="color: #f1c644;"></i>
    </a>
 </div>
+
 {{!-- Table Contents --}}
 <div class="bg-gray px-4 pb-4 pt-2 mb-3">
    <table class="table table-hover table-striped table-sm m-0">
@@ -21,7 +22,7 @@
             <th scope="col">ID</th>
             <th scope="col">Shop Name</th>
             <th scope="col">Owner ID</th>
-            <th scope="col" style="width: 100px">Edit</th>
+            <th scope="col" class="justify-content-end" style="width: 40px;">Edit</th>
          </tr>
       </thead>
       <tbody>
@@ -43,7 +44,10 @@
             <td id="Shops-CityID-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.CityID}}</td>
 
 
-            <td><button class="edit-{{../shopsModal.tableName}} btn btn-dark" id="Shops-{{this.ShopID}}">Edit</button>
+            <td>
+               <button class="edit-{{../shopsModal.tableName}} btn btn-dark btn-sm" id="Shops-{{this.ShopID}}">
+                  <i class=" bi bi-pencil"></i></button>
+               {{!-- <a type="button" id="{{this.ShopID}}"><i class=" bi bi-pencil bi-fm"></i></a> --}}
             </td>
          </tr>
          {{/each}}

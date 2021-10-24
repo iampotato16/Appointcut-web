@@ -1,8 +1,8 @@
 {{!-- header with add button --}}
 <div class="bg-black px-4 py-3 d-flex justify-content-between">
-   <span class="h6 m-0 fw-800">Owners</span>
+   <span class="h6 m-0 fw-800 align-self-center">Owners</span>
    <a href="javascript:;" id="Owners-add" class="i-plus">
-      <i class="bi bi-plus-circle-fill float-right"></i>
+      <i class="bi bi-plus-circle-fill float-right" style="color: #f1c644;"></i>
    </a>
 </div>
 
@@ -17,7 +17,7 @@
             <th scope="col">Family Name</th>
             <th scope="col">E-Mail</th>
             <th scope="col">Contact</th>
-            <th scope="col" style="width: 100px">Edit</th>
+            <th scope="col" class="justify-content-end" style="width: 40px;">Edit</th>
          </tr>
       </thead>
       <tbody>
@@ -28,7 +28,8 @@
             <td id="Owners-familyName-{{this.OwnerID}}" class="align-middle">{{this.familyName}}</td>
             <td id="Owners-e-mail-{{this.OwnerID}}" class="align-middle">{{this.email}}</td>
             <td id="Owners-contact-{{this.OwnerID}}" class="align-middle">{{this.contact}}</td>
-            <td><button class="edit-{{../ownerModal.tableName}} btn btn-dark" id="AddCustomer-{{this.OwnerID}}">Edit</button></td>
+            <td><button class="edit-{{../ownerModal.tableName}} btn btn-dark btn-sm"
+                  id="AddCustomer-{{this.OwnerID}}"><i class=" bi bi-pencil"></i></button></td>
          </tr>
          {{/each}}
       </tbody>

@@ -38,6 +38,7 @@ app.use('/fileMaintenance', routesFileMaintenance);
 const routesLogin = require('./server/routes/routesLogin');
 app.use('/login', routesLogin);
 
+//Sign Up
 const routesSignup = require('./server/routes/routesSignup');
 app.use('/signup', routesSignup);
 
