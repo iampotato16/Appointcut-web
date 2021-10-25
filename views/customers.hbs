@@ -25,15 +25,15 @@
          {{#each rows}}
          <tr class="align-items-center">
             <td id="Customers-ID-{{this.CustomersID}}" class="align-middle">{{this.CustomersID}}</td>
-            <td id="Customers-GivenName-{{this.CustomersID}}" class="align-middle">{{this.GivenName}}</td>
-            <td id="Customers-FamilyName-{{this.CustomersID}}" class="align-middle">{{this.FamilyName}}</td>
+            <td id="Customers-GivenName-{{this.CustomersID}}" class="align-middle">{{this.firstName}}</td>
+            <td id="Customers-FamilyName-{{this.CustomersID}}" class="align-middle">{{this.lastName}}</td>
             <td id="Customers-E-Mail-{{this.CustomersID}}" class="align-middle">{{this.Email}}</td>
             <td id="Customers-Contact-{{this.CustomersID}}" class="align-middle">{{this.Contact}}</td>
             <td id="Customers-Guest-{{this.CustomersID}}" class="align-middle">{{#if IsGuest}}True{{else}}False{{/if}}
             </td>
             <td id="Customers-Disabled-{{this.CustomersID}}" class="align-middle">{{#if
                IsDisabled}}True{{else}}False{{/if}}</td>
-            <td><button class="edit-{{../customerModal.tableName}} btn btn-dark btn-sm" id="AddCustomer-{{this.ID}}"><i
+            <td><button class="edit-{{../customerModal.tableName}} btn btn-dark btn-sm" id="AddCustomer-{{this.CustomersID}}"><i
                      class=" bi bi-pencil"></i></button></td>
          </tr>
          {{/each}}

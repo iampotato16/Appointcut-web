@@ -53,11 +53,10 @@ router.route('/')
    })
    .post((req, res) => {
       var addInput = req.body;
-      connection.query(`INSERT INTO tblemployee SET username = ?, password = ?, firstName = ?, lastName = ?, employeeTypeID = ?, ShopID = ?, salaryTypeValue = ?, salaryTypeID = ?, balance = ?`, 
-      [addInput["Username"], addInput["Password"], addInput["Given Name"], addInput["Family Name"], addInput["Employee Type"], addInput["Shop"], addInput["Salary Value"], addInput["Salary Type"], addInput["balanace"]])
-         .then(mess => { console.log('new owner added') })
+      connection.query(`INSERT INTO tblemployee SET username = ?, password = ?, firstName = ?, lastName = ?, employeeTypeID = ?, ShopID = ?, salaryTypeValue = ?, salaryTypeID = ?, balance = ?`,
+         [addInput["Username"], addInput["Password"], addInput["Given Name"], addInput["Family Name"], addInput["Employee Type"], addInput["Shop"], addInput["Salary Value"], addInput["Salary Type"], addInput["balanace"]])
+         .then(mess => { console.log('New Owner Added') })
          .catch(err => { console.log(err) });
-      console.log("Received post request at customerPost with request: ", [addInput]);
       res.redirect('/employees');
    })
 
@@ -68,12 +67,12 @@ router.post('/edit', async (req, res) => {
    // [Username, password, GivenName, FamilyName, EmployeeType ,Shop, SalaryValue, SalaryType])
    // .then(es => { console.log('Data Added!') })
    // .catch("MALING MALI KA!")
-      connection.query(`UPDATE tblemployee SET username = ?, password = ?, firstName = ?, lastName = ?, employeeTypeID = ?, ShopID = ?, salaryTypeValue = ?, salaryTypeID = ?, balance = ? WHERE EmployeeID = ?`,
-      [request["Username"], request["Password"], request["Given Name"], request["Family Name"],request["Employee Type"] , request["Shop"], request["Salary Value"], request["Salary Type"], request["Balance"],request["ID"]])
-      .then(mess => { console.log("Data Updated!")})
+   connection.query(`UPDATE tblemployee SET username = ?, password = ?, firstName = ?, lastName = ?, employeeTypeID = ?, ShopID = ?, salaryTypeValue = ?, salaryTypeID = ?, balance = ? WHERE EmployeeID = ?`,
+      [request["Username"], request["Password"], request["Given Name"], request["Family Name"], request["Employee Type"], request["Shop"], request["Salary Value"], request["Salary Type"], request["Balance"], request["ID"]])
+      .then(mess => { console.log("Data Updated!") })
       .catch(err => { console.log(err) })
-      res.redirect('/employees')
-   })
+   res.redirect('/employees')
+})
 
 
 router.route('/specializations')
