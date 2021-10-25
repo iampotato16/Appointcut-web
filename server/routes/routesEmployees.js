@@ -2,8 +2,15 @@ const acu = require('../../AppointCutUtils')
 const ModalConstructor = acu.ModalConstructor
 const express = require('express')
 const router = express.Router()
+const mysql2 = require('mysql2/promise')
 
-
+let connection = mysql2.createPool({
+   host: process.env.DB_HOST,
+   user: process.env.DB_USER,
+   port: process.env.DB_PORT,
+   password: process.env.DB_PASS,
+   database: process.env.DB_NAME
+})
 
 router.route('/')
    .get(async (req, res) => {
@@ -46,14 +53,28 @@ router.route('/')
    })
    .post((req, res) => {
       var addInput = req.body;
+      connection.query(`INSERT INTO tblemployee SET username = ?, password = ?, firstName = ?, lastName = ?, employeeTypeID = ?, ShopID = ?, salaryTypeValue = ?, salaryTypeID = ?, balance = ?`, 
+      [addInput["Username"], addInput["Password"], addInput["Given Name"], addInput["Family Name"], addInput["Employee Type"], addInput["Shop"], addInput["Salary Value"], addInput["Salary Type"], addInput["balanace"]])
+         .then(mess => { console.log('new owner added') })
+         .catch(err => { console.log(err) });
       console.log("Received post request at customerPost with request: ", [addInput]);
       res.redirect('/employees');
    })
 
-router.post('/edit', (req, res) => {
-   const reqString = JSON.stringify(req.body);
-   res.send(`Edit post receieved with request ${reqString}`)
-})
+router.post('/edit', async (req, res) => {
+   const request = req.body;
+
+   // connection.query(`UPDATE appointcutdb.tblemployee SET username = ?, password = ?, firstName = ?, lastName = ?, employeeTypeID = ?, ShopID = ?, salaryTypeValue = ?, salaryTypeID = ?`, 
+   // [Username, password, GivenName, FamilyName, EmployeeType ,Shop, SalaryValue, SalaryType])
+   // .then(es => { console.log('Data Added!') })
+   // .catch("MALING MALI KA!")
+      connection.query(`UPDATE tblemployee SET username = ?, password = ?, firstName = ?, lastName = ?, employeeTypeID = ?, ShopID = ?, salaryTypeValue = ?, salaryTypeID = ?, balance = ? WHERE EmployeeID = ?`,
+      [request["Username"], request["Password"], request["Given Name"], request["Family Name"],request["Employee Type"] , request["Shop"], request["Salary Value"], request["Salary Type"], request["Balance"],request["ID"]])
+      .then(mess => { console.log("Data Updated!")})
+      .catch(err => { console.log(err) })
+      res.redirect('/employees')
+   })
+
 
 router.route('/specializations')
    .get(async (req, res) => {
