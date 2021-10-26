@@ -1,57 +1,72 @@
-<div class="mb-2">
-   <button type="button" class="btn btn-dark">Employees</button>
-   <a href="/employees/specializations">
-      <button type="button" hre class="btn btn-outline-dark">Specializations</button>
-   </a>
-</div>
+<main class="col-lg-9 container p-0" id="main">
+   <div class="mt-4 p-3 text-decoration-none">
+      <div class="d-flex justify-content-between">
+         <span class="fs-5 fw-semibold">{{title}}</span>
+         <div class="d-inline float-right">
+            <button class="btn btn-dark btn-sm mx-2 i-plus" href="javascript:;" id="Employee-add" style="height: 30px;">
+               <i class="bi bi-plus"></i>
+            </button>
+            <input type="text" name="search" id="search">
+         </div>
+      </div>
+      <hr>
+      <div class="mb-2">
+         <button type="button" class="btn btn-dark">Employees</button>
+         <a href="/employees/specializations">
+            <button type="button" class="btn btn-outline-dark">Specializations</button>
+         </a>
+      </div>
 
 
-{{!-- header with add button --}}
-<div class="bg-black px-4 py-3 d-flex justify-content-between">
-   <span class="h6 m-0 fw-800">Employees</span>
-   <a href="javascript:;" id="Employee-add" class="i-plus">
-      <i class="bi bi-plus-circle-fill float-right"></i>
-   </a>
-</div>
-{{!-- Table Contents --}}
-<div class="bg-gray px-4 pb-4 pt-2 mb-3">
-   <table class="table table-hover table-striped table-sm m-0">
-      <thead>
-         {{!-- Table Headers --}}
-         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Username</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Employee Type</th>
-            <th scope="col">Shop ID</th>
-            <th scope="col" class="justify-content-end" style="width: 40px;">Actions</th>
-         </tr>
-      </thead>
-      <tbody>
-         {{#each rows}}
-         <tr class="align-items-center">
-            <td id="Employee-ID-{{this.EmployeeID}}" class="align-middle">{{this.EmployeeID}}</td>
-            <td id="Employee-Username-{{this.EmployeeID}}" class="align-middle">{{this.username}}</td>
-            <td id="Employee-GivenName-{{this.EmployeeID}}" class="align-middle">{{this.firstName}}</td>
-            <td id="Employee-FamilyName-{{this.EmployeeID}}" class="align-middle">{{this.lastName}}</td>
-            <td id="Employee-EmployeeType-{{this.EmployeeID}}" class="align-middle">{{this.employeeTypeID}}</td>
-            <td id="Employee-Shop-{{this.EmployeeID}}" class="align-middle">{{this.ShopID}}</td>
+      {{!-- header with add button --}}
+      {{!-- <div class="bg-black px-4 py-3 d-flex justify-content-between">
+         <span class="h6 m-0 fw-800">Employees</span>
+      </div> --}}
+
+      {{!-- Table Contents --}}
+      <div class="bg-gray p-4 mb-3">
+         <table class="table table-hover table-striped table-sm m-0">
+            <thead>
+               {{!-- Table Headers --}}
+               <tr>
+                  <th scope="col"> <small>ID</small> </th>
+                  <th scope="col"> <small>USERNAME</small> </th>
+                  <th scope="col"> <small>FIRST NAME</small> </th>
+                  <th scope="col"> <small>LAST NAME</small> </th>
+                  <th scope="col"> <small>EMPLOYEE TYPE</small> </th>
+                  <th scope="col"> <small>SHOP ID</small> </th>
+                  <th scope="col" class="justify-content-end" style="width: 40px;"><small>ACTIONS</small></th>
+               </tr>
+            </thead>
+            <tbody>
+               {{#each rows}}
+               <tr class="align-items-center">
+                  <td id="Employee-ID-{{this.EmployeeID}}" class="align-middle">{{this.EmployeeID}}</td>
+                  <td id="Employee-Username-{{this.EmployeeID}}" class="align-middle">{{this.username}}</td>
+                  <td id="Employee-GivenName-{{this.EmployeeID}}" class="align-middle">{{this.firstName}}</td>
+                  <td id="Employee-FamilyName-{{this.EmployeeID}}" class="align-middle">{{this.lastName}}</td>
+                  <td id="Employee-EmployeeType-{{this.EmployeeID}}" class="align-middle">{{this.employeeTypeID}}</td>
+                  <td id="Employee-Shop-{{this.EmployeeID}}" class="align-middle">{{this.ShopID}}</td>
 
 
-            <td id="Employee-SalaryValue-{{this.EmployeeID}}" class="align-middle d-none">{{this.salaryTypeValue}}</td>
-            <td id="Employee-SalaryType-{{this.EmployeeID}}" class="align-middle d-none">{{this.salaryTypeID}}</td>
-            <td id="Employee-Balance-{{this.EmployeeID}}" class="align-middle d-none">{{this.balance}}</td>
+                  <td id="Employee-SalaryValue-{{this.EmployeeID}}" class="align-middle d-none">{{this.salaryTypeValue}}
+                  </td>
+                  <td id="Employee-SalaryType-{{this.EmployeeID}}" class="align-middle d-none">{{this.salaryTypeID}}
+                  </td>
+                  <td id="Employee-Balance-{{this.EmployeeID}}" class="align-middle d-none">{{this.balance}}</td>
 
 
-            <td><button class="edit-{{../employeeModal.tableName}} btn btn-dark btn-sm"
-                  id="Employee-{{this.EmployeeID}}"><i class=" bi bi-pencil"></i></button>
-            </td>
-            </td>
-         </tr>
-         {{/each}}
-      </tbody>
-   </table>
-</div>
+                  <td><button class="edit-{{../employeeModal.tableName}} btn btn-dark btn-sm"
+                        id="Employee-{{this.Employeeid}}"><i class=" bi bi-pencil"></i></button>
+                  </td>
+                  </td>
+               </tr>
+               {{/each}}
+            </tbody>
+         </table>
+      </div>
+   </div>
+</main>
+
 
 {{>modal-dialogbox modalInfo=employeeModal}}

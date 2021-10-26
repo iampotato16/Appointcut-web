@@ -33,6 +33,12 @@ async function getAllFromServices() {
    return rows[0]
 }
 
+async function getAllFromBarangay() {
+   var query = 'SELECT tblbarangay.BarangayID, tblbarangay.Name, tblcity.Name as City FROM tblcity INNER JOIN tblbarangay ON tblbarangay.CityID = tblCity.CityID'
+   var rows = await connection.query(query)
+   return rows[0]
+}
+
 class ModalConstructor {
    tableName;
    constructor(tableName) {
@@ -121,4 +127,4 @@ class ModalConstructor {
 
 }
 
-module.exports = { getAllFrom, getAllFromWhere, getAllFromServices, startConnection, ModalConstructor }
+module.exports = { getAllFrom, getAllFromWhere, getAllFromServices, getAllFromBarangay, startConnection, ModalConstructor }

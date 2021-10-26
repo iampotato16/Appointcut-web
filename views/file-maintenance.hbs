@@ -1,26 +1,33 @@
-<div class="row grid">
-   {{!-- <div class="col-lg-6 grid-item">
-      {{> usertype-grid parameter=rowUserType}}
-   </div> --}}
-   <div class="col-lg-6 grid-item">
-      {{> category-grid}}
+<main class="col-lg-9 container p-0" id="main">
+   <div class="mt-4 p-3 text-decoration-none">
+      <span class="fs-5 fw-semibold">{{title}}</span>
+      <input type="text" name="search" id="search" style="float: right;">
+      <hr>
+      <div class="row grid">
+         {{!-- <div class="col-lg-6 grid-item">
+            {{> usertype-grid parameter=rowUserType}}
+         </div> --}}
+         <div class="col-lg-6 grid-item">
+            {{> category-grid}}
+         </div>
+         <div class="col-lg-6 grid-item">
+            {{> services-grid}}
+         </div>
+         {{!-- <div class="col-lg-6 grid-item">
+            {{> specialization-grid}}
+         </div> --}}
+         <div class="col-lg-6 grid-item">
+            {{> haircuts-grid}}
+         </div>
+         {{!-- <div class="col-lg-6 grid-item">
+            {{> faceshape-grid}}
+         </div> --}}
+         <div class="col-lg-6 grid-item">
+            {{> city-grid}}
+         </div>
+         <div class="col-lg-6 grid-item">
+            {{> brgy-grid}}
+         </div>
+      </div>
    </div>
-   <div class="col-lg-6 grid-item">
-      {{> services-grid}}
-   </div>
-   {{!-- <div class="col-lg-6 grid-item">
-      {{> specialization-grid}}
-   </div> --}}
-   <div class="col-lg-6 grid-item">
-      {{> haircuts-grid}}
-   </div>
-   {{!-- <div class="col-lg-6 grid-item">
-      {{> faceshape-grid}}
-   </div> --}}
-   <div class="col-lg-6 grid-item">
-      {{> city-grid}}
-   </div>
-   <div class="col-lg-6 grid-item">
-      {{> brgy-grid}}
-   </div>
-</div>
+</main>

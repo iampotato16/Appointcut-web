@@ -28,6 +28,7 @@
             <tr>
                <th scope="col">ID</th>
                <th scope="col">Barangay</th>
+               <th scope="col">City</th>
                <th scope="col" style="width: 70px">Actions</th>
             </tr>
          </thead>
@@ -35,18 +36,33 @@
             {{#each rowBrgy}}
             <tr>
                <td scope="row">{{this.BarangayID}}</td>
-               <td id="brgy{{this.BarangayID}}">
 
-                  {{!-- BARANGGAY NAME --}}
-                  <span id="brgyValue{{this.BarangayID}}">{{this.Name}}</span>
+               <form action="/fileMaintenance/editBrgy{{this.BarangayID}}" method="POST"
+                  id="editBrgy{{this.BarangayID}}">
+                  <td id="brgy{{this.BarangayID}}">
+                     {{!-- BARANGGAY NAME --}}
+                     <span id="brgyValue{{this.BarangayID}}">{{this.Name}}</span>
 
-                  {{!-- SHOW TEXT FIELD WHEN UPDATING BARANGAY NAME --}}
-                  <form action="/fileMaintenance/editBrgy{{this.BarangayID}}" method="POST"
-                     id="editBrgyValue{{this.BarangayID}}" style="display: none;">
-                     <input type="text" name="inputEditBrgy" id="inputEditBrgy">
-                  </form>
+                     {{!-- SHOW TEXT FIELD WHEN UPDATING BARANGAY NAME --}}
+                     <div style="display: none;" id="editBrgyValue{{this.BarangayID}}">
+                        <input type="text" name="inputEditBrgy" id="inputEditBrgy">
+                     </div>
+                  </td>
+                  <td id="brgyCity{{this.BarangayID}}">
+                     {{!-- BARANGGAY NAME --}}
+                     <span id="brgyCityValue{{this.BarangayID}}">{{this.City}}</span>
 
-               </td>
+                     {{!-- SHOW TEXT FIELD WHEN UPDATING BARANGAY NAME --}}
+                     <div style="display: none;" id="editBrgyCityValue{{this.BarangayID}}">
+                        <select name="inputEditBrgyCity" id="inputEditBrgyCity" placeholder="City"
+                           class="form-select font-small rounded-0">
+                           {{#each ../rowCity}}
+                           <option value="{{this.CityID}}">{{this.Name}}</option>
+                           {{/each}}
+                        </select>
+                     </div>
+                  </td>
+               </form>
                <td>
 
                   {{!-- DEFAULT ICONS --}}
@@ -54,7 +70,7 @@
                      {{!-- <a href=" /viewBrgy/{{this.BarangayID}}" type="button"><i class="bi bi-eye bi-fm"></i></a>
                      --}}
                      <a type="button" id="{{this.BarangayID}}"
-                        onclick="displayEdit(id, brgyValue{{this.BarangayID}}, editBrgyValue{{this.BarangayID}}, brgyIcons{{this.BarangayID}}, editBrgyIcons{{this.BarangayID}})"><i
+                        onclick="displayEdit2(brgyValue{{this.BarangayID}}, editBrgyValue{{this.BarangayID}}, brgyCityValue{{this.BarangayID}}, editBrgyCityValue{{this.BarangayID}}, brgyIcons{{this.BarangayID}}, editBrgyIcons{{this.BarangayID}})"><i
                            class=" bi bi-pencil bi-fm"></i></a>
                      <a href="/fileMaintenance/removeBrgy{{this.BarangayID}}" type="button"><i
                            class="bi bi-x bi-fm"></i></a>
@@ -62,10 +78,10 @@
 
                   {{!-- SHOW ICONS WHEN EDITING BRGY --}}
                   <div id="editBrgyIcons{{this.BarangayID}}" style="display: none;">
-                     <a type="button" onclick="document.getElementById('editBrgyValue{{this.BarangayID}}').submit()"><i
+                     <a type="button" onclick="document.getElementById('editBrgy{{this.BarangayID}}').submit()"><i
                            class=" bi bi-check bi-fm"></i></a>
                      <a href="" type="button"
-                        onclick="displayEdit(id, brgyValue{{this.BarangayID}}, editBrgyValue{{this.BarangayID}}, brgyIcons{{this.BarangayID}}, editBrgyIcons{{this.BarangayID}})"><i
+                        onclick="displayEdit2(brgyValue{{this.BarangayID}}, editBrgyValue{{this.BarangayID}}, brgyCityValue{{this.BarangayID}}, editBrgyCityValue{{this.BarangayID}}, brgyIcons{{this.BarangayID}}, editBrgyIcons{{this.BarangayID}})"><i
                            class="bi bi-x bi-fm"></i></a>
                   </div>
 

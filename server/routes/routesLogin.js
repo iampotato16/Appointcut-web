@@ -19,9 +19,9 @@ router.route('/')
    })
    .post(async (req, res) => {
       const { email, password } = req.body;
-      let ems = await connection.query('SELECT * FROM tblcustomers WHERE Email = ?', [email])
+      let ems = await connection.query('SELECT * FROM tblowner WHERE Email = ?', [email])
       if (ems[0].length > 0) {
-         let pass = await connection.query('SELECT * FROM tblcustomers WHERE passwordhash = ?', [password])
+         let pass = await connection.query('SELECT * FROM tblowner WHERE password = ?', [password])
          if (pass[0].length > 0) {
             res.redirect('/fileMaintenance')
          }

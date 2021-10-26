@@ -33,14 +33,14 @@ function editData(dataName, input, req, res) {
 }
 
 //SERVICES TABLE FUNCTIONS
-function servAddData(dataName, inputService, inputCategory, res) {
-   connection.query('INSERT INTO tblservices SET name = ?, categoryID = ?', [inputService, inputCategory])
+function addData2(dataName, que, input1, input2, res) {
+   connection.query('INSERT INTO tbl' + dataName + ' ' + que, [input1, input2])
       .catch(err => { console.log(err) })
       .then(mess => { res.redirect('/fileMaintenance') });
 }
 
-function servEditData(dataName, inputService, inputCategory, req, res) {
-   connection.query('UPDATE tblservices SET name = ?, categoryID = ? WHERE ServicesID = ?', [inputService, inputCategory, req.params.id])
+function editData2(dataName, que, input1, input2, req, res) {
+   connection.query('UPDATE tbl' + dataName + ' ' + que, [input1, input2, req.params.id])
       .catch(err => { console.log(err) })
       .then(mess => { res.redirect('/fileMaintenance') });
 }
@@ -50,7 +50,7 @@ router.get('/', async (req, res) => {
    //GET DATA IN FM TABLES
    acu.startConnection()
    var title = 'File Maintenance';
-   var rowBrgy = await acu.getAllFrom("tblbarangay")
+   var rowBrgy = await acu.getAllFromBarangay("tblbarangay")
    var rowCategory = await acu.getAllFrom("tblcategory")
    var rowCity = await acu.getAllFrom("tblcity")
    var rowHaircuts = await acu.getAllFrom("tblhaircuts")
@@ -74,13 +74,14 @@ router.get('/removeBrgy:id', (req, res) => {
 
 router.post('/editBrgy:id', (req, res) => {
    var updatedBrgy = req.body.inputEditBrgy;
-   editData('barangay', updatedBrgy, req, res);
+   var updatedBrgyCity = req.body.inputEditBrgyCity;
+   editData2('barangay', 'SET name = ?, cityID = ? WHERE barangayID = ?', updatedBrgy, updatedBrgyCity, req, res);
 });
 
 //CATEGORY
 router.post('/addCategory', (req, res) => {
    var newBrgy = req.body.inputAddBrgy;
-   addData('category', newBrgy, res);
+   addData2('category', newBrgy, res);
 });
 
 router.get('/removeCategory:id', (req, res) => {
@@ -89,7 +90,8 @@ router.get('/removeCategory:id', (req, res) => {
 
 router.post('/editCategory:id', (req, res) => {
    var updatedBrgy = req.body.inputEditBrgy;
-   editData('category', updatedBrgy, req, res);
+   var updatedBrgyCity = req.body.inputEditBrgyCity;
+   editData2('category', updatedBrgy, req, res);
 });
 
 //CITY
@@ -126,7 +128,7 @@ router.post('/editHaircut:id', (req, res) => {
 router.post('/addServices', async (req, res) => {
    var newServices = req.body.inputAddServices;
    var newCategoryServ = req.body.inputAddCategory;
-   servAddData('services', newServices, newCategoryServ, res)
+   addData2('services', 'SET name = ?, categoryID = ?', newServices, newCategoryServ, res)
 
 });
 router.get('/removeServices:id', (req, res) => {
@@ -136,7 +138,7 @@ router.get('/removeServices:id', (req, res) => {
 router.post('/editServices:id', (req, res) => {
    var updatedServices = req.body.inputEditServices;
    var updatedCategoryServ = req.body.inputEditCategory;
-   servEditData('services', updatedServices, updatedCategoryServ, req, res)
+   editData2('services', 'SET name = ?, categoryID = ? WHERE ServicesID = ?', updatedServices, updatedCategoryServ, req, res)
 });
 
 module.exports = router;

@@ -21,7 +21,7 @@ function highlight() {
    else if (/owners/.test(loc)) { emphasize('accounts', 'owners') }
    else if (/shops/.test(loc)) { emphasize('accounts', 'shops') }
    else if (/employees/.test(loc)) { emphasize('accounts', 'employees') }
-   else if (/barbershopApplications/.test(loc)) { emphasize('accounts', 'barbershopApplications') }
+   else if (/barberApps/.test(loc)) { emphasize('accounts', 'barberApps') }
 
    //HIGHLIGHT INFORMATION MODULES
    else if (/hairTrends/.test(loc)) { emphasize('information', 'hairTrends') }
@@ -40,8 +40,8 @@ function displayEdit(id, value, editValue, icons, editIcons) {
 }
 
 //over ride for services
-function displayEditServices(value, editValue, value2, editValue2, icons, editIcons) {
-   toggleDisplayEditServices(value, value2, icons, editValue, editValue2, editIcons);
+function displayEdit2(value, editValue, value2, editValue2, icons, editIcons) {
+   toggleDisplayEdit2(value, value2, icons, editValue, editValue2, editIcons);
 }
 
 function toggleDisplayAdd(element) {
@@ -69,7 +69,7 @@ function toggleDisplayEdit(value, icons, valueEdit, iconsEdit) {
 }
 
 //over ride for services
-function toggleDisplayEditServices(value, value2, icons, valueEdit, valueEdit2, iconsEdit) {
+function toggleDisplayEdit2(value, value2, icons, valueEdit, valueEdit2, iconsEdit) {
    if (value.style.display == 'none' && value2.style.display == 'none') {
       value.style.display = 'block';
       value2.style.display = 'block';
