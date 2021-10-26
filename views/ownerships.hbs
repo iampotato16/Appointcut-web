@@ -7,10 +7,11 @@
 {{!-- header with add button --}}
 <div class="bg-black px-4 py-3 d-flex justify-content-between">
    <span class="h6 m-0 fw-800 align-self-center">Ownerships</span>
-   <a href="javascript:;" id="Ownerships-add" class="i-plus">
+   <a href="javascript:;" id="Ownership-add" class="i-plus">
       <i class="bi bi-plus-circle-fill float-right" style="color: #f1c644;"></i>
    </a>
 </div>
+
 {{!-- Table Contents --}}
 <div class="bg-gray px-4 pb-4 pt-2 mb-3">
    <table class="table table-hover table-striped table-sm m-0">
@@ -26,12 +27,12 @@
       <tbody>
          {{#each rows}}
          <tr class="align-items-center">
-            <td id="Ownership-ID-{{this.id}}" class="align-middle">{{this.id}}</td>
-            <td id="Ownership-OwnerID-{{this.id}}" class="align-middle">{{this.ownerID}}</td>
-            <td id="Ownership-ShopID-{{this.id}}" class="align-middle">{{this.shopID}}</td>
+            <td id="Ownership-ID-{{this.id}}" class="align-middle">{{this.ShopOwnerID}}</td>
+            <td id="Ownership-OwnerID-{{this.id}}" class="align-middle">{{this.OwnerID}}</td>
+            <td id="Ownership-ShopID-{{this.id}}" class="align-middle">{{this.ShopID}}</td>
 
             {{!-- Edit button --}}
-            <td><button class="edit-{{../ownershipModal.tableName}} btn btn-dark btn-sm" id="Ownership-{{this.id}}"><i
+            <td><button class="edit-{{../ownershipModal.tableName}} btn btn-dark btn-sm" id="Ownership-{{this.ShopOwnerID}}"><i
                      class=" bi bi-pencil"></i></button>
             </td>
          </tr>
