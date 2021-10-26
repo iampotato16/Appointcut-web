@@ -2,6 +2,15 @@ const acu = require('../../AppointCutUtils')
 const express = require('express')
 const router = express.Router()
 const ModalConstructor = acu.ModalConstructor;
+const mysql2 = require('mysql2/promise')
+
+let connection = mysql2.createPool({
+   host: process.env.DB_HOST,
+   user: process.env.DB_USER,
+   port: process.env.DB_PORT,
+   password: process.env.DB_PASS,
+   database: process.env.DB_NAME
+})
 
 const title = "Owners"
 
@@ -37,11 +46,21 @@ router.route('/')
       res.render('owners', { layout: 'home-admin', title, rows, ownerModal })
    })
    .post((req, res) => {
-      res.json(req.body)
+      var addInput = req.body;
+        connection.query(`INSERT INTO tblowner SET firstName = ?, lastName = ?, email = ?, contact = ?, appStatusID = ?, password = ?`,
+         [addInput["given Name"], addInput["family Name"], addInput["e-mail"], addInput["contact"],addInput["status"] ,addInput["password"]])
+         .then(mess => { console.log('New Owner Added') })
+         .catch(err => { console.log(err) });
+        res.redirect('/owners');
    })
 
 router.post('/edit', (req, res) => {
-   res.json(req.body)
+   const request = req.body;
+    connection.query(`UPDATE tblowner SET firstName = ?, lastName = ?, email = ?, password = ?, contact = ?, appStatusID = ? WHERE OwnerID = ?`,
+      [request["given Name"], request["family Name"], request["e-mail"], request["password"], request["contact"], request["status"], request["Owner ID"]])
+      .then(mess => { console.log("Data Updated!") })
+      .catch(err => { console.log(err) })
+      res.redirect('/owners');
 
 })
 
