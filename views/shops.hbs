@@ -1,57 +1,76 @@
-<div class="mb-2">
-   <button type="button" class="btn btn-dark">Shops</button>
-   <a href="/shops/ownerShip">
-      <button type="button" hre class="btn btn-outline-dark">Ownerships</button>
-   </a>
-</div>
+<main class="col-lg-9 container p-0" id="main" class="vh-100">
+   <div class="mt-4 p-3 text-decoration-none">
+      <div class="d-flex justify-content-between">
+         <span class="fs-5 fw-semibold">{{title}}</span>
+         <div class="d-inline float-right">
+            <button class="btn btn-dark btn-sm mx-2 i-plus" href="javascript:;" id="Shops-add" style="height: 30px;">
+               <i class="bi bi-plus"></i>
+            </button>
+            <input type="text" name="search" id="search">
+         </div>
+      </div>
+      <hr>
+      <div class="mb-2">
+         <button type="button" class="btn btn-dark">Shops</button>
+         <a href="/shops/ownerShip">
+            <button type="button" class="btn btn-outline-dark">Ownerships</button>
+         </a>
+      </div>
 
-{{!-- header with add button --}}
-<div class="bg-black px-4 py-3 d-flex justify-content-between">
-   <span class="h6 m-0 fw-800 align-self-center">Shops</span>
-   <a href="javascript:;" id="Shops-add" class="i-plus">
-      <i class="bi bi-plus-circle-fill float-right" style="color: #f1c644;"></i>
-   </a>
-</div>
+      {{!-- header with add button --}}
+      {{!-- <div class="bg-black px-4 py-3 d-flex justify-content-between">
+         <span class="h6 m-0 fw-800 align-self-center">Shops</span>
+         <a href="javascript:;" id="Shops-add" class="i-plus">
+            <i class="bi bi-plus-circle-fill float-right" style="color: #f1c644;"></i>
+         </a>
+      </div> --}}
 
-{{!-- Table Contents --}}
-<div class="bg-gray px-4 pb-4 pt-2 mb-3">
-   <table class="table table-hover table-striped table-sm m-0">
-      <thead>
-         {{!-- Table Headers --}}
-         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Shop Name</th>
-            <th scope="col">Owner ID</th>
-            <th scope="col" class="justify-content-end" style="width: 40px;">Edit</th>
-         </tr>
-      </thead>
-      <tbody>
-         {{#each rows}}
-         <tr class="align-items-center">
-            <td id="Shops-ShopID-{{this.ShopID}}" class="align-middle">{{this.ShopID}}</td>
-            <td id="Shops-ShopName-{{this.ShopID}}" class="align-middle">{{this.shopName}}</td>
-            <td id="Shops-OwnerID-{{this.ShopID}}" class="align-middle">{{this.OwnerID}}</td>
-
-
-            <td id="Shops-Longitude-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.longtitude}}
-            </td>
-            <td id="Shops-Latitude-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.latitude}}</td>
-            <td id="Shops-Address-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.address}}</td>
-            <td id="Shops-Contact-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.contact}}</td>
-            <td id="Shops-E-mail-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.email}}</td>
-            <td id="Shops-BarangayID-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.BarangayID}}
-            </td>
-            <td id="Shops-CityID-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.CityID}}</td>
+      {{!-- Table Contents --}}
+      <div class="bg-gray p-4 mb-3">
+         <table class="table table-hover table-striped table-sm m-0">
+            <thead>
+               {{!-- Table Headers --}}
+               <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Shop Name</th>
+                  <th scope="col">Owner ID</th>
+                  <th scope="col" class="justify-content-end" style="width: 40px;"></th>
+               </tr>
+            </thead>
+            <tbody>
+               {{#each rows}}
+               <tr class="align-items-center">
+                  <td id="Shops-ShopID-{{this.ShopID}}" class="align-middle">{{this.ShopID}}</td>
+                  <td id="Shops-ShopName-{{this.ShopID}}" class="align-middle">{{this.shopName}}</td>
+                  <td id="Shops-OwnerID-{{this.ShopID}}" class="align-middle">{{this.OwnerID}}</td>
 
 
-            <td>
-               <button class="edit-{{../shopsModal.tableName}} btn btn-dark btn-sm" id="Shops-{{this.ShopID}}">
-                  <i class=" bi bi-pencil"></i></button>
-            </td>
-         </tr>
-         {{/each}}
-      </tbody>
-   </table>
-</div>
+                  <td id="Shops-Longitude-{{this.ShopID}}" style="display: none;" class="align-middle">
+                     {{this.longtitude}}
+                  </td>
+                  <td id="Shops-Latitude-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.latitude}}
+                  </td>
+                  <td id="Shops-Address-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.address}}
+                  </td>
+                  <td id="Shops-Contact-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.contact}}
+                  </td>
+                  <td id="Shops-E-mail-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.email}}</td>
+                  <td id="Shops-BarangayID-{{this.ShopID}}" style="display: none;" class="align-middle">
+                     {{this.BarangayID}}
+                  </td>
+                  <td id="Shops-CityID-{{this.ShopID}}" style="display: none;" class="align-middle">{{this.CityID}}</td>
+
+
+                  <td>
+                     <button class="edit-{{../shopsModal.tableName}} btn btn-dark btn-sm" id="Shops-{{this.ShopID}}">
+                        <i class=" bi bi-pencil"></i></button>
+                  </td>
+               </tr>
+               {{/each}}
+            </tbody>
+         </table>
+      </div>
+   </div>
+</main>
 
 {{>modal-dialogbox modalInfo=shopsModal}}

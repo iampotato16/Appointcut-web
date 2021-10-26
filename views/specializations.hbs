@@ -1,44 +1,60 @@
-<div class="mb-2">
-   <a href="/employees">
-      <button type="button" class="btn btn-outline-dark">Employees</button></a>
-   <button type="button" hre class="btn btn-dark">Specializations</button>
-</div>
+<main class="col-lg-9 container p-0" id="main">
+   <div class="mt-4 p-3 text-decoration-none">
+      <div class="d-flex justify-content-between">
+         <span class="fs-5 fw-semibold">{{title}}</span>
+         <div class="d-inline float-right">
+            <button class="btn btn-dark btn-sm mx-2 i-plus" href="javascript:;" id="Specializations-add"
+               style="height: 30px;">
+               <i class="bi bi-plus"></i>
+            </button>
+            <input type="text" name="search" id="search">
+         </div>
+      </div>
+      <hr>
+      <div class="mb-2">
+         <a href="/employees">
+            <button type="button" class="btn btn-outline-dark">Employees</button></a>
+         <button type="button" hre class="btn btn-dark">Specializations</button>
+      </div>
 
 
-{{!-- header with add button --}}
-<div class="bg-black px-4 py-3 d-flex justify-content-between">
-   <span class="h6 m-0 fw-800">Specializations</span>
-   <a href="javascript:;" id="Specializations-add" class="i-plus">
-      <i class="bi bi-plus-circle-fill float-right"></i>
-   </a>
-</div>
-{{!-- Table Contents --}}
-<div class="bg-gray px-4 pb-4 pt-2 mb-3">
-   <table class="table table-hover table-striped table-sm m-0">
-      <thead>
-         {{!-- Table Headers --}}
-         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Shop Service</th>
-            <th scope="col">Employee</th>
-            <th scope="col" style="width: 100px">Edit</th>
-         </tr>
-      </thead>
-      <tbody>
-         {{#each rows}}
-         <tr class="align-items-center">
-            <td id="Specializations-ID-{{this.ID}}" class="align-middle">{{this.ID}}</td>
-            <td id="Specializations-ShopService-{{this.ID}}" class="align-middle">{{this.shopServiceID}}</td>
-            <td id="Specializations-Employee-{{this.ID}}" class="align-middle">{{this.employeeID}}</td>
+      {{!-- header with add button --}}
+      <div class="bg-black px-4 py-3 d-flex justify-content-between">
+         <span class="h6 m-0 fw-800">Specializations</span>
+         <a href="javascript:;" id="Specializations-add" class="i-plus">
+            <i class="bi bi-plus-circle-fill float-right"></i>
+         </a>
+      </div>
+      {{!-- Table Contents --}}
+      <div class="bg-gray p-4 mb-3">
+         <table class="table table-hover table-striped table-sm m-0">
+            <thead>
+               {{!-- Table Headers --}}
+               <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Shop Service</th>
+                  <th scope="col">Employee</th>
+                  <th scope="col" style="width: 100px">Edit</th>
+               </tr>
+            </thead>
+            <tbody>
+               {{#each rows}}
+               <tr class="align-items-center">
+                  <td id="Specializations-ID-{{this.ID}}" class="align-middle">{{this.ID}}</td>
+                  <td id="Specializations-ShopService-{{this.ID}}" class="align-middle">{{this.shopServiceID}}</td>
+                  <td id="Specializations-Employee-{{this.ID}}" class="align-middle">{{this.employeeID}}</td>
 
 
 
-            <td><button class="edit-{{../specializationModal.tableName}} btn btn-dark" id="Specializations-{{this.ID}}">Edit</button>
-            </td>
-         </tr>
-         {{/each}}
-      </tbody>
-   </table>
-</div>
+                  <td><button class="edit-{{../specializationModal.tableName}} btn btn-dark"
+                        id="Specializations-{{this.ID}}">Edit</button>
+                  </td>
+               </tr>
+               {{/each}}
+            </tbody>
+         </table>
+      </div>
+   </div>
+</main>
 
 {{>modal-dialogbox modalInfo=specializationModal}}

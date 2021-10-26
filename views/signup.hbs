@@ -6,96 +6,32 @@
             <h1 class="h1 font-weight-bold header-letter-space">CREATE AN ACCOUNT</h1>
          </div>
          <div class="card-body" id="card-body-signup">
-            <form class="row center-div p-0" action="">
-               <div class="col-sm-6">
+            <form class="center-div p-0 d-block" action="/signup" id="signup" method="POST">
+               <div>
                   <!-- nagdefine ng height para pumantay sila sa isat isa  -->
                   <div class="form-group">
-                     <input type="text" class="form-control font-small mb-2 rounded-0" id="username" name="username"
-                        placeholder="Username">
                      <div class="row no-gutters">
-                        <div class="col-lg-6" id="xxr1">
-                           <input type="text" class="form-control font-small mb-2 rounded-0" id="firstName"
+                        <div class="col-lg-6">
+                           <input type="text" class="form-control font-small mb-3 rounded-0" id="firstName"
                               name="firstName" placeholder="First Name">
                         </div>
-                        <div class="col-lg-6" id="xxl1">
-                           <input type="text" class="form-control font-small mb-2 rounded-0" id="lastName"
+                        <div class="col-lg-6">
+                           <input type="text" class="form-control font-small mb-3 rounded-0" id="lastName"
                               name="lastName" placeholder="Last Name">
                         </div>
                      </div>
-                     <input type="email" class="form-control font-small mb-2 rounded-0" id="email" name="email"
+                     <input type="email" class="form-control font-small mb-3 rounded-0" id="email" name="email"
                         placeholder="Email">
-                     <input type="password" class="form-control font-small mb-2 rounded-0" id="password" name="password"
+                     <input type="password" class="form-control mb-3 font-small rounded-0" id="password" name="password"
                         placeholder="Password">
-                     <input type="text" class="form-control font-small mb-2 rounded-0" id="contactNum" name="contactNum"
+                     <input type="text" class="form-control font-small mb-3 rounded-0" id="contactNum" name="contactNum"
                         placeholder="Contact Number">
-                     <div class="row no-gutters">
-                        <div class="col-lg-6" id="xxr2">
-                           <select class="form-control font-small rounded-0" id="city" name="city">
-                              <!-- ===================================
-                                        Search how to insert values from the db
-                                        ==================================== -->
-                              <option value="volvo">Volvo</option>
-                              <option value="saab">Saab</option>
-                              <option value="mercedes">Mercedes</option>
-                              <option value="audi">Audi</option>
-                           </select>
-                        </div>
-                        <div class="col-lg-6" id="xxl2">
-                           <!-- ===================================
-                                    Search how to insert values from the db
-                                    ==================================== -->
-                           <select class="form-control font-small rounded-0" id="brgy" name="brgy">
-                              <option value="volvo">Volvo</option>
-                              <option value="saab">Saab</option>
-                              <option value="mercedes">Mercedes</option>
-                              <option value="audi">Audi</option>
-                           </select>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-sm-6">
-                  <!-- nagdefine ng height para pumantay sila sa isat isa  -->
-                  <div class="form-group">
-                     <div class="center-div mb-2">
-                        <div style="position: relative;">
-                           <div class="center-div" id="addImageDiv">
-                              <input class="font-small" type="file" id="birPermit" name="birPermit"
-                                 style="display: none;">
-                              <label for="birPermit" class="font-small mb-0" id="displayPic"> ADD IMAGE</label>
-                           </div>
-                           <div class="center-div" id="cameraDiv">
-                              <i class="bi bi-camera-fill"></i>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="mb-2">
-                        <label for="birPermit" class="mb-0"><small>BIR PERMIT:</small></label>
-                        <div class="attachment-border">
-                           <input class="font-small reg-file-btn container-fluid pl-0" type="file" id="birPermit"
-                              name="birPermit">
-                        </div>
-                     </div>
-                     <div class="mb-2">
-                        <label for="busPermit" class="mb-0"><small>BUSINESS PERMIT:</small></label>
-                        <div class="attachment-border">
-                           <input class="font-small reg-file-btn container-fluid pl-0" type="file" id="busPermit"
-                              name="busPermit">
-                        </div>
-                     </div>
-                     <div class="mb-2">
-                        <label for="govId" class="mb-0"><small>GOVERNMENT ID:</small></label>
-                        <div class="attachment-border">
-                           <input class="font-small reg-file-btn container-fluid pl-0" type="file" id="govId"
-                              name="govId">
-                        </div>
-                     </div>
                   </div>
                </div>
                <div class="text-center mt-2">
-                  <button
+                  <button onclick="document.getElementById('signup').submit()"
                      class="btn btn-lg btn-primary btn-custom-reg-log font-weight-bold font-small rounded-0 pl-5 pr-5"
-                     type="submit">SIGN IN</button>
+                     type="submit">SIGN UP</button>
                   <p class="font-smaller m-0 mt-2">By signing up you agree to the</p>
                   <a href="" class="font-smaller">Terms & Conditions</a>
                </div>
@@ -104,8 +40,6 @@
       </div>
    </div>
 </div>
-
-
 
 <!-- =============
 Input: Name and ID

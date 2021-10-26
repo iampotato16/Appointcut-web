@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mysql2 = require('mysql2/promise')
+const acu = require('../../AppointCutUtils')
 
 //Connection Pool
 let connection = mysql2.createPool({
@@ -13,14 +14,21 @@ let connection = mysql2.createPool({
 
 //LOGIN
 router.route('/')
-   .get((req, res) => {
+   .get(async (req, res) => {
+      acu.startConnection()
+      var rowBrgy = await acu.getAllFromBarangay("tblbarangay")
+      var rowCity = await acu.getAllFrom("tblcity")
+      console.log(rowBrgy);
       var title = "Create an Account"
-      res.render('signup', { layout: 'main', title });
+      res.render('signup', { layout: 'main', title, rowBrgy, rowCity });
    })
    .post(async (req, res) => {
-      const { username, firstName, lastName, email, password, contactNum, city, brgy } = req.body;
-      connection.query('INSERT INTO tblowners SET username = ?, firstName = ?, lastName - ?, email = ?, password = ?, contactNum = ?, city = ?, brgy = ?', [username, firstName, lastName, email, password, contactNum, city, brgy])
-         .then(mess => { console.log('new owner added') })
+      const { firstName, lastName, email, password, contactNum } = req.body;
+      await connection.query('INSERT INTO tblowner SET firstName = ?, lastName = ?, email = ?, password = ?, contact = ?,appstatusID = 0', [firstName, lastName, email, password, contactNum])
+         .then(mess => {
+            console.log('new owner added')
+            res.redirect('/login')
+         })
          .catch(err => { console.log(err) });
    })
 

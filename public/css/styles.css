@@ -109,9 +109,9 @@ para sa card body */
 
 /* used in signup
 change to rem  */
-.form-group {
+/* .form-group {
    height: 295px;
-}
+} */
 
 #login-logo {
    display: block;
@@ -209,4 +209,14 @@ used in registration */
 .btn-smaller {
    width: 1.5rem; 
    height:1.5rem;
+}
+
+td{
+   font-size: .9rem;
+}
+
+/* ginamit sa sign up  */
+input{
+   color: black;
+   font-size: 1rem;
 }
