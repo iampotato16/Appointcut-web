@@ -27,7 +27,7 @@
             <thead>
                {{!-- Table Headers --}}
                <tr>
-                  <th scope="col"> <small>ID</small> ID</th>
+                  <th scope="col"> <small>ID</small></th>
                   <th scope="col"> <small>FIRST NAME</small></th>
                   <th scope="col"> <small>LAST NAME</small></th>
                   <th scope="col"> <small>EMAIL</small></th>
@@ -51,7 +51,7 @@
                   <td id="Customers-Disabled-{{this.CustomersID}}" class="align-middle">{{#if
                      IsDisabled}}True{{else}}False{{/if}}</td>
                   <td><button class="edit-{{../customerModal.tableName}} btn btn-dark btn-sm"
-                        id="AddCustomer-{{this.ID}}"><i class=" bi bi-pencil"></i></button></td>
+                        id="AddCustomer-{{this.CustomersID}}"><i class=" bi bi-pencil"></i></button></td>
                </tr>
                {{/each}}
             </tbody>

@@ -23,8 +23,8 @@ router.route('/')
       res.render('signup', { layout: 'main', title, rowBrgy, rowCity });
    })
    .post(async (req, res) => {
-      const { firstName, lastName, email, password, contactNum } = req.body;
-      await connection.query('INSERT INTO tblowner SET firstName = ?, lastName = ?, email = ?, password = ?, contact = ?,appstatusID = 0', [firstName, lastName, email, password, contactNum])
+      const { username, firstName, lastName, email, password, contactNum, city, brgy } = req.body;
+      await connection.query('INSERT INTO tblshopapplication SET username = ?, firstName = ?, lastName = ?, email = ?, password = ?, contact = ?, city = ?, brgy = ?, appstatusID = 0', [username, firstName, lastName, email, password, contactNum, city, brgy])
          .then(mess => {
             console.log('new owner added')
             res.redirect('/login')
