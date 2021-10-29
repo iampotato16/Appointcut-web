@@ -64,5 +64,11 @@ router.post('/edit', (req, res) => {
 
 })
 
+router.get('/view:id', async (req, res) => {
+   await acu.startConnection();
+   const rows = await acu.getOneFromWhere('tblowner', 'OwnerID = ' + req.params.id)
+   var title = req.params.id;
+   res.render('ownersPersonal', {layout:'home-admin', title:title, rows});
+})
 
 module.exports = router;

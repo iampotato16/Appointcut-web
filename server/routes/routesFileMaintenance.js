@@ -80,8 +80,8 @@ router.post('/editBrgy:id', (req, res) => {
 
 //CATEGORY
 router.post('/addCategory', (req, res) => {
-   var newBrgy = req.body.inputAddBrgy;
-   addData2('category', newBrgy, res);
+   var newCategory = req.body.inputAddCategory;
+   addData('category', newCategory, res);
 });
 
 router.get('/removeCategory:id', (req, res) => {
@@ -89,9 +89,8 @@ router.get('/removeCategory:id', (req, res) => {
 });
 
 router.post('/editCategory:id', (req, res) => {
-   var updatedBrgy = req.body.inputEditBrgy;
-   var updatedBrgyCity = req.body.inputEditBrgyCity;
-   editData2('category', updatedBrgy, req, res);
+   var updatedCategory = req.body.inputEditCategory;
+   editData('category', updatedCategory, req, res);
 });
 
 //CITY
@@ -116,12 +115,12 @@ router.post('/addHaircut', (req, res) => {
 });
 
 router.get('/removeHaircut:id', (req, res) => {
-   deleteData('haircut', req, res);
+   deleteData('haircuts', req, res);
 });
 
 router.post('/editHaircut:id', (req, res) => {
    var updatedHaircut = req.body.inputEditHaircut;
-   editData('haircut', updatedHaircut, req, res);
+   editData('haircuts', updatedHaircut, req, res);
 });
 
 //SERVICES

@@ -27,6 +27,12 @@ async function getAllFromWhere(table, where) {
    return rows[0]
 }
 
+async function getOneFromWhere(table, where) {
+   let query = 'SELECT * FROM ' + table + ' WHERE ' + where
+   var rows = await connection.query(query)
+   return rows[0][0]
+}
+
 async function getAllFromServices() {
    var query = 'SELECT tblservices.ServicesID, tblservices.Name, tblcategory.Name as Category FROM tblservices INNER JOIN tblCategory ON tblservices.CategoryID = tblCategory.CategoryID'
    var rows = await connection.query(query)
@@ -127,4 +133,4 @@ class ModalConstructor {
 
 }
 
-module.exports = { getAllFrom, getAllFromWhere, getAllFromServices, getAllFromBarangay, startConnection, ModalConstructor }
+module.exports = { getAllFrom, getAllFromWhere, getOneFromWhere, getAllFromServices, getAllFromBarangay, startConnection, ModalConstructor }

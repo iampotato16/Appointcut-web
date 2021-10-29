@@ -3,7 +3,7 @@ const express = require('express')
 const router = express.Router()
 const ModalConstructor = acu.ModalConstructor;
 
-const title = "Barber Applications"
+const title = "Barbershop Applications"
 
 router.route('/')
    .get(async (req, res) => {

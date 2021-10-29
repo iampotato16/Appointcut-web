@@ -28,26 +28,27 @@
             <thead>
                {{!-- Table Headers --}}
                <tr>
-                  <th scope="col"> <small>ID</small></th>
                   <th scope="col"> <small>FIRST NAME</small></th>
                   <th scope="col"> <small>LAST NAME</small></th>
                   <th scope="col"> <small>EMAIL</small></th>
                   <th scope="col"> <small>CONTACT</small></th>
                   <th scope="col"> <small>STATUS</small></th>
-                  <th scope="col" class="justify-content-end" style="width: 40px;"></th>
+                  <th scope="col" class="justify-content-end" style="width: 80px;"></th>
                </tr>
             </thead>
             <tbody>
                {{#each rows}}
                <tr class="align-items-center">
-                  <td id="Owners-OwnerID-{{this.OwnerID}}" class="align-middle">{{this.OwnerID}}</td>
                   <td id="Owners-givenName-{{this.OwnerID}}" class="align-middle">{{this.firstName}}</td>
                   <td id="Owners-familyName-{{this.OwnerID}}" class="align-middle">{{this.lastName}}</td>
                   <td id="Owners-e-mail-{{this.OwnerID}}" class="align-middle">{{this.email}}</td>
                   <td id="Owners-contact-{{this.OwnerID}}" class="align-middle">{{this.contact}}</td>
                   <td id="Owners-status-{{this.OwnerID}}" class="align-middle">{{this.appStatusID}}</td>
-                  <td><button class="edit-{{../ownerModal.tableName}} btn btn-dark btn-sm"
-                        id="Owners-{{this.OwnerID}}"><i class=" bi bi-pencil"></i></button></td>
+                  <td>
+                     <button class="edit-{{../ownerModal.tableName}} btn btn-dark btn-sm"
+                        id="Owners-{{this.OwnerID}}"><i class=" bi bi-pencil"></i></button>
+                     <a href="/owners/view{{this.OwnerID}}" type="button" class="btn btn-dark btn-sm" ><i class=" bi bi-eye"></i></a>
+                  </td>
                </tr>
                {{/each}}
             </tbody>
@@ -55,5 +56,5 @@
       </div>
    </div>
 </main>
-
+ 
 {{>modal-dialogbox modalInfo=ownerModal}}
