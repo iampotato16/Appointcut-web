@@ -1,0 +1,531 @@
+<div class="col-lg-9 g-0" style="position:relative">
+    <main class="min-vh-100 p-3" id="shopsViewPage">
+        <div class="mt-4 text-decoration-none">
+            <div class="d-flex justify-content-between">
+                <span class="fs-5 fw-semibold">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/shops">Barbershops</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{rows.ShopName}}</li>
+                        </ol>
+                    </nav>
+                </span>
+            </div>
+        </div>
+
+        {{!-- nav div --}}
+        <div class="row py-0 px-3">
+            <button class="btn btn-dark rounded-0 col-4 border border-dark px-4 py-2" id="manageShop"
+                onclick="toggleDisplay(this.id)" style="background-color: #f1c644; color: black; box-shadow: none">
+                <small>MANAGE BARBERSHOP</small>
+            </button>
+            <button class="btn btn-dark rounded-0 col-4 border border-dark px-4 py-2" id="manageAppts"
+                onclick="toggleDisplay(this.id)">
+                <small>MANAGE APPOINTMENTS</small>
+            </button>
+            <button class="btn btn-dark rounded-0 col-4 border border-dark px-4 py-2" id="manageReports"
+                onclick="toggleDisplay(this.id)">
+                <small>REPORTS</small>
+            </button>
+        </div>
+
+        <div id="divShop" style="display: block;">
+            <div class="row px-3">
+                <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="me-2 fw-800"><small>OWNERS</small></span>
+                        <button class="btn btn-sm btn-outline-light"
+                            onclick="toggleDialog('addOwner', 'shopsViewPage')"><i class="bi bi-plus"></i></a>
+                    </div>
+                    <form class="d-flex">
+                        <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search"
+                            placeholder="Search" aria-label="Search">
+                        <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small> </button>
+                    </form>
+                </div>
+                <div class="bg-gray p-4 pt-2 mb-3">
+                    <table class="table table-hover table-striped table-sm m-0">
+                        <thead>
+                            <tr>
+                                <th scope="col"> <small>NAME</small></th>
+                                <th scope="col"> <small>EMAIL</small></th>
+                                <th scope="col"> <small>CONTACT</small></th>
+                                <th scope="col"> <small>STATUS</small></th>
+                                <th scope="col" class="justify-content-end" style="width: 76px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each rowOwners}}
+                            <tr class="align-items-center">
+                                <td class="align-middle">{{this.FullName}}</td>
+                                <td class="align-middle">{{this.Email}}</td>
+                                <td class="align-middle">{{this.Contact}}</td>
+                                <td class="align-middle">
+                                    {{#if this.Status}}
+                                    <a href="/setActive{{rows.OwnerID}}" class="btn btn-sm btn-success rounded"
+                                        type="button">
+                                        ACTIVE</a>
+                                    {{else}}
+                                    <button class="btn btn-sm btn-danger rounded"> INACTIVE </button>
+                                    {{/if}}
+                                </td>
+                                <td>
+                                    <button class="btn btn-dark btn-sm"
+                                        onclick="toggleDialog('editOwnerInfo', 'shopsViewPage')"><i
+                                            class=" bi bi-pencil"></i></button>
+                                    <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row px-3">
+                <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="me-2 fw-800"><small>EMPLOYEES</small></span>
+                        <button class="btn btn-sm btn-outline-light"
+                            onclick="toggleDialog('addEmployeeInfo','shopsViewPage')"><i
+                                class="bi bi-plus"></i></button>
+                    </div>
+                    <form class="d-flex">
+                        <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search"
+                            placeholder="Search" aria-label="Search">
+                        <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small> </button>
+                    </form>
+                </div>
+                <div class="bg-gray p-4 pt-2 mb-3">
+                    <table class="table table-hover table-striped table-sm m-0">
+                        <thead>
+                            <tr>
+                                <th scope="col"> <small>NAME</small></th>
+                                <th scope="col"> <small>TYPE</small></th>
+                                <th scope="col"> <small>STATUS</small></th>
+                                <th scope="col" class="justify-content-end" style="width: 76px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each rowEmp}}
+                            <tr class="align-items-center">
+                                <td class="align-middle">{{this.FullName}}</td>
+                                <td class="align-middle">{{this.EmployeeType}}</td>
+                                <td class="align-middle">
+                                    {{#if this.Status}}
+                                    <a href="/setActive{{rows.OwnerID}}" class="btn btn-sm btn-success rounded"
+                                        type="button">
+                                        ACTIVE</a>
+                                    {{else}}
+                                    <button class="btn btn-sm btn-danger rounded"> INACTIVE </button>
+                                    {{/if}}
+                                </td>
+                                <td>
+                                    <button class="btn btn-dark btn-sm"
+                                        onclick="toggleDialog('editEmployeeInfo','shopsViewPage')"><i
+                                            class=" bi bi-pencil"></i></button>
+                                    <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row px-3">
+                <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="me-2 fw-800"><small>SERVICES</small></span>
+                        <button class="btn btn-sm btn-outline-light"
+                            onclick="toggleDialog('addServices','shopsViewPage')"><i class="bi bi-plus"></i></button>
+                    </div>
+                    <form class="d-flex">
+                        <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search"
+                            placeholder="Search" aria-label="Search">
+                        <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small> </button>
+                    </form>
+                </div>
+                <div class="bg-gray p-4 pt-2 mb-3">
+                    <table class="table table-hover table-striped table-sm m-0">
+                        <thead>
+                            <tr>
+                                <th scope="col"> <small>SERVICE</small></th>
+                                <th scope="col"> <small>CATEGORY</small></th>
+                                <th scope="col"> <small>PRICE</small></th>
+                                <th scope="col" class="justify-content-end" style="width: 76px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each rowServ}}
+                            <tr class="align-items-center">
+                                <td class="align-middle">{{this.ServiceName}}</td>
+                                <td class="align-middle">{{this.Category}}</td>
+                                <td class="align-middle">{{this.Price}}</td>
+                                <td>
+                                    <button class=" btn btn-dark btn-sm"
+                                        onclick="toggleDialog('editServices','shopsViewPage')"><i
+                                            class=" bi bi-pencil"></i></button>
+                                    <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="divAppts" style="display: none;">
+            <div class="row px-3">
+                <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="me-2 fw-800"><small>PENDING APPOINTMENTS</small></span>
+                    </div>
+                    <form class="d-flex">
+                        <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search"
+                            placeholder="Search" aria-label="Search">
+                        <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small> </button>
+                    </form>
+                </div>
+                <div class="bg-gray p-4 pt-2 mb-3">
+                    <table class="table table-hover table-striped table-sm m-0">
+                        <thead>
+                            <tr>
+                                <th scope="col"> <small>CUSTOMER NAME</small></th>
+                                <th scope="col"> <small>DATE</small></th>
+                                <th scope="col"> <small>TIME</small></th>
+                                <th scope="col"> <small>SERVICE</small></th>
+                                <th scope="col"> <small>PRICE</small></th>
+                                <th scope="col"> <small>ATTENDING EMP</small></th>
+                                <th scope="col" class="justify-content-end" style="width: 76px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each rowsApptPending}}
+                            <tr class="align-items-center">
+                                <td class="align-middle">{{this.CustomerName}}</td>
+                                <td class="align-middle">{{this.Date}}</td>
+                                <td class="align-middle">{{this.Time}}</td>
+                                <td class="align-middle">{{this.Service}}</td>
+                                <td class="align-middle">{{this.Amount}}</td>
+                                <td class="align-middle">{{this.EmployeeName}}</td>
+                                <td>
+                                    <button class="btn btn-dark btn-sm"><i class="bi bi-check"></i></button>
+                                    <button class="btn btn-dark btn-sm"><i class="bi bi-x"></i></button>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row px-3">
+                <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="me-2 fw-800"><small>APPOINTMENTS</small></span>
+                        <button class="btn btn-sm btn-outline-light"
+                            onclick="toggleDialog('addAppointment','shopsViewPage')"><i class="bi bi-plus"></i></button>
+                    </div>
+                    <form class="d-flex">
+                        <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search"
+                            placeholder="Search" aria-label="Search">
+                        <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small> </button>
+                    </form>
+                </div>
+                <div class="bg-gray p-4 pt-2 mb-3">
+                    <table class="table table-hover table-striped table-sm m-0">
+                        <thead>
+                            <tr>
+                                <th scope="col"> <small>CUSTOMER NAME</small></th>
+                                <th scope="col"> <small>DATE</small></th>
+                                <th scope="col"> <small>TIME</small></th>
+                                <th scope="col"> <small>SERVICE</small></th>
+                                <th scope="col"> <small>PRICE</small></th>
+                                <th scope="col"> <small>ATTENDING EMP</small></th>
+                                <th scope="col"> <small>STATUS</small></th>
+                                <th scope="col" class="justify-content-end" style="width: 40px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each rowsAppt}}
+                            <tr class="align-items-center">
+                                <td class="align-middle">{{this.CustomerName}}</td>
+                                <td class="align-middle">{{this.Date}}</td>
+                                <td class="align-middle">{{this.Time}}</td>
+                                <td class="align-middle">{{this.Service}}</td>
+                                <td class="align-middle">{{this.Amount}}</td>
+                                <td class="align-middle">{{this.EmployeeName}}</td>
+                                <td class="align-middle">{{this.Status}}</td>
+                                <td>
+                                    <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="divReports" style="display: none;">
+            <div style="width: 800px; height: 800px; background-color:yellow"></div>
+        </div>
+    </main>
+
+
+    {{!-- DIALOG BOXES --}}
+    <div id="editOwnerInfo" class="dialog bg-yellow m-auto" style="display: none;">
+        <div>
+            <div class="card p-4 bg-black">
+                <div class="text-center">
+                    <h6 class="fw-800"> EDIT OWNER INFORMATION </h6>
+                    <hr>
+                </div>
+                <div class="center-div pt-2">
+                    <div>
+                        <form action="view{{rows.OwnersID}}/editOwnerInfo" id="editOwnerInfoForm" method="POST">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="firstName"
+                                type="text" value="{{rows.firstName}}" name="firstName" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="lastName"
+                                type="text" value="{{rows.lastName}}" name="lastName" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact"
+                                type="text" value="{{rows.contact}}" name="contact" style="width: 300px;">
+                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
+                        </form>
+                        <div class="center-div pt-2" style="width: 300px;">
+                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                onclick="document.getElementById('editOwnerInfoForm').submit()">
+                                <small>SAVE</small></button>
+                            <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                onclick="toggleDialog('editOwnerInfo','shopsViewPage')"> <small>CANCEL</small></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="addOwner" class="dialog bg-yellow m-auto" style="display: none;">
+        <div>
+            <div class="card p-4 bg-black">
+                <div class="text-center">
+                    <h6 class="fw-800"> ADD OWNER </h6>
+                    <hr>
+                </div>
+                <div class="center-div pt-2">
+                    <div>
+                        <form action="view{{rows.OwnersID}}/addOwner" id="addOwnerInfo" method="POST">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="firstName"
+                                type="text" value="{{rows.firstName}}" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="lastName"
+                                type="text" value="{{rows.lastName}}" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact"
+                                type="text" value="{{rows.contact}}" style="width: 300px;">
+                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
+                        </form>
+                        <div class="center-div pt-2" style="width: 300px;">
+                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                onclick="document.getElementById('addOwnerForm').submit()"> <small>SAVE</small></button>
+                            <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                onclick="toggleDialog('addOwner','shopsViewPage')"> <small>CANCEL</small></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="editEmployeeInfo" class="dialog bg-yellow m-auto" style="display: none;">
+        <div>
+            <div class="card p-4 bg-black">
+                <div class="text-center">
+                    <h6 class="fw-800"> EDIT EMPLOYEE INFORMATION </h6>
+                    <hr>
+                </div>
+                <div class="center-div pt-2">
+                    <div>
+                        <form action="view{{rows.OwnersID}}/editEmployeeInfo" id="editEmployeeInfoForm" method="POST">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="firstName"
+                                type="text" value="firstName" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="lastName"
+                                type="text" value="lastName" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact"
+                                type="text" value="contact" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="employeeType"
+                                type="text" value="employeeType" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="salaryType"
+                                type="text" value="salaryType" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="salaryValue"
+                                type="text" value="salaryValue" style="width: 300px;">
+                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
+                        </form>
+                        <div class="center-div pt-2" style="width: 300px;">
+                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                onclick="document.getElementById('editEmployeeInfoForm').submit()">
+                                <small>SAVE</small></button>
+                            <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                onclick="toggleDialog('editEmployeeInfo','shopsViewPage')">
+                                <small>CANCEL</small></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="addEmployeeInfo" class="dialog bg-yellow m-auto" style="display: none;">
+        <div>
+            <div class="card p-4 bg-black">
+                <div class="text-center">
+                    <h6 class="fw-800"> ADD EMPLOYEE </h6>
+                    <hr>
+                </div>
+                <div class="center-div pt-2">
+                    <div>
+                        <form action="view{{rows.OwnersID}}/addEmployeeInfo" id="addEmployeeInfoForm" method="POST">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="firstName"
+                                type="text" value="firstName" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="lastName"
+                                type="text" value="lastName" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact"
+                                type="text" value="contact" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="employeeType"
+                                type="text" value="employeeType" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="salaryType"
+                                type="text" value="salaryType" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="salaryValue"
+                                type="text" value="salaryValue" style="width: 300px;">
+                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
+                        </form>
+                        <div class="center-div pt-2" style="width: 300px;">
+                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                onclick="document.getElementById('addEmployeeInfoForm').submit()">
+                                <small>SAVE</small></button>
+                            <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                onclick="toggleDialog('addEmployeeInfo','shopsViewPage')">
+                                <small>CANCEL</small></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="editServices" class="dialog bg-yellow m-auto" style="display: none;">
+        <div>
+            <div class="card p-4 bg-black">
+                <div class="text-center">
+                    <h6 class="fw-800"> EDIT SERVICES </h6>
+                    <hr>
+                </div>
+                <div class="center-div pt-2">
+                    <div>
+                        <form action="view{{rows.OwnersID}}/editServices" id="editServices" method="POST">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="serviceName"
+                                type="text" value="serviceName" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="category"
+                                type="text" value="category" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="price"
+                                type="text" value="price" style="width: 300px;">
+                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
+                        </form>
+                        <div class="center-div pt-2" style="width: 300px;">
+                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                onclick="document.getElementById('editServices').submit()"> <small>SAVE</small></button>
+                            <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                onclick="toggleDialog('editServices','shopsViewPage')"> <small>CANCEL</small></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="addServices" class="dialog bg-yellow m-auto" style="display: none;">
+        <div>
+            <div class="card p-4 bg-black">
+                <div class="text-center">
+                    <h6 class="fw-800"> ADD SERVICES </h6>
+                    <hr>
+                </div>
+                <div class="center-div pt-2">
+                    <div>
+                        <form action="view{{rows.OwnersID}}/addServices" id="addServices" method="POST">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="serviceName"
+                                type="text" value="serviceName" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="category"
+                                type="text" value="category" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="price"
+                                type="text" value="price" style="width: 300px;">
+                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
+                        </form>
+                        <div class="center-div pt-2" style="width: 300px;">
+                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                onclick="document.getElementById('addServices').submit()"> <small>SAVE</small></button>
+                            <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                onclick="toggleDialog('addServices','shopsViewPage')"> <small>CANCEL</small></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="addAppointment" class="dialog bg-yellow m-auto" style="display: none;">
+        <div>
+            <div class="card p-4 bg-black">
+                <div class="text-center">
+                    <h6 class="fw-800"> ADD APPOINTMENT </h6>
+                    <hr>
+                </div>
+                <div class="center-div pt-2">
+                    <div>
+                        <form action="view{{rows.OwnersID}}/addAppointmentForm" id="addAppointmentForm" method="POST">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="date"
+                                type="text" placeholder="Date" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="time"
+                                type="text" placeholder="Time" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="service"
+                                type="text" placeholder="Service" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="price"
+                                type="text" placeholder="Price" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="attendingEmp"
+                                type="text" placeholder="Attending Employee" style="width: 300px;">
+                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
+                        </form>
+                        <div class="center-div pt-2" style="width: 300px;">
+                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                onclick="document.getElementById('addAppointmentForm').submit()">
+                                <small>SAVE</small></button>
+                            <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                onclick="toggleDialog('addAppointment','shopsViewPage')"> <small>CANCEL</small></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleDisplay(id) {
+        $('#manageShop').css({ 'background-color': '', 'color': '', 'box-shadow': '' })
+        $('#manageAppts').css({ 'background-color': '', 'color': '', 'box-shadow': '' })
+        $('#manageReports').css({ 'background-color': '', 'color': '', 'box-shadow': '' })
+        $('#divShop').css('display', 'none')
+        $('#divAppts').css('display', 'none')
+        $('#divReports').css('display', 'none')
+        if (id == 'manageShop') {
+            $('#divShop').css('display', 'block')
+            $('#manageShop').css({ 'background-color': '#f1c644', 'color': 'black', 'box-shadow': 'none' })
+        }
+        else if (id == 'manageAppts') {
+            $('#divAppts').css('display', 'block')
+            $('#manageAppts').css({ 'background-color': '#f1c644', 'color': 'black', 'box-shadow': 'none' })
+        }
+        else {
+            $('#divReports').css('display', 'block')
+            $('#manageReports').css({ 'background-color': '#f1c644', 'color': 'black', 'box-shadow': 'none' })
+        }
+    }
+</script>

@@ -1,0 +1,211 @@
+<div class="col-lg-9 g-0" style="position:relative">
+   <main class="min-vh-100 p-3" id="customersViewPage">
+      <div class="mt-4 text-decoration-none">
+         <div class="d-flex justify-content-between">
+            <span class="fs-5 fw-semibold">
+               <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                     <li class="breadcrumb-item"><a href="/customers">Customers</a></li>
+                     <li class="breadcrumb-item active" aria-current="page">{{rowCust.FullName}}</li>
+                  </ol>
+               </nav>
+            </span>
+         </div>
+      </div>
+      <hr class="mt-0" />
+      <div>
+         <div class="bg-black">
+            <p class="px-4 py-2 m-0 fw-800"><small>CUSTOMER INFORMATION</small></p>
+         </div>
+         <div class="bg-gray p-4 pt-2 mb-3">
+            <table class="table table-hover table-striped table-sm m-0">
+               <thead>
+                  <tr>
+                     <th scope="col"> <small>NAME</small></th>
+                     <th scope="col"> <small>EMAIL</small></th>
+                     <th scope="col"> <small>CONTACT</small></th>
+                     <th scope="col"> <small>STATUS</small></th>
+                     <th scope="col" class="justify-content-end" style="width: 40px;"></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr class="align-items-center">
+                     <td class="align-middle">{{rowCust.FullName}}</td>
+                     <td class="align-middle">{{rowCust.Email}}</td>
+                     <td class="align-middle">{{rowCust.Contact}}</td>
+                     <td class="align-middle">
+                        {{! WALA PA ATANG STATUS FIELD? }}
+                        {{#if rowCust.status}}
+                        <a href="/setActive{{rowCust.CustomersID}}" class="btn btn-sm btn-success rounded"
+                           type="button"> ACTIVE</a>
+                        {{else}}
+                        <button class="btn btn-sm btn-danger rounded">
+                           INACTIVE
+                        </button>
+                        {{/if}}
+                     </td>
+                     <td>
+                        <button class="btn btn-dark btn-sm"
+                           onclick="toggleDialog('editCustomerInfo','customersViewPage')"><i
+                              class="bi bi-pencil"></i></button>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+      <div>
+         <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+            <div>
+               <span class="me-2 fw-800"><small>APPOINTMENTS</small></span>
+               <button class="btn btn-sm btn-outline-light"
+                  onclick="toggleDialog('addAppointment','customersViewPage')"><i class="bi bi-plus"></i></button>
+            </div>
+            <form class="d-flex">
+               <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search" placeholder="Search"
+                  aria-label="Search" />
+               <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small> </button>
+            </form>
+         </div>
+         <div class="bg-gray p-4 pt-2 mb-3">
+            <table class="table table-hover table-striped table-sm m-0">
+               <thead>
+                  <tr>
+                     <th scope="col"> <small>DATE</small></th>
+                     <th scope="col"> <small>TIME</small></th>
+                     <th scope="col"> <small>SERVICE</small></th>
+                     <th scope="col"> <small>SHOP</small></th>
+                     <th scope="col"> <small>BARBER</small></th>
+                     <th scope="col"> <small>STATUS</small></th>
+                     <th scope="col" class="justify-content-end" style="width: 76px;"></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {{#each rowAppt}}
+                  <tr class="align-items-center">
+                     <td class="align-middle">{{this.Date}}</td>
+                     <td class="align-middle">{{this.Time}}
+                        //
+                        {{this.Duration}}</td>
+                     <td class="align-middle">{{this.Service}}</td>
+                     <td class="align-middle">{{this.ShopName}}</td>
+                     <td class="align-middle">{{this.EmployeeName}}</td>
+                     <td class="align-middle">{{this.AppointmentStatus}}</td>
+                     <td>
+                        <button class="btn btn-dark btn-sm"
+                           onclick="toggleDialog('editAppointment','customersViewPage')"><i
+                              class="bi bi-pencil"></i></button>
+                        <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
+                     </td>
+                  </tr>
+                  {{/each}}
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </main>
+
+   {{! DIALOG BOXES }}
+
+   <div id="editCustomerInfo" class="dialog bg-black m-auto" style="display: none;">
+      <div>
+         <div class="card p-4 bg-black">
+            <div class="text-center">
+               <h6 class="fw-800"> EDIT CUSTOMER INFORMATION </h6>
+               <hr />
+            </div>
+            <div class="center-div pt-2">
+               <div>
+                  <form action="view{{rowCust.CustomersID}}/editCustomerInfo" id="editCustomerInfoForm" method="POST">
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                        value="{{rowCust.firstName}}" name="firstName" style="width: 300px;" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                        value="{{rowCust.lastName}}" name="lastName" style="width: 300px;" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                        value="{{rowCust.Contact}}" name="contact" style="width: 300px;" />
+                     {{! hindi ko na ininclude email since its part of login credentials }}
+                  </form>
+                  <div class="center-div pt-2" style="width: 300px;">
+                     <button class="btn btn-warning rounded-0 col-6 me-1"
+                        onclick="document.getElementById('editCustomerInfoForm').submit()">SAVE</button>
+                     <button class="btn btn-outline-warning rounded-0 col-6"
+                        onclick="toggleDialog('editCustomerInfo','customersViewPage')">CANCEL</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div id="editAppointment" class="dialog m-auto" style="display: none;">
+      <div>
+         <div class="card bg-black p-4">
+            <div class="text-center">
+               <h6 class="fw-800"> EDIT APPOINTMENT INFORMATION </h6>
+               <hr />
+            </div>
+            <div class="center-div pt-2">
+               <div>
+                  <form action="view{{rowCust.CustomersID}}/editCustomerAppointment" id="editCustomerAppointment"
+                     method="POST">
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" value="Date"
+                        name="firstName" style="width: 300px;" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" value="Time"
+                        name="lastName" style="width: 300px;" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" value="Service"
+                        name="contact" style="width: 300px;" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" value="Shop"
+                        name="firstName" style="width: 300px;" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" value="Barber"
+                        name="lastName" style="width: 300px;" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" value="Status"
+                        name="contact" style="width: 300px;" />
+                     {{! hindi ko na ininclude email since its part of login credentials }}
+                  </form>
+                  <div class="center-div pt-2" style="width: 300px;">
+                     <button class="btn btn-warning col-6 rounded-0 me-1"
+                        onclick="document.getElementById('editCustomerAppointment').submit()">SAVE</button>
+                     <button class="btn btn-outline-warning rounded-0 col-6"
+                        onclick="toggleDialog('editAppointment','customersViewPage')">CANCEL</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div id="addAppointment" class="dialog bg-black m-auto" style="display: none;">
+      <div>
+         <div class="card p-4 bg-black">
+            <div class="text-center">
+               <h6 class="fw-800"> ADD APPOINTMENT INFORMATION </h6>
+               <hr />
+            </div>
+            <div class="center-div pt-2">
+               <div>
+                  <form action="view{{rowCust.CustomersID}}/addCustomerAppointment" id="addCustomerAppointment"
+                     method="POST">
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                        placeholder="Date" name="" style="width: 300px;" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                        placeholder="Time" name="" style="width: 300px;" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                        placeholder="Service" name="" style="width: 300px;" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                        placeholder="Shop" name="" style="width: 300px;" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                        placeholder="Barber" name="" style="width: 300px;" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                        placeholder="Status" name="" style="width: 300px;" />
+                     {{! hindi ko na ininclude email since its part of login credentials }}
+                  </form>
+                  <div class="center-div pt-2" style="width: 300px;">
+                     <button class="btn btn-warning rounded-0 col-6 me-1"
+                        onclick="document.getElementById('addCustomerAppointment').submit()">SAVE</button>
+                     <button class="btn btn-outline-warning rounded-0 col-6"
+                        onclick="toggleDialog('addAppointment','customersViewPage')">CANCEL</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

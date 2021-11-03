@@ -1,5 +1,18 @@
 highlight();
 
+ 
+function toggleDialog(dialog, mainPage){
+   var el = document.getElementById(dialog)
+   if(el.style.display == "none"){
+      document.getElementById(mainPage).style.filter = "brightness(75%)"
+      document.getElementById(dialog).style.display = "block"     
+   }
+   else{
+      document.getElementById(mainPage).style.filter = "brightness(100%)"
+      document.getElementById(dialog).style.display = "none"
+   }
+}
+ 
 // for date time
 var dt = new Date();
 document.getElementById("datetime").innerHTML = (("0" + (dt.getMonth() + 1)).slice(-2)) + "/" + (("0" + dt.getDate()).slice(-2)) + "/" + (dt.getFullYear()) + " " + (("0" + dt.getHours() + 1).slice(-2)) + ":" + (("0" + dt.getMinutes() + 1).slice(-2));

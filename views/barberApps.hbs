@@ -3,7 +3,7 @@
       <div class="d-flex justify-content-between">
          <span class="fs-5 fw-semibold">{{title}}</span>
          <div class="d-inline float-right">
-            <button class="btn btn-dark btn-sm mx-2 i-plus" href="javascript:;" id="BarberApps-add"
+            <button class="btn btn-dark btn-sm i-plus" href="javascript:;" id="BarberApps-add"
                style="height: 30px;">
                <i class="bi bi-plus"></i>
             </button>
@@ -21,7 +21,7 @@
 
       {{!-- Table Contents --}}
       <div class="bg-gray p-4 mb-3">
-         <table class="table table-hover table-striped m-0">
+         <table class="table table-hover table-striped table-sm m-0">
             <thead>
                {{!-- Table Headers --}}
                <tr>
@@ -30,7 +30,7 @@
                   <th scope="col"> <small>LAST NAME</small> </th>
                   <th scope="col"> <small>EMAIL</small> </th>
                   <th scope="col"> <small>CONTACT</small> </th>
-                  <th scope="col" class="align-content-end" style="width: 70px"> <small> ACTIONS </small></th>
+                  <th scope="col" class="align-content-end" style="width: 76px"></th>
                </tr>
             </thead>
             <tbody>
@@ -42,8 +42,8 @@
                   <td id="BarberApps-e-mail-{{this.OwnerID}}" class="align-middle">{{this.email}}</td>
                   <td id="BarberApps-contact-{{this.OwnerID}}" class="align-middle">{{this.contact}}</td>
                   <td>
-                     <a type="button"><i class=" bi bi-check bi-fm"></i></a>
-                     <a type="button"><i class="bi bi-x bi-fm"></i></a>
+                     <button class="btn btn-dark btn-sm"><i class="bi bi-check"></i></button>
+                     <button class="btn btn-dark btn-sm"><i class="bi bi-x"></i></button>
                   </td>
                </tr>
                {{/each}}

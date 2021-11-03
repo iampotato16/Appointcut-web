@@ -1,11 +1,16 @@
 <main class="col-lg-9 container p-0" id="main">
    <div class="mt-4 p-3 text-decoration-none">
       <div class="d-flex justify-content-between">
-         <span class="fs-5 fw-semibold">{{title}}</span>
+         <span class="fs-5 fw-semibold">
+            <nav aria-label="breadcrumb">
+               <ol class="breadcrumb">
+                  <li class="breadcrumb-item active" aria-current="page">Owners</li>
+               </ol>
+            </nav>
+         </span>
          <div class="d-inline float-right">
             <td>
-               <button class="btn btn-dark btn-sm mx-2 i-plus" href="javascript:;" id="Owners-add"
-                  style="height: 30px;">
+               <button class="btn btn-dark btn-sm i-plus" href="javascript:;" id="Owners-add" style="height: 30px;">
                   <i class="bi bi-plus"></i>
                </button>
             </td>
@@ -13,14 +18,7 @@
 
          </div>
       </div>
-      <hr>
-      {{!-- header with add button --}}
-      {{!-- <div class="bg-black px-4 py-3 d-flex justify-content-between">
-         <span class="h6 m-0 fw-800 align-self-center">Owners</span>
-         <a href="javascript:;" id="Owners-add" class="i-plus">
-            <i class="bi bi-plus-circle-fill float-right" style="color: #f1c644;"></i>
-         </a>
-      </div> --}}
+      <hr class="mt-0">
 
       {{!-- Table Contents --}}
       <div class="bg-gray p-4 mb-3">
@@ -33,7 +31,7 @@
                   <th scope="col"> <small>EMAIL</small></th>
                   <th scope="col"> <small>CONTACT</small></th>
                   <th scope="col"> <small>STATUS</small></th>
-                  <th scope="col" class="justify-content-end" style="width: 80px;"></th>
+                  <th scope="col" class="justify-content-end" style="width: 112px;"></th>
                </tr>
             </thead>
             <tbody>
@@ -43,11 +41,19 @@
                   <td id="Owners-familyName-{{this.OwnerID}}" class="align-middle">{{this.lastName}}</td>
                   <td id="Owners-e-mail-{{this.OwnerID}}" class="align-middle">{{this.email}}</td>
                   <td id="Owners-contact-{{this.OwnerID}}" class="align-middle">{{this.contact}}</td>
-                  <td id="Owners-status-{{this.OwnerID}}" class="align-middle">{{this.appStatusID}}</td>
+                  <td>
+                     {{#if this.OwnerID}}
+                     <a href="/setActive{{rows.OwnerID}}" class="btn btn-sm btn-success" type="button"> ACTIVE</a>
+                     {{else}}
+                     <button class="btn btn-sm btn-warning rounded"> INACTIVE </button>
+                     {{/if}}
+                  </td>
                   <td>
                      <button class="edit-{{../ownerModal.tableName}} btn btn-dark btn-sm"
                         id="Owners-{{this.OwnerID}}"><i class=" bi bi-pencil"></i></button>
-                     <a href="/owners/view{{this.OwnerID}}" type="button" class="btn btn-dark btn-sm" ><i class=" bi bi-eye"></i></a>
+                     <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
+                     <a href="/owners/view{{this.OwnerID}}" type="button" class="btn btn-dark btn-sm"><i
+                           class=" bi bi-eye"></i></a>
                   </td>
                </tr>
                {{/each}}
@@ -56,5 +62,5 @@
       </div>
    </div>
 </main>
- 
+
 {{>modal-dialogbox modalInfo=ownerModal}}

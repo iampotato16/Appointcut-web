@@ -2,6 +2,7 @@
 black: 151515
 yellow: f1c644
 white: f5f5f5 */
+
 html,
 body {
    font-family: "Montserrat", monospace;
@@ -14,11 +15,11 @@ body {
    min-height: -webkit-fill-available;
 }
 
-main{
+main {
    background-color: #f5f5f5;
 }
 
-.row{
+.row {
    box-sizing: border-box;
 }
 /* added to remove inline css from body
@@ -59,7 +60,12 @@ USED IN SIGNUP */
    color: #f5f5f5;
 }
 
-.bg-gray{
+.bg-yellow {
+   background-color: #f1c644;
+   color: black;
+}
+
+.bg-gray {
    background-color: #e5e5e5;
 }
 .btn-custom-reg-log {
@@ -163,16 +169,15 @@ change to rem  */
 used in registration */
 
 /* ginamit sa gridssss */
- 
-.bi-fm{
+
+.bi-fm {
    color: #151515;
    padding: 0 5px;
 }
 
-.bi-fm:hover{
+.bi-fm:hover {
    color: #f1c644;
 }
-
 
 .fw-800 {
    font-weight: 800;
@@ -203,20 +208,29 @@ used in registration */
    }
 }
 
-
-
 /* BAGONG CSS PARA SA BUTTONS NG ADMIN */
 .btn-smaller {
-   width: 1.5rem; 
-   height:1.5rem;
+   width: 1.5rem;
+   height: 1.5rem;
 }
 
-td{
-   font-size: .9rem;
+td {
+   font-size: 0.9rem;
 }
 
 /* ginamit sa sign up  */
-input{
+input {
    color: black;
    font-size: 1rem;
+}
+
+.dialog {
+   position: absolute;
+   margin: auto;
+   z-index: 3;
+   width: 500px;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
 }

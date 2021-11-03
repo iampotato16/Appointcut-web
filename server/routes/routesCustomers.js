@@ -13,7 +13,6 @@ let connection = mysql2.createPool({
    database: process.env.DB_NAME
 })
 
-
 const title = "Customers"
 
 router.route('/')
@@ -55,6 +54,21 @@ router.post('/edit',(req,res)=>{
       .catch(err => { console.log(err) })
       res.redirect('/customers');
 })
+
+//views
+router.get('/view:id', async (req, res) => {
+    const row1 = await connection.query('SELECT * FROM appointcutdb.customer WHERE CustomersID = ' + req.params.id);
+    const row2 = await connection.query('SELECT * FROM appointcutdb.appointment WHERE CustomersID = ' + req.params.id); 
+    const rowCust = row1[0][0]
+    const rowAppt = row2[0]
+    var title = rowCust.FullName    
+    res.render('customersView', {layout: 'home-admin', title: title, rowCust, rowAppt})
+})
+
+router.post('/view:id/editCustomerInfo', (req, res) => {
+    const {firstName, lastName, contact} = req.body
+    console.log(firstName, lastName, contact)
+}) 
 
 module.exports = router;
 

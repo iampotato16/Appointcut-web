@@ -67,8 +67,19 @@ router.post('/edit', (req, res) => {
 router.get('/view:id', async (req, res) => {
    await acu.startConnection();
    const rows = await acu.getOneFromWhere('tblowner', 'OwnerID = ' + req.params.id)
-   var title = req.params.id;
-   res.render('ownersPersonal', {layout:'home-admin', title:title, rows});
+   var shopId = rows.OwnerID;
+   const rowsBS = await acu.getAllFromWhere('tblshop', 'OwnerID = ' + shopId)
+   var title = rows.firstName + ' ' + rows.lastName ;
+   res.render('ownersView', {layout:'home-admin', title:title, rows, rowsBS});
+})
+
+router.get('/view:id/viewShop:id', async (req, res) => {
+   await acu.startConnection();
+   const rowsEmp = await acu.getAllFromWhere('appointcutdb.employee', 'ShopID = ' + req.params.id)
+   const rowsServ = await acu.getAllFromWhere('appointcutdb.services', 'shopServicesID = ' + req.params.id)
+   const rowsApptPending = await acu.getAllFromWhere('appointcutdb.appointment', 'shopID = ' + req.params.id + ' AND appointmentstatus = "Pending"')
+   const rowsAppt = await acu.getAllFromWhere('appointcutdb.appointment', 'shopID = ' + req.params.id + ' AND appointmentstatus != "Pending"')
+   res.render('ownersBarbershopsView', {layout:'home-admin', title:'aaa', rowsEmp, rowsServ, rowsApptPending, rowsAppt});
 })
 
 module.exports = router;

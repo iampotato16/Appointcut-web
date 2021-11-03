@@ -1,0 +1,208 @@
+<div class="col-lg-9 g-0" style="position:relative">
+    <main class="min-vh-100 p-3" id="ownersViewPage">
+        <div class="mt-4 px-3 text-decoration-none">
+            <div class="d-flex justify-content-between">
+                <span class="fs-5 fw-semibold">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/owners">Owners</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"> {{rows.firstName}} {{rows.lastName}}
+                            </li>
+                        </ol>
+                    </nav>
+                </span>
+            </div>
+        </div>
+        <hr class="mt-0">
+        <div>
+            <div class="bg-black">
+                <p class="px-4 py-2 m-0 fw-800"><small>OWNER INFORMATION</small></p>
+            </div>
+            <div class="bg-gray p-4 pt-2 mb-3">
+                <table class="table table-hover table-striped table-sm m-0">
+                    <thead>
+                        <tr>
+                            <th scope="col"> <small>NAME</small></th>
+                            <th scope="col"> <small>EMAIL</small></th>
+                            <th scope="col"> <small>CONTACT</small></th>
+                            <th scope="col" class="justify-content-end" style="width: 40px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="align-items-center">
+                            <td class="align-middle">{{rows.firstName}} {{rows.lastName}}</td>
+                            <td class="align-middle">{{rows.email}}</td>
+                            <td class="align-middle">{{rows.contact}}</td>
+                            <td>
+                                <button class="btn btn-dark btn-sm"
+                                    onclick="toggleDialog('editOwnerInfo','ownersViewPage')"><i
+                                        class=" bi bi-pencil"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+            <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="me-2 fw-800"><small>BARBERSHOPS</small></span>
+                    <button class="btn btn-sm btn-outline-light"
+                        onclick="toggleDialog('addShopInfo', 'ownersViewPage')"><i class="bi bi-plus"></i></button>
+                </div>
+
+                <form class="d-flex">
+                    <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search" placeholder="Search"
+                        aria-label="Search">
+                    <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small> </button>
+                </form>
+            </div>
+            <div class="bg-gray p-4 pt-2 mb-3">
+                <table class="table table-hover table-striped table-sm m-0">
+                    <thead>
+                        <tr>
+                            <th scope="col"> <small>SHOP NAME</small></th>
+                            <th scope="col"> <small>ADDRESS</small></th>
+                            <th scope="col"> <small>EMAIL</small></th>
+                            <th scope="col"> <small>CONTACT</small></th>
+                            <th scope="col"> <small>STATUS</small></th>
+                            <th scope="col" class="justify-content-end" style="width: 112px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each rowsBS}}
+                        <tr class="align-items-center">
+                            <td class="align-middle">{{this.shopName}}</td>
+                            <td class="align-middle">{{this.address}}</td>
+                            <td class="align-middle">{{this.email}}</td>
+                            <td class="align-middle">{{this.contact}}</td>
+                            <td class="align-middle">
+                                {{#if rows.appStatusID}}
+                                <a href="/setActive{{rows.OwnerID}}" class="btn btn-sm btn-success rounded"
+                                    type="button">
+                                    ACTIVE</a>
+                                {{else}}
+                                <button class="btn btn-sm btn-danger rounded"> INACTIVE </button>
+                                {{/if}}
+                            </td>
+                            <td>
+                                <button class="btn btn-dark btn-sm"
+                                    onclick="toggleDialog('editShopInfo', 'ownersViewPage')"><i
+                                        class=" bi bi-pencil"></i></button>
+                                <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
+                                <a href="/owners/view{{../rows.OwnerID}}/viewShop{{this.ShopID}}" type="button"
+                                    class="btn btn-dark btn-sm"><i class=" bi bi-eye"></i></a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+
+    {{!-- DIAGLOG BOXES --}}
+    <div id="editOwnerInfo" class="dialog bg-yellow m-auto" style="display: none;">
+        <div>
+            <div class="card p-4 bg-black">
+                <div class="text-center">
+                    <h6 class="fw-800"> EDIT OWNER INFORMATION </h6>
+                    <hr>
+                </div>
+                <div class="center-div pt-2">
+                    <div>
+                        <form action="view{{rows.OwnersID}}/editOwnerInfo" id="editOwnerInfoForm" method="POST">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="firstName"
+                                type="text" value="{{rows.firstName}}" name="firstName" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="lastName"
+                                type="text" value="{{rows.lastName}}" name="lastName" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact"
+                                type="text" value="{{rows.contact}}" name="contact" style="width: 300px;">
+                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
+                        </form>
+                        <div class="center-div pt-2" style="width: 300px;">
+                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                onclick="document.getElementById('editOwnerInfoForm').submit()">
+                                <small>SAVE</small></button>
+                            <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                onclick="toggleDialog('editOwnerInfo','ownersViewPage')"> <small>CANCEL</small></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="editShopInfo" class="dialog bg-yellow m-auto" style="display: none;">
+        <div>
+            <div class="card p-4 bg-black">
+                <div class="text-center">
+                    <h6 class="fw-800"> EDIT BARBERSHOP INFORMATION </h6>
+                    <hr>
+                </div>
+                <div class="center-div pt-2">
+                    <div>
+                        <form action="view{{rows.OwnersID}}/editShopInfo" id="editShopInfoForm" method="POST">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="shopName"
+                                type="text" value="shopName" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="city"
+                                type="text" value="city" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="baranggay"
+                                type="text" value="baranggay" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="street"
+                                type="text" value="street" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact"
+                                type="text" value="contact" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="status"
+                                type="text" value="status" style="width: 300px;">
+                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
+                        </form>
+                        <div class="center-div pt-2" style="width: 300px;">
+                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                onclick="document.getElementById('editShopInfoForm').submit()">
+                                <small>SAVE</small></button>
+                            <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                onclick="toggleDialog('editShopInfo','ownersViewPage')"> <small>CANCEL</small></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="addShopInfo" class="dialog bg-yellow m-auto" style="display: none;">
+        <div>
+            <div class="card p-4 bg-black">
+                <div class="text-center">
+                    <h6 class="fw-800"> ADD BARBERSHOP </h6>
+                    <hr>
+                </div>
+                <div class="center-div pt-2">
+                    <div>
+                        <form action="view{{rows.OwnersID}}/addShopInfo" id="addShopInfoForm" method="POST">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="shopName"
+                                type="text" placeholder="shopName" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="city"
+                                type="text" placeholder="city" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="baranggay"
+                                type="text" placeholder="baranggay" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="street"
+                                type="text" placeholder="street" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact"
+                                type="text" placeholder="contact" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="status"
+                                type="text" placeholder="status" style="width: 300px;">
+                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
+                        </form>
+                        <div class="center-div pt-2" style="width: 300px;">
+                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                onclick="document.getElementById('addShopInfoForm').submit()">
+                                <small>SAVE</small></button>
+                            <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                onclick="toggleDialog('addShopInfo','ownersViewPage')"> <small>CANCEL</small></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

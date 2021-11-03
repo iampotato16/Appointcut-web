@@ -18,23 +18,11 @@ router.route('/')
    .get(async (req, res) => {
       let title = "Shops"
       await acu.startConnection();
-      const rows = await acu.getAllFrom('tblshop')
+      const rows = await acu.getAllFrom('appointcutdb.shop')
          .catch(err => {
             console.error("Error getting all from shop:" + err)
          });
-      // const rows = [{
-      //     "ID":1,
-      //     "ownerID":12,
-      //     "shopName":"Ang Bohok",
-      //     "longitude":12.42,
-      //     "latitude":135.63,
-      //     "address":"Your moms house",
-      //     "contact":"099912412",
-      //     "email":"mamamo@gmail.com",
-      //     "barangayID":2,
-      //     "cityID":3
-      // }]
-
+      
       const mc = new ModalConstructor(title);
       mc.setAddAction('/shops');
       mc.setEditAction('/shops/edit');
@@ -71,47 +59,17 @@ router.post("/edit", (req, res) => {
         
 })
 
-//OwnerShip
-router.route('/ownerShip')
-   .get(async (req, res) => {
-      let title = "Ownership"
-      await acu.startConnection();
-      const rows = await acu.getAllFrom('tblshopownership')
-         .catch(err => {
-            console.error("Error getting all from shopownership:" + err)
-         });
-
-      // const rows = [{
-      //    "id": 1,
-      //    "ownerID": 12,
-      //    "shopID": 16,
-      // }]
-
-      const mc = new ModalConstructor(title);
-      mc.setAddAction('/shops/ownerShip');
-      mc.setEditAction('/shops/ownerShip/edit');
-      mc.addField("ID", ModalConstructor.TYPE_TEXT, "", ModalConstructor.VISIBILITY_EDIT, "readonly");
-      mc.addField("Owner ID", ModalConstructor.TYPE_TEXT);
-      mc.addField("Shop ID", ModalConstructor.TYPE_TEXT);
-      let ownershipModal = mc.construct();
-
-      res.render('ownerships', { layout: 'home-admin', title, rows, ownershipModal });
-   })
-   .post((req, res) => {
-      var addInput = req.body;
-        connection.query(`INSERT INTO tblshopownership SET OwnerID = ?, ShopID = ?`,
-         [addInput["Owner ID"], addInput["Shop ID"]])
-         .then(mess => { res.redirect('/shops/ownerShip')})
-         .catch(err => { console.log(err) });
-        
-   })
-
-router.post("/ownerShip/edit", (req, res) => {
-   var request = req.body;
-   connection.query(`UPDATE tblshopownership SET OwnerID = ?, ShopID = ? WHERE ShopOwnerID = ?`,
-         [request["Owner ID"], request["Shop ID"],request["ID"]])
-         .then(mess => { res.redirect('/shops/ownerShip')})
-         .catch(err => { console.log(err) });
+//views
+router.get('/view:id', async (req, res) => {
+   await acu.startConnection();
+   const rows = await acu.getOneFromWhere('appointcutdb.shop', 'ShopID = ' + req.params.id)
+   const rowOwners = await acu.getAllFromWhere('appointcutdb.shopownership', 'ShopID = ' + req.params.id)
+   const rowEmp = await acu.getAllFromWhere('appointcutdb.employee', 'ShopID = ' + req.params.id)
+   const rowServ = await acu.getAllFromWhere('appointcutdb.services', 'ShopID = ' + req.params.id)
+   const rowsApptPending = await acu.getAllFromWhere('appointcutdb.appointment', 'shopID = ' + req.params.id + ' AND appointmentstatus = "Pending"')
+   const rowsAppt = await acu.getAllFromWhere('appointcutdb.appointment', 'shopID = ' + req.params.id + ' AND appointmentstatus != "Pending"')
+   var title = rows.ShopName;
+   res.render('shopsView', {layout:'home-admin', title:title, rows, rowOwners, rowEmp, rowServ, rowsApptPending, rowsAppt});
 })
 
 module.exports = router;
