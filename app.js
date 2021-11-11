@@ -51,6 +51,12 @@ app.use('/signup', routesSignup);
 const routesBarberApps = require('./server/routes/routesBarberApps');
 app.use('/barberApps', routesBarberApps);
 
+//REST
+//Tokens
+const routesToken = require('./server/routes/Rest/routesToken')
+app.use('/rest/token', routesToken)
+
+
 app.listen(port, () => {
    console.log('Gumagana sa ikatatlong libong daungan')
 })
