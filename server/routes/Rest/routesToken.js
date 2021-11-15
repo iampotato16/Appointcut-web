@@ -26,33 +26,36 @@ router.route('/:email-:pw')
 
     //authenticat the user
     const userAuthenticity = await authenticateUser(userEmail,userPw)
+    var user = null
+    var result
     switch (userAuthenticity){
-        case UserAuthStatus.BARBER://valid user
         case UserAuthStatus.CUSTOMER:
+            user = await getCustomerDetails(`${userEmail}`)
+            break;
+        case UserAuthStatus.BARBER://valid user
         case UserAuthStatus.DESK:
-            const token = await uidgen.generate()
-            const user = await getUserDetails(`${userEmail}`)
-            result = {
-                "authStatus": userAuthenticity,
-                "token":token,
-                "firstName": user.firstName,
-                "lastName": user.lastName,
-            }
-                addToken(user.id, userAuthenticity, token)//add token to db
-                res.json(result)//give status and token
-        break;
-
-        default://invalid credentials
-            result = {
-                "authStatus": userAuthenticity,
-                "token":null,
-                "firstName": null,
-                "lastName": null,
-                "type": null
-            }
-            res.json(result)//give status with null token
+            user = await getEmployeeDetails(`${userEmail}`)
         break;
     }
+    if (user == null){
+        result = {//status with nyll token
+            "authStatus": userAuthenticity,
+            "token":null,
+            "firstName": null,
+            "lastName": null,
+            "type": null
+        }
+    }else{
+        const token = await uidgen.generate()
+        result = {
+            "authStatus": userAuthenticity,
+            "token":token,
+            "firstName": user.firstName,
+            "lastName": user.lastName,
+        }
+            addToken(user.id, userAuthenticity, token)//add token to db
+    }
+    res.json(result)//give status and token
 })
 
 /**temporary function for user authentication kasi tulog si migz*/
@@ -108,6 +111,7 @@ const UserAuthStatus = {
  * @param {string} token access token to of the user
  */
 async function addToken(id, type, token){
+    if (type == UserAuthStatus.DESK) return
     //date + 1 week
     let week = new Date()
     week.setDate(week.getDate() +7)
@@ -123,7 +127,7 @@ async function addToken(id, type, token){
  * @param {String} email email of the user
  * @returns name and id of the user as json
  */
-async function getUserDetails(email){
+async function getCustomerDetails(email){
     console.log(`D/routesToken: email: ${email}`)
     let ems = await connection.query('SELECT * FROM tblcustomers WHERE Email = ?', [email])
     let user = ems[0].pop()
@@ -131,6 +135,22 @@ async function getUserDetails(email){
         "firstName":user.firstName,
         "lastName":user.lastName,
         "id":user.CustomersID
+    }
+}
+
+/**
+ * Retrieves user's name
+ * @param {String} email email of the user
+ * @returns name and id of the user as json
+ */
+async function getEmployeeDetails(email){
+    console.log(`D/routesToken: email: ${email}`)
+    let ems = await connection.query('SELECT * FROM tblemployee WHERE Email = ?', [email])
+    let user = ems[0].pop()
+    return {
+        "firstName":user.firstName,
+        "lastName":user.lastName,
+        "id":user.EmployeeID
     }
 }
 
