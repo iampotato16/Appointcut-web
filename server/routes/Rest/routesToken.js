@@ -1,12 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const mysql2 = require('mysql2/promise')
+//Connection Pool
+const connection = mysql2.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    port: process.env.DB_PORT,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
+})
 //fetch user
 const UserFetch = require('../../../classes/UserFetch');
-const uf = new UserFetch()
-//token gen
-const UIDGenerator = require('uid-generator')
-const uidgen = new UIDGenerator()
+const uf = new UserFetch.UserFetch(connection)
+const TokenManager = require('../../../classes/TokenManager')
+const tm = new TokenManager(connection)
 //TODO: implement refresh tokens
 
 
@@ -22,17 +29,21 @@ router.route('/:email-:pw')
     const userAuthenticity = await uf.authenticateUser(userEmail,userPw)
     var user = null
     var result
+    
+    //which user type
     switch (userAuthenticity){
-        case uf.UserAuthStatus.CUSTOMER:
+        case UserFetch.UserAuthStatus.CUSTOMER:
             user = await uf.getCustomerDetails(`${userEmail}`)
             break;
-        case UserAuthStatus.BARBER://valid user
-        case UserAuthStatus.DESK:
+        case UserFetch.UserAuthStatus.BARBER://valid user
+        case UserFetch.UserAuthStatus.DESK:
             user = await uf.getEmployeeDetails(`${userEmail}`)
         break;
     }
+
+    //user had invalid credentials
     if (user == null){
-        result = {//status with nyll token
+        result = {//status with null token
             "authStatus": userAuthenticity,
             "token":null,
             "firstName": null,
@@ -40,14 +51,13 @@ router.route('/:email-:pw')
             "type": null
         }
     }else{
-        const token = await uidgen.generate()
+        const token = await tm.addToken(user.id,userAuthenticity)
         result = {
             "authStatus": userAuthenticity,
             "token":token,
             "firstName": user.firstName,
             "lastName": user.lastName,
         }
-            uf.addToken(user.id, userAuthenticity, token)//add token to db
     }
     res.json(result)//give status and token
 })
