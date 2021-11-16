@@ -53,9 +53,11 @@ app.use('/barberApps', routesBarberApps);
 
 //REST
 //Tokens
-const routesToken = require('./server/routes/Rest/routesToken')
-app.use('/rest/token', routesToken)
-
+const routesRestToken = require('./server/routes/Rest/routesToken')
+app.use('/rest/token', routesRestToken)
+//shops
+const routesRestShop = require('./server/routes/Rest/routesShop.js')
+app.use('/rest/token', routesRestShop)
 
 app.listen(port, () => {
    console.log('Gumagana sa ikatatlong libong daungan')
