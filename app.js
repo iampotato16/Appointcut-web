@@ -57,7 +57,7 @@ const routesRestToken = require('./server/routes/Rest/routesToken')
 app.use('/rest/token', routesRestToken)
 //shops
 const routesRestShop = require('./server/routes/Rest/routesShop.js')
-app.use('/rest/token', routesRestShop)
+app.use('/rest/shops', routesRestShop)
 
 app.listen(port, () => {
    console.log('Gumagana sa ikatatlong libong daungan')

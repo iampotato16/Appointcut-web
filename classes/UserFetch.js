@@ -79,7 +79,7 @@ class UserFetch {
      */
     async getEmployeeDetails(email) {
         console.log(`D/UserFetch: email: ${email}`)
-        let ems = await connection.query('SELECT * FROM tblemployee WHERE Email = ?', [email])
+        let ems = await this.connection.query('SELECT * FROM tblemployee WHERE Email = ?', [email])
         let user = ems[0].pop()
         return {
             "firstName": user.firstName,

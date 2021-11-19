@@ -18,7 +18,7 @@ const tm = new TokenManager(connection)
 
 
 
-//routes/token
+//Path: /rest/token
 //request a token from server
 router.route('/:email-:pw')
 .get(async (req, res) => {
