@@ -57,6 +57,7 @@ router.route('/:email-:pw')
             "token":token,
             "firstName": user.firstName,
             "lastName": user.lastName,
+            "id": user.id
         }
     }
     res.json(result)//give status and token

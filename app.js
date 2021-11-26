@@ -58,6 +58,12 @@ app.use('/rest/token', routesRestToken)
 //shops
 const routesRestShop = require('./server/routes/Rest/routesShop.js')
 app.use('/rest/shops', routesRestShop)
+//barbers
+const routesRestBarbers = require('./server/routes/Rest/routesBarbers.js')
+app.use('/rest/barbers', routesRestBarbers)
+//appointments
+const routesAppointments = require('./server/routes/Rest/routesAppointments')
+app.use('/rest/appointments', routesAppointments)
 
 app.listen(port, () => {
    console.log('Gumagana sa ikatatlong libong daungan')

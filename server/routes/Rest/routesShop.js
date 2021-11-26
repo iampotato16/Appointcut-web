@@ -20,6 +20,8 @@ router.route("/")
     res.json(shops)
 })
 
+
+
 //Path: /rest/shops/services
 router.route("/services/:id")
 .get(async (req,res)=>{

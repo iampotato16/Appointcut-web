@@ -24,7 +24,7 @@ class ShopFetch{
      * @returns a json array of the supported services of the shop
      */
     async getShopServices(id){
-        var shopServices = await this.connection.query(`SELECT * FROM shopservices where ID = ${id}`)
+        var shopServices = await this.connection.query(`SELECT * FROM shopservices where shopID = ${id}`)
         return shopServices
     }
 }
