@@ -10,10 +10,13 @@
                   </ol>
                </nav>
             </span>
+            <button class="btn btn-dark btn-sm" onclick="toggleDialog('editCustomerInfo','customersViewPage')" style="height:32px;">
+               <i class="bi bi-pencil"></i><small>EDIT CUSTOMER INFORMATION</small> 
+            </button>
          </div>
       </div>
-      <hr class="mt-0" />
-      <div>
+      <hr class="mt-0">
+      {{!-- <div>
          <div class="bg-black">
             <p class="px-4 py-2 m-0 fw-800"><small>CUSTOMER INFORMATION</small></p>
          </div>
@@ -35,7 +38,7 @@
                      <td class="align-middle">{{rowCust.Contact}}</td>
                      <td class="align-middle">
                         {{! WALA PA ATANG STATUS FIELD? }}
-                        {{#if rowCust.status}}
+                        {{#if rowCust.Status}}
                         <a href="/setActive{{rowCust.CustomersID}}" class="btn btn-sm btn-success rounded"
                            type="button"> ACTIVE</a>
                         {{else}}
@@ -53,7 +56,7 @@
                </tbody>
             </table>
          </div>
-      </div>
+      </div> --}}
       <div>
          <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
             <div>
@@ -77,24 +80,22 @@
                      <th scope="col"> <small>SHOP</small></th>
                      <th scope="col"> <small>BARBER</small></th>
                      <th scope="col"> <small>STATUS</small></th>
-                     <th scope="col" class="justify-content-end" style="width: 76px;"></th>
+                     <th scope="col" class="justify-content-end" style="width: 40px;"></th>
                   </tr>
                </thead>
                <tbody>
                   {{#each rowAppt}}
                   <tr class="align-items-center">
-                     <td class="align-middle">{{this.Date}}</td>
-                     <td class="align-middle">{{this.Time}}
-                        //
-                        {{this.Duration}}</td>
+                     <td class="align-middle dateDisplay">{{this.Date}}</td>
+                     <td class="align-middle">{{this.TimeIn}} - {{this.TimeOut}}</td>
                      <td class="align-middle">{{this.Service}}</td>
                      <td class="align-middle">{{this.ShopName}}</td>
                      <td class="align-middle">{{this.EmployeeName}}</td>
                      <td class="align-middle">{{this.AppointmentStatus}}</td>
                      <td>
-                        <button class="btn btn-dark btn-sm"
+                        {{!-- <button class="btn btn-dark btn-sm"
                            onclick="toggleDialog('editAppointment','customersViewPage')"><i
-                              class="bi bi-pencil"></i></button>
+                              class="bi bi-pencil"></i></button> --}}
                         <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
                      </td>
                   </tr>
@@ -106,13 +107,12 @@
    </main>
 
    {{! DIALOG BOXES }}
-
    <div id="editCustomerInfo" class="dialog bg-black m-auto" style="display: none;">
       <div>
          <div class="card p-4 bg-black">
             <div class="text-center">
                <h6 class="fw-800"> EDIT CUSTOMER INFORMATION </h6>
-               <hr />
+               <hr>
             </div>
             <div class="center-div pt-2">
                <div>
@@ -136,7 +136,7 @@
          </div>
       </div>
    </div>
-   <div id="editAppointment" class="dialog m-auto" style="display: none;">
+   {{!-- <div id="editAppointment" class="dialog m-auto" style="display: none;">
       <div>
          <div class="card bg-black p-4">
             <div class="text-center">
@@ -171,7 +171,7 @@
             </div>
          </div>
       </div>
-   </div>
+   </div> --}}
    <div id="addAppointment" class="dialog bg-black m-auto" style="display: none;">
       <div>
          <div class="card p-4 bg-black">

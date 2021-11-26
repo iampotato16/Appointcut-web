@@ -1,6 +1,6 @@
 <div class="col-lg-9 g-0" style="position:relative">
     <main class="min-vh-100 p-3" id="ownersViewPage">
-        <div class="mt-4 px-3 text-decoration-none">
+        <div class="mt-4 text-decoration-none">
             <div class="d-flex justify-content-between">
                 <span class="fs-5 fw-semibold">
                     <nav aria-label="breadcrumb">
@@ -11,10 +11,13 @@
                         </ol>
                     </nav>
                 </span>
+               <button class="btn btn-dark btn-sm" onclick="toggleDialog('editOwnerInfo','ownersViewPage')" style="height:32px;">
+                   <i class=" bi bi-pencil"></i><small>EDIT OWNER INFORMATION</small> 
+                </button>
             </div>
         </div>
         <hr class="mt-0">
-        <div>
+        {{!-- <div>
             <div class="bg-black">
                 <p class="px-4 py-2 m-0 fw-800"><small>OWNER INFORMATION</small></p>
             </div>
@@ -25,14 +28,24 @@
                             <th scope="col"> <small>NAME</small></th>
                             <th scope="col"> <small>EMAIL</small></th>
                             <th scope="col"> <small>CONTACT</small></th>
+                            <th scope="col"> <small>STATUS</small></th>
                             <th scope="col" class="justify-content-end" style="width: 40px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="align-items-center">
                             <td class="align-middle">{{rows.firstName}} {{rows.lastName}}</td>
-                            <td class="align-middle">{{rows.email}}</td>
-                            <td class="align-middle">{{rows.contact}}</td>
+                            <td class="align-middle">{{rows.Email}}</td>
+                            <td class="align-middle">{{rows.Contact}}</td>
+                            <td class="align-middle">
+                                {{#if rows.Status}}
+                                <a href="/setActive" class="btn btn-sm btn-success rounded"
+                                    type="button">
+                                    ACTIVE</a>
+                                {{else}}
+                                <button class="btn btn-sm btn-danger rounded"> INACTIVE </button>
+                                {{/if}}
+                            </td>
                             <td>
                                 <button class="btn btn-dark btn-sm"
                                     onclick="toggleDialog('editOwnerInfo','ownersViewPage')"><i
@@ -42,7 +55,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div> --}}
         <div>
             <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
                 <div>
@@ -66,30 +79,29 @@
                             <th scope="col"> <small>EMAIL</small></th>
                             <th scope="col"> <small>CONTACT</small></th>
                             <th scope="col"> <small>STATUS</small></th>
-                            <th scope="col" class="justify-content-end" style="width: 112px;"></th>
+                            <th scope="col" class="justify-content-end" style="width: 76px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                         {{#each rowsBS}}
                         <tr class="align-items-center">
-                            <td class="align-middle">{{this.shopName}}</td>
-                            <td class="align-middle">{{this.address}}</td>
-                            <td class="align-middle">{{this.email}}</td>
-                            <td class="align-middle">{{this.contact}}</td>
+                            <td class="align-middle">{{this.ShopName}}</td>
+                            <td class="align-middle">{{this.Address}}</td>
+                            <td class="align-middle">{{this.Email}}</td>
+                            <td class="align-middle">{{this.ShopContact}}</td>
                             <td class="align-middle">
-                                {{#if rows.appStatusID}}
-                                <a href="/setActive{{rows.OwnerID}}" class="btn btn-sm btn-success rounded"
-                                    type="button">
-                                    ACTIVE</a>
+                                {{#if this.Status}}
+                                <a href="/owners/view{{../rows.OwnerID}}/setInactive{{this.ShopID}}" class="btn btn-sm btn-success rounded" type="button">
+                                ACTIVE</a>
                                 {{else}}
-                                <button class="btn btn-sm btn-danger rounded"> INACTIVE </button>
+                                <a href="/owners/view{{../rows.OwnerID}}/setActive{{this.ShopID}}" class="btn btn-sm btn-danger rounded" type="button"> INACTIVE </a>
                                 {{/if}}
                             </td>
                             <td>
                                 <button class="btn btn-dark btn-sm"
                                     onclick="toggleDialog('editShopInfo', 'ownersViewPage')"><i
                                         class=" bi bi-pencil"></i></button>
-                                <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
+                                {{!-- <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button> --}}
                                 <a href="/owners/view{{../rows.OwnerID}}/viewShop{{this.ShopID}}" type="button"
                                     class="btn btn-dark btn-sm"><i class=" bi bi-eye"></i></a>
                             </td>
@@ -112,14 +124,21 @@
                 </div>
                 <div class="center-div pt-2">
                     <div>
-                        <form action="view{{rows.OwnersID}}/editOwnerInfo" id="editOwnerInfoForm" method="POST">
+                        <form action="view{{rows.OwnerID}}/edit{{rows.OwnerID}}" id="editOwnerInfoForm" method="POST">
                             <input class="form-control form-control-sm mb-2 font-small rounded-0" name="firstName"
                                 type="text" value="{{rows.firstName}}" name="firstName" style="width: 300px;">
                             <input class="form-control form-control-sm mb-2 font-small rounded-0" name="lastName"
                                 type="text" value="{{rows.lastName}}" name="lastName" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="email"
+                                type="text" value="{{rows.Email}}" name="contact" style="width: 300px;">
                             <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact"
-                                type="text" value="{{rows.contact}}" name="contact" style="width: 300px;">
-                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
+                                type="text" value="{{rows.Contact}}" name="contact" style="width: 300px;">
+                            <div class="center-div">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" value="1" id="status" name="status">
+                                    <label class="form-check-label" for="status"> Active </label>
+                                </div>
+                            </div>
                         </form>
                         <div class="center-div pt-2" style="width: 300px;">
                             <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
@@ -144,18 +163,39 @@
                     <div>
                         <form action="view{{rows.OwnersID}}/editShopInfo" id="editShopInfoForm" method="POST">
                             <input class="form-control form-control-sm mb-2 font-small rounded-0" name="shopName"
-                                type="text" value="shopName" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="city"
-                                type="text" value="city" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="baranggay"
-                                type="text" value="baranggay" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="street"
-                                type="text" value="street" style="width: 300px;">
+                                type="text" placeholder="shopName" style="width: 300px;">
                             <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact"
-                                type="text" value="contact" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="status"
-                                type="text" value="status" style="width: 300px;">
-                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
+                                type="text" placeholder="contact" style="width: 300px;">
+                            <select class="form-control form-control-sm mb-2 font-small rounded-0" name="city"
+                                id="city" onchange="">
+                                <option selected disabled hidden>City</option>
+                                {{#each rowsServCategory}}
+                                <option value="{{this.CategoryID}}">{{this.Name}}</option>
+                                {{/each}}
+                            </select>
+                            <select class="form-control form-control-sm mb-2 font-small rounded-0" name="baranggay"
+                                id="baranggay" onchange="changeServices(this,1)">
+                                <option selected disabled hidden>baranggay</option>
+                                {{#each rowsServCategory}}
+                                <option value="{{this.CategoryID}}">{{this.Name}}</option>
+                                {{/each}}
+                            </select>
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="street"
+                                type="text" placeholder="street" style="width: 300px;">
+                            <div class="mb-2">
+                                <label for="birPermit" class="mb-0"><small>BIR PERMIT:</small></label>
+                                <div class="attachment-border">
+                                <input class="font-small reg-file-btn container-fluid pl-0" type="file" id="birPermit"
+                                    name="birPermit">
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label for="busPermit" class="mb-0"><small>BUSINESS PERMIT:</small></label>
+                                <div class="attachment-border">
+                                <input class="font-small reg-file-btn container-fluid pl-0" type="file" id="busPermit"
+                                    name="busPermit">
+                                </div>
+                            </div>
                         </form>
                         <div class="center-div pt-2" style="width: 300px;">
                             <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
@@ -178,20 +218,41 @@
                 </div>
                 <div class="center-div pt-2">
                     <div>
-                        <form action="view{{rows.OwnersID}}/addShopInfo" id="addShopInfoForm" method="POST">
+                        <form action="view{{rows.OwnersID}}" id="addShopInfoForm" method="POST">
                             <input class="form-control form-control-sm mb-2 font-small rounded-0" name="shopName"
                                 type="text" placeholder="shopName" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="city"
-                                type="text" placeholder="city" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="baranggay"
-                                type="text" placeholder="baranggay" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="street"
-                                type="text" placeholder="street" style="width: 300px;">
                             <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact"
                                 type="text" placeholder="contact" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="status"
-                                type="text" placeholder="status" style="width: 300px;">
-                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
+                            <select class="form-control form-control-sm mb-2 font-small rounded-0" name="city"
+                                id="city" onchange="">
+                                <option selected disabled hidden>City</option>
+                                {{#each rowsServCategory}}
+                                <option value="{{this.CategoryID}}">{{this.Name}}</option>
+                                {{/each}}
+                            </select>
+                            <select class="form-control form-control-sm mb-2 font-small rounded-0" name="baranggay"
+                                id="baranggay" onchange="changeServices(this,1)">
+                                <option selected disabled hidden>baranggay</option>
+                                {{#each rowsServCategory}}
+                                <option value="{{this.CategoryID}}">{{this.Name}}</option>
+                                {{/each}}
+                            </select>
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="street"
+                                type="text" placeholder="street" style="width: 300px;">
+                            <div class="mb-2">
+                                <label for="birPermit" class="mb-0"><small>BIR PERMIT:</small></label>
+                                <div class="attachment-border">
+                                <input class="font-small reg-file-btn container-fluid pl-0" type="file" id="birPermit"
+                                    name="birPermit">
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label for="busPermit" class="mb-0"><small>BUSINESS PERMIT:</small></label>
+                                <div class="attachment-border">
+                                <input class="font-small reg-file-btn container-fluid pl-0" type="file" id="busPermit"
+                                    name="busPermit">
+                                </div>
+                            </div>
                         </form>
                         <div class="center-div pt-2" style="width: 300px;">
                             <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"

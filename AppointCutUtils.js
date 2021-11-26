@@ -45,6 +45,18 @@ async function getAllFromBarangay() {
    return rows[0]
 }
 
+async function insertInto(table, values){
+   let query = 'INSERT INTO ' + table + ' VALUES ' + values; 
+   var id = await connection.query(query).then(async mess => {
+      return await mess[0]})
+   return await id
+}
+
+async function updateSet(table, values, where){
+   let query = 'UPDATE ' + table + ' SET ' + values + ' WHERE ' + where; 
+   var rows = await connection.query(query)
+}
+
 class ModalConstructor {
    tableName;
    constructor(tableName) {
@@ -133,4 +145,5 @@ class ModalConstructor {
 
 }
 
-module.exports = { getAllFrom, getAllFromWhere, getOneFromWhere, getAllFromServices, getAllFromBarangay, startConnection, ModalConstructor }
+ 
+module.exports = { getAllFrom, getAllFromWhere, getOneFromWhere, getAllFromServices, getAllFromBarangay, insertInto, updateSet, startConnection, ModalConstructor }

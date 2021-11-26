@@ -1,0 +1,100 @@
+<div id="addEmployeeInfo" class="dialog bg-yellow m-auto" style="display: none;">
+    <div>
+        <div class="card p-4 bg-black position-relative">
+            <button class="position-absolute btn btn-link p-0" style="right: 1.5rem; margin-top: -.5rem;"
+                onclick="toggleDialog('addEmployeeInfo')"><i class="bi bi-x"></i></button>
+            <div class="text-center">
+                <h6 class="fw-800"> ADD EMPLOYEE </h6>
+                <hr>
+            </div>
+            <div class="center-div pt-2">
+                <form action="/owners/view{{ownerID}}/viewShop{{shopID}}" id="addEmployeeInfoForm" method="POST">
+                    <div class="tab addEmp">
+                        <p class="text-center"> <small> EMPLOYEE INFORMATION </small> </p>
+                        <input class="form-control form-control-sm mb-2 font-small rounded-0" name="firstName"
+                            type="text" placeholder="firstName" style="width: 300px;">
+                        <input class="form-control form-control-sm mb-2 font-small rounded-0" name="lastName"
+                            type="text" placeholder="lastName" style="width: 300px;">
+                        <input class="form-control form-control-sm mb-2 font-small rounded-0" name="email" type="text"
+                            placeholder="email" style="width: 300px;">
+                        <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact" type="text"
+                            placeholder="contact" style="width: 300px;">
+                        <div style="width: 300px;">
+                            <select class="form-control form-control-sm mb-2 font-small rounded-0" name="employeeType">
+                                <option selected disabled hidden>Employee Type...</option>
+                                {{#each rowsEmpType}}
+                                <option value="{{this.EmployeeTypeID}}">{{this.Name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div style="width: 300px;">
+                            <select class="form-control form-control-sm mb-2 font-small rounded-0" name="salaryType">
+                                <option selected disabled hidden>Salary Type...</option>
+                                {{#each rowsSalaryType}}
+                                <option value="{{this.SalaryTypeID}}">{{this.Name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <input class="form-control form-control-sm mb-2 font-small rounded-0" name="salaryValue"
+                            type="text" placeholder="salaryValue" style="width: 300px">
+                    </div>
+                    <div class="tab addEmp">
+                        <p class="text-center"><small>EMPLOYEE SCHEDULE</small></p>
+                        {{#each days}}
+                        <div class="row d-flex align-items-center" style="width: 400px;">
+                            <div class="col-4">
+                                <input class="form-check-input" type="checkbox" name="{{this.name}}"
+                                    id="checkDays{{this.name}}" value="{{this.name}}">
+                                <label class="form-check-label" for="inlineCheckbox1">
+                                    <small>{{this.name}}</small></label>
+                            </div>
+                            <div class="col-8 justify-content-center">
+                                <div class="row">
+                                    <div class="col-6 d-flex align-items-center">
+                                        <input class="form-control form-control-sm mb-2 font-small rounded-0"
+                                            name="timeIn" id="timeIn{{this.name}}" type="time" disabled>
+                                    </div>
+                                    <div class="col-6 d-flex align-items-center">
+                                        <input class="form-control form-control-sm mb-2 font-small rounded-0"
+                                            name="timeOut" id="timeOut{{this.name}}" type="time" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                    <div class="tab addEmp">
+                        <p class="text-center"><small>EMPLOYEE SPECIALIZATION</small></p>
+                        {{#each rowsServ}}
+                        <div>
+                            <input class="form-check-input" type="checkbox" name="{{this.ServiceName}}"
+                                id="shopService{{this.ShopServicesID}}" value="{{this.name}}">
+                            <label class="form-check-label" for="inlineCheckbox1">
+                                <small>{{this.ServiceName}}</small></label>
+                        </div>
+                        {{/each}}
+                    </div>
+
+                    {{!-- BUTTONS --}}
+                    <div style="display: block;">
+                        <div class="center-div p-2">
+                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800" style="width: 150px;"
+                                type="button" id="prevBtnaddEmp"
+                                onclick="toggleMultiForm.nextPrev(-1)">Previous</button>
+                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800" style="width: 150px;"
+                                type="button" id="nextBtnaddEmp" onclick="toggleMultiForm.nextPrev(1)">Next</button>
+                        </div>
+                    </div>
+
+                    {{!--
+                    <!-- Circles which indicates the steps of the form: --> --}}
+                    <div class="text-center pt-4">
+                        <span class="step addEmp"></span>
+                        <span class="step addEmp"></span>
+                        <span class="step addEmp"></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

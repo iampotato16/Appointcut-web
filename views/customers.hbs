@@ -1,69 +1,169 @@
-<main class="col-lg-9 container p-0" id="main">
-   <div class="mt-4 p-3 text-decoration-none">
-      <div class="d-flex justify-content-between">
-         <span class="fs-5 fw-semibold">
-            <nav aria-label="breadcrumb">
-               <ol class="breadcrumb">
-                  <li class="breadcrumb-item active" aria-current="page">Customers</li>
-               </ol>
-            </nav>
-         </span>
-         <div class="d-inline float-right">
-            <td>
-               <button href="javascript:;" class="btn btn-dark btn-sm i-plus" id="Customers-add" style="height: 30px;">
+<div class="col-lg-9 g-0" style="position:relative">
+   <main class="min-vh-100 p-3" id="customersPage">
+      <div class="mt-4 text-decoration-none">
+         <div class="d-flex justify-content-between">
+            <span class="fs-5 fw-semibold">
+               <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                     <li class="breadcrumb-item active" aria-current="page">Customers</li>
+                  </ol>
+               </nav>
+            </span>
+            <div class="d-flex float-right" style="height: 2rem">
+               <form class="d-flex">
+                  <input class="form-control form-control-sm me-1 p-1 rounded-0" type="search" placeholder="Search"
+                     aria-label="Search" />
+                  <button class="btn btn-sm btn-dark me-1" type="submit"><small>SEARCH</small> </button>
+               </form>
+               <button class="btn btn-dark btn-sm me-1 i-plus" onclick="toggleDialog('addCustomer','customersPage')">
                   <i class="bi bi-plus"></i>
                </button>
-            </td>
-            <input type="text" name="search" id="search">
+            </div>
+         </div>
+         <hr class="mt-0">
+         <div class="bg-gray p-4 mb-3">
+            <table class="table table-hover table-striped table-sm m-0">
+               <thead>
+                  <tr>
+                     <th scope="col"> <small>NAME</small></th>
+                     <th scope="col"> <small>EMAIL</small></th>
+                     <th scope="col"> <small>CONTACT</small></th>
+                     <th scope="col"> <small>GUEST</small></th>
+                     <th scope="col"> <small>STATUS</small></th>
+                     <th scope="col" class="justify-content-end" style="width: 76px;"></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {{#each rows}}
+                  <tr class="align-items-center">
+                     <td class="align-middle">{{this.FullName}}</td>
+                     <td class="align-middle">{{this.Email}}</td>
+                     <td class="align-middle">{{this.Contact}}</td>
+                     <td class="align-middle">
+                        {{#if this.Guest}}True{{else}}False{{/if}}
+                     </td>
+                     <td class="align-middle">
+                        {{#if this.Status}}
+                        <a href="customers/setInactive{{this.CustomersID}}" class="btn btn-sm btn-success rounded" type="button">
+                           ACTIVE</a>
+                        {{else}}
+                         <a href="customers/setActive{{this.CustomersID}}" class="btn btn-sm btn-danger rounded" type="button"> INACTIVE </a>
+                        {{/if}}
+                     <td>
+                        <button class="btn btn-dark btn-sm"
+                           onclick="toggleDialog('editCustomerInfo{{this.CustomersID}}','customersPage', {{this.CustomersID}})">
+                           <i class=" bi bi-pencil"></i></button>
+                        {{!-- <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button> --}}
+                        <a href="/customers/view{{this.CustomersID}}" type="button" class="btn btn-dark btn-sm"><i
+                              class=" bi bi-eye"></i></a>
+                     </td>
+                  </tr>
 
+                  <div id="editCustomerInfo{{this.CustomersID}}" class="dialog bg-black m-auto" style="display: none;">
+                     <div>
+                        <div class="card p-4 bg-black">
+                           <div class="text-center">
+                              <h6 class="fw-800"> EDIT CUSTOMER INFORMATION </h6>
+                              <hr>
+                           </div>
+                           <div class="center-div pt-2">
+                              <div>
+                                 <form action="/customers/edit{{this.CustomersID}}" method="POST">
+                                    <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                                       name="firstName" value="{{this.firstName}}" />
+                                    <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                                       name="lastName" value="{{this.lastName}}" />
+                                    <input class=" form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                                       name="email" style="width: 300px;" value={{this.Email}} />
+                                    <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                                       name="contact" style="width: 300px;" value={{this.Contact}} />
+                                    <div class="center-div">
+                                       <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="checkbox" value="1" id="guest"
+                                             name="guest" {{#if this.Guest}} checked {{/if}}>
+                                          <label class="form-check-label" for="guest">
+                                             Guest
+                                          </label>
+                                       </div>
+                                       <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="checkbox" value="1" id="status"
+                                             name="status" {{#if this.Status}} checked {{/if}}>
+                                          <label class="form-check-label" for="status">
+                                             Active
+                                          </label>
+                                       </div>
+                                    </div>
+                                    <div class="center-div pt-2" style="width: 300px;">
+                                       <button class="btn btn-warning rounded-0 col-6 me-1" type="submit">SAVE</button>
+                                       <button class="btn btn-outline-warning rounded-0 col-6"
+                                          onclick="toggleDialog('editCustomerInfo{{this.CustomersID}}','customersPage')">CANCEL</button>
+                                    </div>
+                                 </form>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  {{/each}}
+               </tbody>
+            </table>
          </div>
       </div>
-      <hr class="mt-0">
-      <div class="bg-gray p-4 mb-3">
-         <table class="table table-hover table-striped table-sm m-0">
-            <thead>
-               {{!-- Table Headers --}}
-               <tr>
-                  <th scope="col"> <small>FIRST NAME</small></th>
-                  <th scope="col"> <small>LAST NAME</small></th>
-                  <th scope="col"> <small>EMAIL</small></th>
-                  <th scope="col"> <small>CONTACT</small></th>
-                  <th scope="col"> <small>GUEST</small></th>
-                  <th scope="col"> <small>STATUS</small></th>
-                  <th scope="col" class="justify-content-end" style="width: 112px;"></th>
-               </tr>
-            </thead>
-            <tbody>
-               {{#each rows}}
-               <tr class="align-items-center">
-                  <td id="Customers-GivenName-{{this.CustomersID}}" class="align-middle">{{this.firstName}}</td>
-                  <td id="Customers-FamilyName-{{this.CustomersID}}" class="align-middle">{{this.lastName}}</td>
-                  <td id="Customers-E-Mail-{{this.CustomersID}}" class="align-middle">{{this.Email}}</td>
-                  <td id="Customers-Contact-{{this.CustomersID}}" class="align-middle">{{this.Contact}}</td>
-                  <td id="Customers-Guest-{{this.CustomersID}}" class="align-middle">
-                     {{#if IsGuest}}True{{else}}False{{/if}}
-                  </td>
-                  <td id="Customers-Disabled-{{this.CustomersID}}" class="align-middle">
-                     {{#if isDisabled}}
-                     <a href="/setActive{{rows.OwnerID}}" class="btn btn-sm btn-success rounded" type="button">
-                        ACTIVE</a>
-                     {{else}}
-                     <button class="btn btn-sm btn-danger rounded"> INACTIVE </button>
-                     {{/if}}
-                  <td>
-                     <button class="edit-{{../customerModal.tableName}} btn btn-dark btn-sm"
-                        id="AddCustomer-{{this.CustomersID}}"><i class=" bi bi-pencil"></i></button>
-                     <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
-                     <a href="/customers/view{{this.CustomersID}}" type="button" class="btn btn-dark btn-sm"><i
-                           class=" bi bi-eye"></i></a>
+   </main>
 
-                  </td>
-               </tr>
-               {{/each}}
-            </tbody>
-         </table>
+   {{!-- DIALOG BOXES --}}
+   <div id="addCustomer" class="dialog bg-black m-auto" style="display: none;">
+      <div>
+         <div class="card p-4 bg-black">
+            <div class="text-center">
+               <h6 class="fw-800"> ADD CUSTOMER </h6>
+               <hr>
+            </div>
+            <div class="center-div pt-2">
+               <div>
+                  <form action="/customers" id="addCustomerForm" method="POST">
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" name="firstName"
+                        placeholder="First Name" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" name="lastName"
+                        placeholder="Last Name" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" name="email"
+                        style="width: 300px;" placeholder="Email" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" name="contact"
+                        style="width: 300px;" placeholder="Contact Number" />
+                     <div class="center-div">
+                        <div class="form-check form-check-inline">
+                           <input class="form-check-input" type="checkbox" value="1" id="guest" name="guest">
+                           <label class="form-check-label" for="guest">
+                              Guest
+                           </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                           <input class="form-check-input" type="checkbox" value="1" id="status" name="status">
+                           <label class="form-check-label" for="status">
+                              Active
+                           </label>
+                        </div>
+                     </div>
+                  </form>
+                  <div class="center-div pt-2" style="width: 300px;">
+                     <button class="btn btn-warning rounded-0 col-6 me-1"
+                        onclick="document.getElementById('addCustomerForm').submit()">SAVE</button>
+                     <button class="btn btn-outline-warning rounded-0 col-6"
+                        onclick="toggleDialog('addCustomer','customersPage')">CANCEL</button>
+                  </div>
+               </div>
+            </div>
+         </div>
       </div>
    </div>
-</main>
+
+
+</div>
+
+
+
+
+
 
 {{>modal-dialogbox modalInfo=customerModal}}

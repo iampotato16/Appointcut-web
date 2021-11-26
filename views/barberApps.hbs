@@ -2,24 +2,18 @@
    <div class="mt-4 p-3 text-decoration-none">
       <div class="d-flex justify-content-between">
          <span class="fs-5 fw-semibold">{{title}}</span>
-         <div class="d-inline float-right">
-            <button class="btn btn-dark btn-sm i-plus" href="javascript:;" id="BarberApps-add"
-               style="height: 30px;">
+         <div class="d-flex float-right" style="height: 2rem">
+            <form class="d-flex">
+               <input class="form-control form-control-sm me-1 p-1 rounded-0" type="search" placeholder="Search"
+                  aria-label="Search" />
+               <button class="btn btn-sm btn-dark me-1" type="submit"><small>SEARCH</small> </button>
+            </form>
+            <button href="javascript:;" class="btn btn-dark btn-sm me-1 i-plus" id="Customers-add">
                <i class="bi bi-plus"></i>
             </button>
-            <input type="text" name="search" id="search">
          </div>
       </div>
       <hr>
-      {{!-- header with add button --}}
-      {{!-- <div class="bg-black px-4 py-3 d-flex justify-content-between">
-         <span class="h6 m-0 fw-800 align-self-center">Barbershop Applications</span>
-         <a href="javascript:;" id="BarberApps-add" class="i-plus">
-            <i class="bi bi-plus-circle-fill float-right" style="color: #f1c644;"></i>
-         </a>
-      </div> --}}
-
-      {{!-- Table Contents --}}
       <div class="bg-gray p-4 mb-3">
          <table class="table table-hover table-striped table-sm m-0">
             <thead>

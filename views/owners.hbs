@@ -1,66 +1,157 @@
-<main class="col-lg-9 container p-0" id="main">
-   <div class="mt-4 p-3 text-decoration-none">
-      <div class="d-flex justify-content-between">
-         <span class="fs-5 fw-semibold">
-            <nav aria-label="breadcrumb">
-               <ol class="breadcrumb">
-                  <li class="breadcrumb-item active" aria-current="page">Owners</li>
-               </ol>
-            </nav>
-         </span>
-         <div class="d-inline float-right">
-            <td>
-               <button class="btn btn-dark btn-sm i-plus" href="javascript:;" id="Owners-add" style="height: 30px;">
+<div class="col-lg-9 g-0" style="position:relative">
+   <main class="min-vh-100 p-3" id="ownersPage">
+      <div class="mt-4 text-decoration-none">
+         <div class="d-flex justify-content-between">
+            <span class="fs-5 fw-semibold">
+               <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                     <li class="breadcrumb-item active" aria-current="page">Owners</li>
+                  </ol>
+               </nav>
+            </span>
+            <div class="d-flex float-right" style="height: 2rem">
+               <form class="d-flex">
+                  <input class="form-control form-control-sm me-1 p-1 rounded-0" type="search" placeholder="Search"
+                     aria-label="Search" />
+                  <button class="btn btn-sm btn-dark me-1" type="submit"><small>SEARCH</small> </button>
+               </form>
+               <button class="btn btn-dark btn-sm me-1 i-plus" onclick="toggleDialog('addOwner','ownersPage')">
                   <i class="bi bi-plus"></i>
                </button>
-            </td>
-            <input type="text" name="search" id="search">
+            </div>
+         </div>
+         <hr class="mt-0">
 
+         {{!-- Table Contents --}}
+         <div class="bg-gray p-4 mb-3">
+            <table class="table table-hover table-striped table-sm m-0">
+               <thead>
+                  {{!-- Table Headers --}}
+                  <tr>
+                     <th scope="col"> <small>NAME</small></th>
+                     <th scope="col"> <small>EMAIL</small></th>
+                     <th scope="col"> <small>CONTACT</small></th>
+                     <th scope="col"> <small>STATUS</small></th>
+                     <th scope="col" class="justify-content-end" style="width: 76px;"></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {{#each rows}}
+                  <tr class="align-items-center">
+                     <td class="align-middle">{{this.FullName}}</td>
+                     <td class="align-middle">{{this.Email}}</td>
+                     <td class="align-middle">{{this.Contact}}</td>
+                     <td>
+                        {{#if this.Status}}
+                        <a href="owners/setInactive{{this.OwnerID}}" class="btn btn-sm btn-success rounded" type="button">
+                           ACTIVE</a>
+                        {{else}}
+                         <a href="owners/setActive{{this.OwnerID}}" class="btn btn-sm btn-danger rounded" type="button"> INACTIVE </a>
+                        {{/if}}
+                     </td>
+                     <td>
+                        <button class="btn btn-dark btn-sm"
+                           onclick="toggleDialog('editOwner{{this.OwnerID}}','ownersPage')"><i
+                              class=" bi bi-pencil"></i></button>
+                        {{!-- <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button> --}}
+                        <a href="/owners/view{{this.OwnerID}}" type="button" class="btn btn-dark btn-sm"><i
+                              class=" bi bi-eye"></i></a>
+                     </td>
+                  </tr>
+                  {{!-- DIALOG BOXES --}}
+                  <div id="editOwner{{this.OwnerID}}" class="dialog bg-black m-auto" style="display: none;">
+                     <div>
+                        <div class="card p-4 bg-black">
+                           <div class="text-center">
+                              <h6 class="fw-800"> EDIT OWNER </h6>
+                              <hr>
+                           </div>
+                           <div class="center-div pt-2">
+                              <div>
+                                 <form action="/owners/edit{{this.OwnerID}}" method="POST">
+                                    <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                                       name="firstName" value="{{this.firstName}}" />
+                                    <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                                       name="lastName" value="{{this.lastName}}" />
+                                    <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                                       name="email" style="width: 300px;" value="{{this.Email}}" />
+                                    <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                                       name="contact" style="width: 300px;" value="{{this.Contact}}" />
+                                    <div class="center-div">
+                                       <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="checkbox" value="1" id="status"
+                                             name="status" {{#if this.Status}} checked {{/if}}>
+                                          <label class="form-check-label" for="status">
+                                             Active
+                                          </label>
+                                       </div>
+                                    </div>
+                                    <div class="center-div pt-2" style="width: 300px;">
+                                       <button class="btn btn-warning rounded-0 col-6 me-1" type="submit">SAVE</button>
+                                       <button class="btn btn-outline-warning rounded-0 col-6"
+                                          onclick="toggleDialog('editOwner{{this.OwnerID}}','ownersPage')">CANCEL</button>
+                                    </div>
+                                 </form>
+
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  {{/each}}
+               </tbody>
+            </table>
          </div>
       </div>
-      <hr class="mt-0">
+   </main>
 
-      {{!-- Table Contents --}}
-      <div class="bg-gray p-4 mb-3">
-         <table class="table table-hover table-striped table-sm m-0">
-            <thead>
-               {{!-- Table Headers --}}
-               <tr>
-                  <th scope="col"> <small>FIRST NAME</small></th>
-                  <th scope="col"> <small>LAST NAME</small></th>
-                  <th scope="col"> <small>EMAIL</small></th>
-                  <th scope="col"> <small>CONTACT</small></th>
-                  <th scope="col"> <small>STATUS</small></th>
-                  <th scope="col" class="justify-content-end" style="width: 112px;"></th>
-               </tr>
-            </thead>
-            <tbody>
-               {{#each rows}}
-               <tr class="align-items-center">
-                  <td id="Owners-givenName-{{this.OwnerID}}" class="align-middle">{{this.firstName}}</td>
-                  <td id="Owners-familyName-{{this.OwnerID}}" class="align-middle">{{this.lastName}}</td>
-                  <td id="Owners-e-mail-{{this.OwnerID}}" class="align-middle">{{this.email}}</td>
-                  <td id="Owners-contact-{{this.OwnerID}}" class="align-middle">{{this.contact}}</td>
-                  <td>
-                     {{#if this.OwnerID}}
-                     <a href="/setActive{{rows.OwnerID}}" class="btn btn-sm btn-success" type="button"> ACTIVE</a>
-                     {{else}}
-                     <button class="btn btn-sm btn-warning rounded"> INACTIVE </button>
-                     {{/if}}
-                  </td>
-                  <td>
-                     <button class="edit-{{../ownerModal.tableName}} btn btn-dark btn-sm"
-                        id="Owners-{{this.OwnerID}}"><i class=" bi bi-pencil"></i></button>
-                     <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
-                     <a href="/owners/view{{this.OwnerID}}" type="button" class="btn btn-dark btn-sm"><i
-                           class=" bi bi-eye"></i></a>
-                  </td>
-               </tr>
-               {{/each}}
-            </tbody>
-         </table>
+   {{!-- DIALOG BOXES --}}
+   <div id="addOwner" class="dialog bg-black m-auto" style="display: none;">
+      <div>
+         <div class="card p-4 bg-black">
+            <div class="text-center">
+               <h6 class="fw-800"> ADD OWNER </h6>
+               <hr>
+            </div>
+            <div class="center-div pt-2">
+               <div>
+                  <form action="/owners" id="addOwnerForm" method="POST">
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" name="firstName"
+                        placeholder="First Name" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" name="lastName"
+                        placeholder="Last Name" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" name="email"
+                        style="width: 300px;" placeholder="Email" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" name="contact"
+                        style="width: 300px;" placeholder="Contact Number" />
+                     <div class="col-auto my-1">
+                        <select class="form-control form-control-sm mb-2 font-small rounded-0" name="shop">
+                           <option selected>Barbershop...</option>
+                           {{#each rowShop}}
+                           <option value="{{this.ShopID}}">{{this.ShopName}}</option>
+                           {{/each}}
+                        </select>
+                     </div>
+                     <div class="center-div">
+                        <div class="form-check form-check-inline">
+                           <input class="form-check-input" type="checkbox" value="1" id="status" name="status">
+                           <label class="form-check-label" for="status">
+                              Active
+                           </label>
+                        </div>
+                     </div>
+                  </form>
+                  <div class="center-div pt-2" style="width: 300px;">
+                     <button class="btn btn-warning rounded-0 col-6 me-1"
+                        onclick="document.getElementById('addOwnerForm').submit()">SAVE</button>
+                     <button class="btn btn-outline-warning rounded-0 col-6"
+                        onclick="toggleDialog('addOwner','ownersPage')">CANCEL</button>
+                  </div>
+               </div>
+            </div>
+         </div>
       </div>
    </div>
-</main>
+</div>
 
 {{>modal-dialogbox modalInfo=ownerModal}}
