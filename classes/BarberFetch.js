@@ -58,6 +58,21 @@ class BarberFetch{
     }
 
     /**
+     * Fetches the full details of appointments for given date
+     * @param {*} barberId 
+     * @param {*} month 
+     * @param {*} year 
+     */
+    async getBarberAppointmentView(barberName,day, month, year){
+        const select = `select * from appointment`
+        const where = `where DAY(Date) = ${day} and MONTH(Date) = ${month} and YEAR(Date) = ${year} and EmployeeName = ${barberName}`
+        console.log(`${select} ${where};`)
+        const appointments = await this.connection.query(`${select} ${where};`)
+        
+        return appointments
+    }
+
+    /**
      * Retrieves the barber's shift schedule
      * @param {Int} barberId 
      * @returns List of the barber's schedule for different days of the week

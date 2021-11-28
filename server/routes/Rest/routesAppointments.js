@@ -10,13 +10,35 @@ let connection = mysql2.createPool({
     database: process.env.DB_NAME
 })
 const AppointmentsManager = require('../../../classes/AppointmentsManager')
-const apt = new AppointmentsManager(connection)
+const apm = new AppointmentsManager(connection)
+
+const UserFetch = require('../../../classes/UserFetch')
+
+const TokenManager = require('../../../classes/TokenManager')
+const tm = new TokenManager(connection)
 
 //Path : /rest/appointments
 router.route('/')
 .post(async (req, res) => {
     console.log("D/routesAppt: " + JSON.stringify(req.body))
-    res.sendStatus(200)
+    const apt = req.body
+    const auth = await tm.verifyToken(apt.userToken)
+
+    //only customers can set appointments
+    if(auth.userType != UserFetch.UserAuthStatus.CUSTOMER){
+        console.log("Appointment made by not a customer")
+        res.sendStatus(401)
+        return
+    }
+
+    if(await apm.setAppointment(apt)){
+        console.log("Appointment made by customer")
+        res.sendStatus(200)
+        return
+    }
+
+    console.log("Appointment request invalid")
+    res.sendStatus(400)
 })
 
 module.exports = router

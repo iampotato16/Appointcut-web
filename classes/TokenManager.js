@@ -41,6 +41,21 @@ class TokenManager{
         console.log(`D/TokenManager: Added token to db: ${JSON.stringify(token)}`)
         return token
     }
+
+    /**
+     * Verifies the given token
+     * @param {*} token Token to be verified
+     * @returns the entry in the database
+     */
+    async verifyToken(token){
+        let user = await this.connection.query('SELECT * FROM tblaccesstoken WHERE token = ?', [token])
+
+        //invalid token
+        if(user[0].length == 0) {return UserFetch.UserAuthStatus.TOKEN}
+        user = user[0].pop()
+        console.log("D/TokenManager: " + user.userType)
+        return user
+    }
 }
 
 module.exports = TokenManager

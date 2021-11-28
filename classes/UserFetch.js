@@ -3,7 +3,8 @@ const UserAuthStatus = {
     CUSTOMER: 'CUSTOMER',
     BARBER: 'BARBER',
     EMAIL: 'EMAIL',//invalid email
-    PASSWORD: 'PASSWORD'//invalid password
+    PASSWORD: 'PASSWORD',//invalid password
+    TOKEN: 'TOKEN' //invalid token
 }
 /**
  * For fetching  user details from the database
@@ -29,10 +30,15 @@ class UserFetch {
      * @param {String} password 
      * @returns {UserAuthStatus} Status of the user
      */
-    async authenticateUser(email, password) {
+    async authenticateUser(email, password, userType) {
 
-        let cust = await this.connection.query('SELECT * FROM tblcustomers WHERE Email = ?', [email])
-        let barb = await this.connection.query('SELECT * FROM tblemployee WHERE Email = ?', [email])
+        var cust = new Array([])
+        var barb = new Array([])
+        if(userType =="Customer"){
+            cust = await this.connection.query('SELECT * FROM tblcustomers WHERE Email = ?', [email])}
+        if(userType =="Employee"){
+            barb = await this.connection.query('SELECT * FROM tblemployee WHERE Email = ?', [email])}
+
         if (cust[0].length > 0) {//customer
             let pass = await this.connection.query('SELECT * FROM tblcustomers WHERE PasswordHash = ?', [password])
             if (pass[0].length > 0) {//valid user
@@ -85,6 +91,21 @@ class UserFetch {
             "firstName": user.firstName,
             "lastName": user.lastName,
             "id": user.EmployeeID
+        }
+    }
+
+    /**
+     * Retrieves user's name
+     * @param {String} email email of the user
+     * @returns name and id of the user as json
+     */
+    async getEmployeeDetailsFromId(id) {
+        console.log(`D/UserFetch: id: ${id}`)
+        let ems = await this.connection.query('SELECT * FROM tblemployee WHERE EmployeeID = ?', [id])
+        let user = ems[0].pop()
+        return {
+            "firstName": user.firstName,
+            "lastName": user.lastName
         }
     }
 

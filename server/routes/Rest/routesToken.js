@@ -20,13 +20,14 @@ const tm = new TokenManager(connection)
 
 //Path: /rest/token
 //request a token from server
-router.route('/:email-:pw')
+router.route('/:email-:pw-:userType')
 .get(async (req, res) => {
     const userEmail = req.params.email
     const userPw = req.params.pw
+    const userType = req.params.userType
 
     //authenticat the user
-    const userAuthenticity = await uf.authenticateUser(userEmail,userPw)
+    const userAuthenticity = await uf.authenticateUser(userEmail,userPw, userType)
     var user = null
     var result
     
