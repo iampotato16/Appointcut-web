@@ -44,14 +44,17 @@
                      </td>
                      <td class="align-middle">
                         {{#if this.Status}}
-                        <a href="customers/setInactive{{this.CustomersID}}" class="btn btn-sm btn-success rounded" type="button">
+                        <a href="customers/setInactive{{this.CustomersID}}" class="btn btn-sm btn-success rounded"
+                           type="button">
                            ACTIVE</a>
                         {{else}}
-                         <a href="customers/setActive{{this.CustomersID}}" class="btn btn-sm btn-danger rounded" type="button"> INACTIVE </a>
+                        <a href="customers/setActive{{this.CustomersID}}" class="btn btn-sm btn-danger rounded"
+                           type="button"> INACTIVE </a>
                         {{/if}}
                      <td>
-                        <button class="btn btn-dark btn-sm"
-                           onclick="toggleDialog('editCustomerInfo{{this.CustomersID}}','customersPage', {{this.CustomersID}})">
+                        <button class="btn btn-dark btn-sm" {{!-- NAKALAGAY TO AS PARAMETER SA TOGGLEDIALOG, BAKA KASI
+                           MAY MASIRA DAHIL TINANGGAL KO ,'customersPage', {{this.CustomersID}} --}}
+                           onclick="toggleDialog('editCustomerInfo{{this.CustomersID}}')">
                            <i class=" bi bi-pencil"></i></button>
                         {{!-- <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button> --}}
                         <a href="/customers/view{{this.CustomersID}}" type="button" class="btn btn-dark btn-sm"><i

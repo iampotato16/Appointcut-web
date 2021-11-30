@@ -15,6 +15,12 @@ router.route("/services").get(async (req, res) => {
    res.send(rows);
 });
 
+router.route("/barangay").get(async (req, res) => {
+   acu.startConnection();
+   const rows = await acu.getAllFrom("tblbarangay");
+   res.send(rows);
+});
+
 router.route("/shopservices").get(async (req, res) => {
    acu.startConnection();
    const rows = await acu.getAllFrom("tblshopservices");
@@ -27,9 +33,21 @@ router.route("/shopservicesview").get(async (req, res) => {
    res.send(rows);
 });
 
+router.route("/employeeSpecialization").get(async (req, res) => {
+   acu.startConnection();
+   const rows = await acu.getAllFrom("appointcutdb.employeespecialization");
+   res.send(rows);
+});
+
 router.route("/appointments").get(async (req, res) => {
    acu.startConnection();
    const rows = await acu.getAllFrom("tblappointment");
+   res.send(rows);
+});
+
+router.route("/appointmentviews").get(async (req, res) => {
+   acu.startConnection();
+   const rows = await acu.getAllFrom("appointcutdb.appointment");
    res.send(rows);
 });
 

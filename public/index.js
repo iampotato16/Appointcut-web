@@ -1,3 +1,6 @@
+//const { min } = require("moment");
+//const e = require("express");
+
 highlight();
 
 window.onload = function () {
@@ -57,7 +60,7 @@ function initializeChart(chart) {
                apptsTotal = 0;
             }
             var ctx = document.getElementById("myChart");
-            var myChart = new Chart(ctx, {
+            myChart = new Chart(ctx, {
                type: "line",
                data: {
                   labels: xValues,
@@ -284,6 +287,49 @@ $(function () {
    );
 });
 
+function toggleMenu(id) {
+   $("#manageShop").css({
+      "background-color": "",
+      color: "",
+      "box-shadow": "",
+   });
+   $("#manageAppts").css({
+      "background-color": "",
+      color: "",
+      "box-shadow": "",
+   });
+   $("#manageReports").css({
+      "background-color": "",
+      color: "",
+      "box-shadow": "",
+   });
+   $("#divShop").css("display", "none");
+   $("#divAppts").css("display", "none");
+   $("#divReports").css("display", "none");
+   if (id == "manageShop") {
+      $("#divShop").css("display", "block");
+      $("#manageShop").css({
+         "background-color": "#f1c644",
+         color: "black",
+         "box-shadow": "none",
+      });
+   } else if (id == "manageAppts") {
+      $("#divAppts").css("display", "block");
+      $("#manageAppts").css({
+         "background-color": "#f1c644",
+         color: "black",
+         "box-shadow": "none",
+      });
+   } else {
+      $("#divReports").css("display", "block");
+      $("#manageReports").css({
+         "background-color": "#f1c644",
+         color: "black",
+         "box-shadow": "none",
+      });
+   }
+}
+
 //FORMAT DATE
 //To format super specific date ang haba haba punyemas
 function formatDate() {
@@ -293,280 +339,37 @@ function formatDate() {
    }
 }
 
-//FOR CATEGORY AND SERVICES -- for changing services based on the selected category
-var service;
-function changeServices(b, n, id) {
-   const chosenCategory = b.value;
-   updateServices(chosenCategory, id);
-   service = document.querySelector("#service" + n);
+//FOR CITY AND BARANGAY
+var barangay;
+function changeBrgy(el, n) {
+   const city = el.value;
+   updateBarangay(city);
+   barangay = document.getElementById("barangay" + n);
 }
 
-function updateServices(category, id) {
-   var services = [];
-   fetch("/getInfo/services")
+function updateBarangay(city) {
+   var barangayList = [];
+   fetch("/getInfo/barangay")
       .then((res) => res.json())
       .then((data) => {
          for (var i = 0; i < data.length; i++) {
-            if (data[i].CategoryID == category) {
-               services.push(data[i]);
+            if (data[i].CityID == city) {
+               barangayList.push(data[i]);
             }
          }
       })
       .then((data) => {
-         var serviceOptions =
-            "<option hidden disabled selected>Service</option>";
-         services.forEach((element) => {
-            serviceOptions +=
+         var brgyOptions = "<option hidden disabled selected>Barangay</option>";
+         barangayList.forEach((element) => {
+            brgyOptions +=
                "<option value=" +
-               element.ServicesID +
+               element.BarangayID +
                "> " +
                element.Name +
                " </option>";
          });
-         service.innerHTML = serviceOptions;
-      });
-}
-
-//FOR APPOINTMENTS -- CATEGORY AND SERVICES
-var apptService;
-function changeApptServices(b, n, id) {
-   const chosenCategory = b.value;
-   updateApptServices(chosenCategory, id);
-   apptService = document.querySelector("#service" + n);
-}
-
-function updateApptServices(category, id) {
-   console.log(category, id);
-   var services = [];
-   fetch("/getInfo/shopservicesview")
-      .then((res) => res.json)
-      .then((data) => {
-         for (var i = 0; i < data.length; i++) {
-            if (category == data[i].CategoryID && id == data[i].shopID) {
-               services.push(data[i]);
-            }
-         }
-      })
-      .then((data) => {
-         var serviceOptions =
-            "<option hidden disabled selected>Service</option>";
-         services.forEach((element) => {
-            serviceOptions +=
-               "<option value=" +
-               element.ID +
-               "> " +
-               element.Service +
-               " </option>";
-         });
-         apptService.innerHTML = serviceOptions;
-      });
-}
-
-//FOR EMPLOYEE SPECIALIZATION
-function changeEmployee() {
-   var el = document
-      .getElementById("service2")
-      .fetch("/getInfo/employeeSpecialization")
-      .then((res) => res.json())
-      .then((data) => {
-         var ableEmployees = [];
-         for (var i = 0; i < data.length; i++) {
-            if (data.shopServicesID == el.value) {
-               ableEmployees.push(data[i].employeeID);
-            }
-         }
-      });
-}
-
-//FOR FLATPICKR -- For changing enabled dates per employee
-//get select element that holds the barber list
-const attendingEmp = document.querySelector("#attendingEmp");
-
-//Listens to attendingEmp
-attendingEmp.onchange = function () {
-   const employee = attendingEmp.value;
-   updateDatePicker(employee);
-};
-
-function updateDatePicker(employee) {
-   var days = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-   ];
-   var nonWorkingDays = [];
-   var nwdNumberForm = [];
-   var scheduleData, appointments, services, shopservices;
-
-   fetch("/getInfo/services")
-      .then((res) => res.json())
-      .then((data) => {
-         services = data;
-      });
-
-   fetch("/getInfo/shopservices")
-      .then((res) => res.json())
-      .then((data) => {
-         shopservices = data;
-      });
-
-   fetch("/getInfo/appointments")
-      .then((res) => res.json())
-      .then((data) => {
-         appointments = data;
-      });
-
-   //get nonworking days
-   fetch("/getInfo/schedule")
-      .then((res) => res.json())
-      .then((data) => {
-         scheduleData = data;
-         for (var i = 0; i < data.length; i++) {
-            if (data[i].EmployeeID == employee && data[i].TimeIn == null) {
-               nonWorkingDays.push(data[i].Date);
-            }
-         }
-      })
-      //get non working days index for flatpicker
-      .then((data) => {
-         for (var i = 0; i < nonWorkingDays.length; i++) {
-            if (days.includes(nonWorkingDays[i])) {
-               nwdNumberForm.push(days.indexOf(nonWorkingDays[i]));
-            }
-         }
-      })
-      //initializes datepicker with dynamic disabled days
-      .then((data) => {
-         const myInput = document.querySelector("#apptDate");
-         const fp = flatpickr(myInput, {
-            disable: [
-               function (date) {
-                  return nwdNumberForm.includes(date.getDay());
-               },
-            ],
-            onChange: function (selectedDates, dateStr, instance) {
-               //1. get date
-               var day = selectedDates[0].getDay();
-               //2. get occupied time of chosen date
-               var occupiedTimeSlot = [];
-               var occupiedTime, occupiedDur, end;
-
-               for (var i = 0; i < appointments.length; i++) {
-                  //check if the appt is of the chosen employee
-                  if (appointments[i].EmployeeID == employee) {
-                     //check if the appt is of the same date
-                     var newDate = new Date(appointments[i].Date);
-                     var currentDate =
-                        newDate.getFullYear() +
-                        "-" +
-                        (newDate.getMonth() + 1) +
-                        "-" +
-                        newDate.getDate();
-                     if (currentDate == dateStr) {
-                        //get time
-                        occupiedTime = appointments[i].Time;
-                        //get duration
-                        shopservices.forEach((element) => {
-                           if (
-                              appointments[i].ShopServicesID ==
-                              element.shopServicesID
-                           ) {
-                              occupiedDur = element.Duration;
-                              end = new Date(dateStr + " " + occupiedTime);
-                              var endAAA = new Date(
-                                 end.getTime() + occupiedDur * 60000
-                              );
-                              occupiedTimeSlot.push([
-                                 occupiedTime,
-                                 endAAA.toTimeString().substring(0, 8),
-                              ]);
-                           }
-                        });
-                        console.log(occupiedTimeSlot);
-                     }
-                  }
-               }
-               //3. get schedule of chosen date
-               //---select timeIn and timeOut from tblsched where empId = employee
-               var daySchedTimeIn, daySchedTimeOut;
-               for (var i = 0; i < scheduleData.length; i++) {
-                  //check that the schedule to be returned is of the chosen employee
-                  if (scheduleData[i].EmployeeID == employee) {
-                     //chech if the returned sched must be the same as the day
-                     var a = scheduleData[i].Date;
-                     var dayIndex = days.indexOf(a);
-                     if (dayIndex == day) {
-                        daySchedTimeIn = scheduleData[i].TimeIn;
-                        daySchedTimeOut = scheduleData[i].TimeOut;
-                        console.log(daySchedTimeOut + " " + daySchedTimeIn);
-                     }
-                  }
-               }
-               //4. get chosen service and duration
-               var loc = window.location.href;
-               var shopId = loc.charAt(loc.length - 1);
-               var serviceId = document.getElementById("service2").value;
-               var duration;
-               for (var i = 0; i < shopservices.length; i++) {
-                  if (
-                     shopservices[i].shopID == shopId &&
-                     shopservices[i].servicesID == serviceId
-                  ) {
-                     duration = shopservices[i].Duration;
-                  }
-               }
-
-               //5. iterate through timeStart and timeOut
-               //dummy dates lang yung date kasi ang importante naman is yung time
-               var timeEnd = new Date("2015-03-25 " + daySchedTimeOut);
-               var iteratingTime = new Date("2015-03-25 " + daySchedTimeIn);
-               var timeArrDisplay = [],
-                  timeArrValue = [];
-               while (iteratingTime < timeEnd) {
-                  //nadagdagdan si iterating time ng minutes
-
-                  timeArrValue.push(
-                     iteratingTime.toTimeString().substring(0, 8)
-                  );
-                  timeArrDisplay.push(
-                     iteratingTime.toLocaleString("en-US", {
-                        hour: "numeric",
-                        minute: "numeric",
-                        hour12: true,
-                     })
-                  );
-                  iteratingTime = new Date(
-                     iteratingTime.getTime() + duration * 60000
-                  );
-               }
-
-               var timeDropBox = document.getElementById("time");
-               var timeOptions =
-                  "<option hidden disabled selected>Time</option>";
-               for (var i = 0; i < timeArrValue.length; i++) {
-                  timeOptions +=
-                     "<option value='" +
-                     timeArrValue[i] +
-                     "'> " +
-                     timeArrDisplay[i] +
-                     " </option>";
-               }
-               timeDropBox.innerHTML = timeOptions;
-
-               //select time from tblappts where empID = employeeID and date = dateStr
-
-               //slice free time depending on the service duration
-               // for(start timeIn; ++ ){
-               //    set timeStart and timeEnd using duration
-               //    compare from time array if may masasagasaan syang oras
-
-               // }
-            },
-         });
+         console.log(barangay);
+         barangay.innerHTML = brgyOptions;
       });
 }
 
@@ -615,10 +418,8 @@ function toggleMultiForm(dialog, action, form) {
 
    var currentTab = 0; // Current tab is set to be the first tab (0)
    showTab(currentTab); // Display the current tab
-
    function showTab(n) {
       // This function will display the specified tab of the form ...
-
       x[n].style.display = "block";
       // ... and fix the Previous/Next buttons:
       if (n == 0) {
@@ -638,6 +439,7 @@ function toggleMultiForm(dialog, action, form) {
    function nextPrev(n) {
       // This function will figure out which tab to display
       var x = document.getElementsByClassName("tab " + action);
+      console.log(n, validateForm());
       // Exit the function if any field in the current tab is invalid:
       if (n == 1 && !validateForm()) return false;
       // Hide the current tab:
@@ -650,9 +452,10 @@ function toggleMultiForm(dialog, action, form) {
          document.getElementById(form).submit();
          toggleDialog(dialog);
          return false;
+      } else {
+         showTab(currentTab);
       }
       // Otherwise, display the correct tab:
-      showTab(currentTab);
    }
    toggleMultiForm.nextPrev = nextPrev;
 
@@ -691,7 +494,8 @@ function toggleMultiForm(dialog, action, form) {
          x[i].className = x[i].className.replace(" active", "");
       }
       //... and adds the "active" class to the current step:
-      x[n + 1].className += " active";
+      console.log(x[n] + "pleaaaaaaaaase");
+      x[n].className += " active";
    }
 }
 
@@ -718,19 +522,25 @@ function enableTime() {
    }
 }
 
-function toggleDialog(dialog, action, form) {
+function toggleMultiDialog(dialog, action, form) {
    var el = document.getElementById(dialog);
    if (el.style.display == "none") {
-      // document.getElementById(mainPage).style.filter = "brightness(75%)"
       document.getElementById(dialog).style.display = "block";
       toggleMultiForm(dialog, action, form);
    } else {
-      // document.getElementById(mainPage).style.filter = "brightness(100%)"
       document.getElementById(dialog).style.display = "none";
       toggleMultiForm(dialog, action, form);
    }
 }
 
+function toggleDialog(dialog) {
+   var el = document.getElementById(dialog);
+   if (el.style.display == "none") {
+      document.getElementById(dialog).style.display = "block";
+   } else {
+      document.getElementById(dialog).style.display = "none";
+   }
+}
 // for date time
 var dt = new Date();
 document.getElementById("datetime").innerHTML =
