@@ -64,4 +64,27 @@ router.route('/recordpayment/:token-:aptid-:shopid-:amt')
     await apm.payAppointment(payment)
 })
 
+//Path : /rest/appointments/conflicts
+router.route('/conflicts/:barberId-:year-:month-:date-:in-:out')
+.get(async (req, res) => {
+    const request = req.params
+    const outTime = request.out
+    var outHour = outTime.split(':')[0]
+    const outMinute = outTime.split(':')[1]
+    var outMinuteReduced = parseInt(outMinute)-1
+
+    //correction for -1 minute
+    if(outMinuteReduced == -1){
+        outHour = parseInt(outHour) - 1
+        outMinuteReduced = 59
+    }
+
+    const outTimeStitched = `${outHour}:${outMinuteReduced}`
+
+    const conflicts = await apm.checkConflict(
+        request.barberId, request.year, request.month, request.date, request.in, outTimeStitched
+    )
+    res.send(`${conflicts}`)
+})
+
 module.exports = router
