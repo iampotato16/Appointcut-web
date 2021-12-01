@@ -36,7 +36,7 @@ async function getOneFromWhere(table, where) {
 
 async function getAllFromServices() {
    var query =
-      "SELECT tblservices.ServicesID, tblservices.Name, tblcategory.Name as Category FROM tblservices INNER JOIN tblCategory ON tblservices.CategoryID = tblCategory.CategoryID";
+      "SELECT tblservices.ServicesID, tblservices.Name, tblcategory.Name as Category FROM tblservices INNER JOIN tblcategory ON tblservices.CategoryID = tblcategory.CategoryID";
    var rows = await connection.query(query);
    return rows[0];
 }
