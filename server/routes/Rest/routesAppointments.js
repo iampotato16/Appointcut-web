@@ -17,6 +17,8 @@ const UserFetch = require('../../../classes/UserFetch')
 const TokenManager = require('../../../classes/TokenManager')
 const tm = new TokenManager(connection)
 
+const Payment = require('../../../classes/Payment')
+
 //Path : /rest/appointments
 router.route('/')
 .post(async (req, res) => {
@@ -31,14 +33,33 @@ router.route('/')
         return
     }
 
-    if(await apm.setAppointment(apt)){
+    const appointmentID = await apm.setAppointment(apt)
+    if(appointmentID > 0){
         console.log("Appointment made by customer")
-        res.sendStatus(200)
+        res.status(200).send(appointmentID+"")
         return
     }
 
     console.log("Appointment request invalid")
     res.sendStatus(400)
+})
+
+//Path : /rest/appointments/recordpayment
+router.route('/recordpayment/:token-:aptid-:shopid-:amt')
+.post(async (req,res) =>{
+    //get the request
+    const request = req.body
+    //store payment details
+    const payment = new Payment(request.aptid,request.shopid,request.amt)
+
+    //verify token
+    var verification = await tm.verifyToken(request.token)
+    if(verification == UserFetch.UserAuthStatus.TOKEN){
+        res.sendStatus(401)//unauthorized
+    }
+
+    //save to db
+    await apm.payAppointment(payment)
 })
 
 module.exports = router

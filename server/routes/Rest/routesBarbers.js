@@ -50,7 +50,6 @@ router.route('/appointments/:barberId-:month-:year')
     console.log(`D/routesBarbers: schedule id: ${barberId}, month ${month}, year ${year}`)
     const appointments = await bf.getBarberAppointmentForMonthYear(barberId,month,year)
 
-    console.log(JSON.stringify(appointments))
     res.json(appointments)
 })
 
