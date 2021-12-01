@@ -43,7 +43,7 @@ async function getAllFromServices() {
 
 async function getAllFromBarangay() {
    var query =
-      "SELECT tblbarangay.BarangayID, tblbarangay.Name, tblcity.Name as City FROM tblcity INNER JOIN tblbarangay ON tblbarangay.CityID = tblCity.CityID";
+      "SELECT tblbarangay.BarangayID, tblbarangay.Name, tblcity.Name as City FROM tblcity INNER JOIN tblbarangay ON tblbarangay.CityID = tblcity.CityID";
    var rows = await connection.query(query);
    return rows[0];
 }
