@@ -21,10 +21,21 @@
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap" rel="stylesheet">
 
-   <!-- jquery -->
-   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-      crossorigin="anonymous">
-      </script>
+   <!-- flatpickr -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+   {{!-- chart.js -- nandito to kasi ayaw sa baba --}}
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+   {{!-- date range picker --}}
+   <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+   <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+   {{!-- timepicker --}}
+   <link href="/css/timepicker.css" rel="stylesheet">
+   <script type="text/javascript" src="/scripts/timepicker.js"></script>
 
    <!-- Custom styles for this template -->
    <link href="/css/sidebars.css" rel="stylesheet">
@@ -69,13 +80,12 @@
                         <li><a href="/customers" class="link-light rounded" id="customers">Customers</a></li>
                         <li><a href="/owners" class="link-light rounded" id="owners">Owners</a></li>
                         <li><a href="/shops" class="link-light rounded" id="shops">Shops</a></li>
-                        {{!-- <li><a href="/employees" class="link-light rounded" id="employees">Employees</a></li> --}}
                         <li><a href="/barberApps" class="link-light rounded" id="barberApps">Barbershop
                               Applications</a></li>
                      </ul>
                   </div>
                </li>
-               <li class="mb-1">
+               {{!-- <li class="mb-1">
                   <button class="btn btn-toggle align-items-center collapsed" data-bs-toggle="collapse"
                      data-bs-target="#information-collapse" aria-expanded="false">
                      Information Modules
@@ -89,7 +99,7 @@
                               Preview</a></li>
                      </ul>
                   </div>
-               </li>
+               </li> --}}
                <li class="mb-1">
                   <button class="btn align-items-center" id="fm">
                      <a class="btn-toggle-custom text-decoration-none" href="/fileMaintenance" id="fm-link">File
@@ -97,25 +107,11 @@
                   </button>
                </li>
                <hr>
-               {{!-- <li class="mb-1">
-                  <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                     data-bs-target="#account-collapse" aria-expanded="false">
-                     Account
-                  </button>
-                  <div class="collapse" id="account-collapse">
-                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-dark rounded">New...</a></li>
-                        <li><a href="#" class="link-dark rounded">Profile</a></li>
-                        <li><a href="#" class="link-dark rounded">Settings</a></li>
-                        <li><a href="#" class="link-dark rounded">Sign out</a></li>
-                     </ul>
-                  </div>
-               </li> --}}
             </ul>
          </div>
       </aside>
       {{{body}}}
-       
+
       {{!-- gumagana kahit wala ka --}}
       <script src="/sidebar.js"></script>
 
@@ -126,9 +122,9 @@
       <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
       <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 
-
       <script src="/masonry.js"></script>
       <script src="/index.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 </body>
 

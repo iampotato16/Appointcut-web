@@ -7,8 +7,8 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/owners">Owners</a></li>
-                                <li class="breadcrumb-item"><a href="/owners/view{{rows.OwnerID}}">Owner Name</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Barbershop Name</li>
+                                <li class="breadcrumb-item"><a href="/owners/view{{ownerID}}">{{ownerID}}</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
                             </ol>
                         </nav>
                     </span>
@@ -40,7 +40,7 @@
                     <div>
                         <span class="me-2 fw-800"><small>EMPLOYEES</small></span>
                         <button class="btn btn-sm btn-outline-light"
-                            onclick="toggleDialog('addEmployeeInfo','ownerBarbershopViewPage')"><i
+                            onclick="toggleMultiDialog('addEmployeeInfo', 'addEmp', 'addEmployeeInfoForm')"><i
                                 class="bi bi-plus"></i></button>
                     </div>
                     <form class="d-flex">
@@ -54,41 +54,240 @@
                         <thead>
                             <tr>
                                 <th scope="col"> <small>NAME</small></th>
-                                <th scope="col"> <small>TYPE</small></th>
+                                <th scope="col"> <small>CONTACT</small></th>
+                                <th scope="col"> <small>EMAIL</small></th>
+                                <th scope="col"> <small>ROLE</small></th>
+                                <th scope="col"> <small>SALARY TYPE</small></th>
+                                <th scope="col"> <small>VALUE</small></th>
                                 <th scope="col"> <small>STATUS</small></th>
-                                <th scope="col" class="justify-content-end" style="width: 76px;"></th>
+                                <th scope="col" class="justify-content-end" style="width: 40px;"></th>
                             </tr>
                         </thead>
                         <tbody>
                             {{#each rowsEmp}}
                             <tr class="align-items-center">
                                 <td class="align-middle">{{this.FullName}}</td>
+                                <td class="align-middle">{{this.Contact}}</td>
+                                <td class="align-middle">{{this.Email}}</td>
                                 <td class="align-middle">{{this.EmployeeType}}</td>
-                                <td></td>
+                                <td class="align-middle">{{this.SalaryType}}</td>
+                                <td class="align-middle">{{this.SalaryValue}}</td>
+                                <td class="align-middle">
+                                    {{#if this.Status}}
+                                    <a href="/owners/view{{../ownerID}}/viewShop{{../shopID}}/setInactiveEmp{{this.EmployeeID}}"
+                                        class="btn btn-sm btn-success" type="button"> ACTIVE</a>
+                                    {{else}}
+                                    <a href="/owners/view{{../ownerID}}/viewShop{{../shopID}}/setActiveEmp{{this.EmployeeID}}"
+                                        class="btn btn-sm btn-warning" type="button"> INACTIVE</a>
+                                    {{/if}}
+                                </td>
                                 <td>
                                     <button class="btn btn-dark btn-sm"
-                                        onclick="toggleDialog('editEmployeeInfo','ownerBarbershopViewPage')"><i
+                                        onclick="toggleMultiDialog('editEmployeeInfo{{this.EmployeeID}}', 'editEmp{{this.EmployeeID}}', 'editEmployeeInfoForm{{this.EmployeeID}}');"><i
                                             class=" bi bi-pencil"></i></button>
-                                    <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
+                                    {{!-- <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
+                                    --}}
                                 </td>
                             </tr>
+
+                            {{!-- EDIT EMPLOYEE INFO --}}
+                            <div id="editEmployeeInfo{{this.EmployeeID}}" class="dialog bg-yellow m-auto"
+                                style="display: none;">
+                                <div>
+                                    <div class="card p-4 bg-black position-relative">
+                                        <button class="position-absolute btn btn-link p-0"
+                                            style="right: 1.5rem; margin-top: -.5rem;"
+                                            onclick="toggleDialog('editEmployeeInfo{{this.EmployeeID}}')">
+                                            <i class="bi bi-x"></i></button>
+                                        <div class="text-center">
+                                            <h6 class="fw-800"> EDIT EMPLOYEE INFORMATION </h6>
+                                            <hr>
+                                        </div>
+                                        <div class="pt-2">
+                                            <form
+                                                action="/owners/view{{../ownerID}}/viewShop{{../shopID}}/editEmp{{this.EmployeeID}}"
+                                                id="editEmployeeInfoForm{{this.EmployeeID}}" method="POST">
+                                                <div class="tab editEmp{{this.EmployeeID}}">
+                                                    <div class="d-flex justify-content-center">
+                                                        <div>
+                                                            <p class="text-center"> <small> EMPLOYEE INFORMATION
+                                                                </small>
+                                                            </p>
+                                                            <input
+                                                                class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                                name="firstName" type="text" value="{{this.firstName}}"
+                                                                style="width: 300px;">
+                                                            <input
+                                                                class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                                name="lastName" type="text" value="{{this.lastName}}"
+                                                                style="width: 300px;">
+                                                            <input
+                                                                class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                                name="email" type="text" value="{{this.Email}}"
+                                                                style="width: 300px;">
+                                                            <input
+                                                                class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                                name="contact" type="text" value="{{this.Contact}}"
+                                                                style="width: 300px;">
+                                                            <div>
+                                                                <select
+                                                                    class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                                    name="employeeType" style="width: 300px;">
+                                                                    <option selected disabled hidden>
+                                                                        {{this.EmployeeType}}
+                                                                    </option>
+                                                                    {{#each ../rowsEmpType}}
+                                                                    <option value="{{this.EmployeeTypeID}}">
+                                                                        {{this.Name}}
+                                                                    </option>
+                                                                    {{/each}}
+                                                                </select>
+                                                            </div>
+                                                            <div>
+                                                                <select
+                                                                    class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                                    name="salaryType" style="width: 300px;">
+                                                                    <option selected disabled hidden>{{this.SalaryType}}
+                                                                    </option>
+                                                                    {{#each ../rowsSalaryType}}
+                                                                    <option value="{{this.SalaryTypeID}}">{{this.Name}}
+                                                                    </option>
+                                                                    {{/each}}
+                                                                </select>
+                                                            </div>
+                                                            <input
+                                                                class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                                name="salaryValue" type="text"
+                                                                value="{{this.SalaryValue}}" style="width: 300px;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab editEmp{{this.EmployeeID}}">
+                                                    <p class="text-center"><small>EMPLOYEE SCHEDULE</small></p>
+                                                    {{#each ../rowsEmpSchedule}}
+                                                    {{#if (withinShop this.EmployeeID ../this.EmployeeID)}}
+                                                    {{#if this.dayStatus}}
+                                                    <div class="row m-auto" style="width: 400px">
+                                                        <div class="col-4">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="{{this.Date}}" value="{{this.Date}}" {{#if
+                                                                this.TimeIn}} checked {{/if}}>
+                                                            <label class="form-check-label" for="inlineCheckbox1">
+                                                                <small>{{this.Date}}</small></label>
+                                                        </div>
+                                                        <div class="col-8 justify-content-center">
+                                                            <div class="row">
+                                                                <div class="col-6 d-flex align-items-center">
+                                                                    <input
+                                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                                        name="timeIn" type="time" {{!--
+                                                                        onchange="inputTime(this)" --}}
+                                                                        value="{{this.TimeIn}}" {{!--
+                                                                        min="{{../this.TimeIn}}"
+                                                                        max="{{../this.TimeOut}}" --}}>
+                                                                </div>
+                                                                <div class="col-6 d-flex align-items-center">
+                                                                    <input
+                                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                                        name="timeOut" type="time"
+                                                                        onchange="inputTime(this)"
+                                                                        value="{{this.TimeOut}}"
+                                                                        min="{{../this.TimeIn}}"
+                                                                        max="{{../this.TimeOut}}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {{else}}
+                                                    <div class="row m-auto" style="display: none">
+                                                        <div class="col-4">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="{{this.Date}}" value="{{this.Date}}" {{#if
+                                                                this.TimeIn}} checked {{/if}}>
+                                                            <label class="form-check-label" for="inlineCheckbox1">
+                                                                <small>{{this.Date}}</small></label>
+                                                        </div>
+                                                        <div class="col-8 justify-content-center">
+                                                            <div class="row">
+                                                                <div class="col-6 d-flex align-items-center">
+                                                                    <input
+                                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                                        name="timeIn" type="time"
+                                                                        value="{{this.TimeIn}}" disabled>
+                                                                </div>
+                                                                <div class="col-6 d-flex align-items-center">
+                                                                    <input
+                                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                                        name="timeOut" type="time"
+                                                                        value="{{this.TimeOut}}" disabled>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {{/if}}
+                                                    {{/if}}
+                                                    {{/each}}
+                                                </div>
+                                                <div class="tab editEmp{{this.EmployeeID}}">
+                                                    <p class="text-center"><small>EMPLOYEE SPECIALIZATION</small></p>
+                                                    {{#each ../rowsEmpSpecArray}}
+                                                    {{#if (withinShop this.EmployeeID ../this.EmployeeID)}}
+                                                    <div>
+                                                        <input value={{this.ShopServicesID}}
+                                                            name="serviceName{{this.Index}}" style="display: none">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            name="service{{this.Index}}" value="{{this.Status}}" {{#if
+                                                            this.Status}} checked {{/if}}>
+                                                        <label class="form-check-label" for="inlineCheckbox1">
+                                                            <small>{{this.ServiceName}}</small></label>
+                                                    </div>
+                                                    {{/if}}
+                                                    {{/each}}
+                                                </div>
+
+                                                {{!-- BUTTONS --}}
+                                                <div style="overflow:auto;">
+                                                    <div class="center-div p-2">
+                                                        <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                                            style="width: 150px;" type="button"
+                                                            id="prevBtneditEmp{{this.EmployeeID}}"
+                                                            onclick="toggleMultiForm.nextPrev(-1)">Previous</button>
+                                                        <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                                            style="width: 150px;" type="button"
+                                                            id="nextBtneditEmp{{this.EmployeeID}}"
+                                                            onclick="toggleMultiForm.nextPrev(1)">Next</button>
+                                                    </div>
+                                                </div>
+                                                {{!-- Circles which indicates the steps of the form: --}}
+                                                <div class="text-center pt-4">
+                                                    <span class="step editEmp{{this.EmployeeID}}"></span>
+                                                    <span class="step editEmp{{this.EmployeeID}}"></span>
+                                                    <span class="step editEmp{{this.EmployeeID}}"></span>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             {{/each}}
                         </tbody>
                     </table>
                 </div>
             </div>
+
+            {{!-- SERVICES --}}
             <div class="row px-3">
                 <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
                     <div>
                         <span class="me-2 fw-800"><small>SERVICES</small></span>
-                        <button class="btn btn-sm btn-outline-light"
-                            onclick="toggleDialog('addServices','ownerBarbershopViewPage')"><i
+                        <button class="btn btn-sm btn-outline-light" onclick="toggleDialog('addServices')"><i
                                 class="bi bi-plus"></i></button>
                     </div>
                     <form class="d-flex">
                         <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search"
                             placeholder="Search" aria-label="Search">
-                        <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small> </button>
+                        <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small>
+                        </button>
                     </form>
                 </div>
                 <div class="bg-gray p-4 pt-2 mb-3">
@@ -97,23 +296,181 @@
                             <tr>
                                 <th scope="col"> <small>SERVICE</small></th>
                                 <th scope="col"> <small>CATEGORY</small></th>
+                                <th scope="col"> <small>DURATION</small></th>
                                 <th scope="col"> <small>PRICE</small></th>
-                                <th scope="col" class="justify-content-end" style="width: 76px;"></th>
+                                <th scope="col"> <small>STATUS</small></th>
+                                <th scope="col" class="justify-content-end" style="width: 40px;"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{#each rowsServ}}
+                            {{#each rowsShopServ}}
                             <tr class="align-items-center">
-                                <td class="align-middle">{{this.ServiceName}}</td>
-                                <td class="align-middle">{{this.Category}}</td>
+                                <td class="align-middle">{{this.Service}}</td>
+                                <td class="align-middle">{{this.CategoryName}}</td>
+                                <td class="align-middle">{{this.Duration}}</td>
                                 <td class="align-middle">{{this.Price}}</td>
+                                <td class="align-middle">
+                                    {{#if this.Status}}
+                                    <a href="/owners/view{{../ownerID}}/viewShop{{../shopID}}/setInactiveServ{{this.ID}}"
+                                        class="btn btn-sm btn-success" type="button"> ACTIVE</a>
+                                    {{else}}
+                                    <a href="/owners/view{{../ownerID}}/viewShop{{../shopID}}/setActiveServ{{this.ID}}"
+                                        class="btn btn-sm btn-warning" type="button"> INACTIVE</a>
+                                    {{/if}}
+                                </td>
                                 <td>
                                     <button class="btn btn-dark btn-sm"
-                                        onclick="toggleDialog('editServices','ownerBarbershopViewPage')"><i
+                                        onclick="toggleDialog('editServices{{this.ID}}')"><i
                                             class=" bi bi-pencil"></i></button>
-                                    <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
+                                    {{!-- <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
+                                    --}}
                                 </td>
                             </tr>
+                            <div id="editServices{{this.ID}}" class="dialog bg-yellow m-auto" style="display: none;">
+                                <div>
+                                    <div class="card p-4 bg-black">
+                                        <div class="text-center">
+                                            <h6 class="fw-800"> EDIT SERVICES </h6>
+                                            <hr>
+                                        </div>
+                                        <div class="center-div pt-2">
+                                            <div>
+                                                <form
+                                                    action="/owners/view{{../ownerID}}/viewShop{{../shopID}}/editService{{this.ID}}"
+                                                    method="POST">
+                                                    <div class="col-auto my-1">
+                                                        <select
+                                                            class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                            name="editCategory"
+                                                            onchange="changeServices(this,{{this.ID}})">
+                                                            <option selected disabled hidden>
+                                                                {{this.CategoryName}}
+                                                            </option>
+                                                            {{#each ../rowsServCategory}}
+                                                            <option value="{{this.CategoryID}}">{{this.Name}}
+                                                            </option>
+                                                            {{/each}}
+
+                                                        </select>
+                                                        <select
+                                                            class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                            name="editService" id="service{{this.ID}}">
+                                                            <option value="{{this.ServicesID}}" disabled selected
+                                                                hidden>
+                                                                {{this.Service}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <input
+                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                        name="editPrice" type="text" value="{{this.Price}}"
+                                                        style="width: 300px;">
+                                                    <input
+                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                        name="editDuration" type="number" value="{{this.Duration}}"
+                                                        step="15" min="15">
+                                                    <div class="center-div pt-2" style="width: 300px;">
+                                                        <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                                            type="submit">
+                                                            <small>SAVE</small></button>
+                                                        <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                                            type="button"
+                                                            onclick="toggleDialog('editServices{{this.ID}}')">
+                                                            <small>CANCEL</small></button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {{!-- BARBERSHOP SCHEDULE --}}
+            <div class="row px-3">
+                <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="me-2 fw-800"><small>BARBERSHOP SCHEDULE</small></span>
+                    </div>
+                </div>
+                <div class="bg-gray p-4 pt-2 mb-3">
+                    <table class="table table-hover table-striped table-sm m-0">
+                        <thead>
+                            <tr>
+                                <th scope="col"> <small>DAY</small></th>
+                                <th scope="col"> <small>TIME IN</small></th>
+                                <th scope="col"> <small>TIME OUT</small></th>
+                                <th scope="col" class="justify-content-end" style="width: 40px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each rowsDays}}
+                            <tr class="align-items-center">
+                                <td class="align-middle">{{this.Day}}</td>
+                                {{#if this.TimeIn}}
+                                <td class="align-middle">{{this.TimeIn}}</td>
+                                <td class="align-middle">{{this.TimeOut}}</td>
+                                {{else}}
+                                <td class="align-middle">NO SCHEDULE</td>
+                                <td class="align-middle">NO SCHEDULE</td>
+                                {{/if}}
+                                <td>
+                                    <button class="btn btn-dark btn-sm"
+                                        onclick="toggleDialog('editShopSchedule{{this.shopSchedulesID}}')"><i
+                                            class=" bi bi-pencil"></i></button>
+                                </td>
+                            </tr>
+                            <div id="editShopSchedule{{this.shopSchedulesID}}" class="dialog bg-yellow m-auto"
+                                style="display: none;">
+                                <div>
+                                    <div class="card p-4 bg-black">
+                                        <div class="text-center">
+                                            <h6 class="fw-800"> EDIT SCHEDULE </h6>
+                                            <hr>
+                                        </div>
+                                        <div class="center-div pt-2">
+                                            <div>
+                                                <form
+                                                    action="/owners/view{{../ownerID}}/viewShop{{../shopID}}/editShopSchedule{{this.shopSchedulesID}}"
+                                                    method="POST">
+                                                    <input
+                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                        name="day" type="" value="{{this.Day}}"
+                                                        style="width: 300px; background-color: rgb(214, 223, 141)"
+                                                        disabled>
+                                                    <input
+                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                        name="timeIn" type="time" value="{{this.TimeIn}}"
+                                                        style="width: 300px;">
+                                                    <input
+                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                        name="timeOut" type="time" value="{{this.TimeOut}}"
+                                                        style="width: 300px;">
+                                                    <div>
+                                                        <input class="form-check-input" type="checkbox" name="status"
+                                                            value="1" {{#if this.Status}} checked {{/if}}>
+                                                        <label class="form-check-label" for="inlineCheckbox1">
+                                                            <small>ACTIVE</small></label>
+                                                    </div>
+                                                    <div class="center-div pt-2" style="width: 300px;">
+                                                        <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                                            type="submit">
+                                                            <small>SAVE</small></button>
+                                                        <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                                            type="button"
+                                                            onclick="toggleDialog('editShopSchedule{{this.shopSchedulesID}}')">
+                                                            <small>CANCEL</small></button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             {{/each}}
                         </tbody>
                     </table>
@@ -126,13 +483,15 @@
             <div class="row px-3">
                 <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
                     <div>
-                        <span class="me-2 fw-800"><small>PENDING APPOINTMENTS</small></span>
+                        <span class="me-2 fw-800"><small>APPOINTMENTS</small></span>
+                        <button class="btn btn-sm btn-outline-light" onclick="toggleDialog('addAppointment')"><i
+                                class="bi bi-plus"></i></buttons>
                     </div>
-
                     <form class="d-flex">
                         <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search"
                             placeholder="Search" aria-label="Search">
-                        <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small> </button>
+                        <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small>
+                        </button>
                     </form>
                 </div>
                 <div class="bg-gray p-4 pt-2 mb-3">
@@ -149,37 +508,85 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{#each rowsApptPending}}
+                            {{#each rowsApptApproved}}
                             <tr class="align-items-center">
+                                {{#if this.AppointmentType}}
                                 <td class="align-middle">{{this.CustomerName}}</td>
-                                <td class="align-middle">{{this.Date}}</td>
-                                <td class="align-middle">{{this.Time}}</td>
+                                {{else}}
+                                <td class="align-middle">{{this.WalkInName}}</td>
+                                {{/if}}
+                                <td class="align-middle dateDisplay">{{this.Date}}</td>
+                                <td class="align-middle">{{this.TimeIn}} - {{this.TimeOut}}</td>
                                 <td class="align-middle">{{this.Service}}</td>
                                 <td class="align-middle">{{this.Amount}}</td>
-                                <td class="align-middle">{{this.Barber}}</td>
+                                <td class="align-middle">{{this.EmployeeName}}</td>
+                                </td>
                                 <td>
-                                    <button class="btn btn-dark btn-sm"><i class="bi bi-check"></i></button>
-                                    <button class="btn btn-dark btn-sm"><i class="bi bi-x"></i></button>
+                                    <a type="button" class="btn btn-dark btn-sm"
+                                        onclick="toggleDialog('appointmentStatus')"><i class="bi bi-check"></i></a>
+                                    <a type="button" class="btn btn-dark btn-sm"
+                                        href="/owners/view{{../ownerID}}/viewShop{{../shopID}}/cancelAppt{{this.AppointmentID}}"><i
+                                            class="bi bi-x"></i></a>
                                 </td>
                             </tr>
+                            <div id="appointmentStatus" class="dialog bg-yellow m-auto" style="display: none;">
+                                <div>
+                                    <div class="card p-4 bg-black">
+                                        <div class="text-center">
+                                            <h6 class="fw-800"> APPOINTMENT STATUS </h6>
+                                            <hr>
+                                        </div>
+                                        <div class="center-div pt-2">
+                                            <form method="POST"
+                                                action="/owners/view{{../ownerID}}/viewShop{{../shopID}}/completeAppt{{this.AppointmentID}}">
+                                                <div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="appointmentStatus" value="0">
+                                                        <label class="form-check-label" for="completed">
+                                                            Completed
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="appointmentStatus" value="2">
+                                                        <label class="form-check-label" for="noShow">
+                                                            No Show
+                                                        </label>
+                                                    </div>
+                                                    <div class="center-div pt-2" style="width: 300px;">
+                                                        <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                                            type="submit">
+                                                            <small>SAVE</small></button>
+                                                        <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                                            type="button" onclick="toggleDialog('appointmentStatus')">
+                                                            <small>CANCEL</small></button>
+                                                    </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             {{/each}}
                         </tbody>
                     </table>
                 </div>
             </div>
-
             <div class="row px-3">
                 <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
                     <div>
-                        <span class="me-2 fw-800"><small>APPOINTMENTS</small></span>
-                        <button class="btn btn-sm btn-outline-light"
+                        <span class="me-2 fw-800"><small>APPOINTMENT HISTORY</small></span>
+                        {{!-- removed kasi di naman makakapag add sa history --}}
+                        {{!-- <button class="btn btn-sm btn-outline-light"
                             onclick="toggleDialog('addAppointment','ownerBarbershopViewPage')"><i
-                                class="bi bi-plus"></i></buttons>
+                                class="bi bi-plus"></i>
+                            </buttons> --}}
                     </div>
                     <form class="d-flex">
                         <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search"
                             placeholder="Search" aria-label="Search">
-                        <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small> </button>
+                        <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small>
+                        </button>
                     </form>
                 </div>
                 <div class="bg-gray p-4 pt-2 mb-3">
@@ -192,24 +599,25 @@
                                 <th scope="col"> <small>SERVICE</small></th>
                                 <th scope="col"> <small>PRICE</small></th>
                                 <th scope="col"> <small>ATTENDING EMP</small></th>
-                                <th scope="col"></th>
-                                <th scope="col" class="justify-content-end" style="width: 40px;"></th>
+                                <th scope="col"> <small>STATUS</small></th>
+                                {{!-- <th scope="col" class="justify-content-end" style="width: 40px;"></th>
+                                --}}
                             </tr>
                         </thead>
                         <tbody>
-                            {{#each rowsAppt}}
+                            {{#each rowsApptHistory}}
                             <tr class="align-items-center">
                                 <td class="align-middle">{{this.CustomerName}}</td>
-                                <td class="align-middle">{{this.Date}}</td>
-                                <td class="align-middle">{{this.Time}}</td>
+                                <td class="align-middle dateDisplay">{{this.Date}}</td>
+                                <td class="align-middle">{{this.TimeIn}} - {{this.TimeOut}}</td>
                                 <td class="align-middle">{{this.Service}}</td>
                                 <td class="align-middle">{{this.Amount}}</td>
                                 <td class="align-middle">{{this.EmployeeName}}</td>
-                                <td class="align-middle">{{this.AppointmentStatus}}
+                                <td class="align-middle">{{this.AppointmentStatus}}</td>
                                 </td>
-                                <td>
+                                {{!-- <td>
                                     <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
-                                </td>
+                                </td> --}}
                             </tr>
                             {{/each}}
                         </tbody>
@@ -219,113 +627,155 @@
         </div>
 
         <div id="divReports" style="display: none;">
-            <div style="width: 800px; height: 800px; background-color:yellow"></div>
+            <div class="row px-3">
+                <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+                    <span class="me-2 fw-800"><small>CUSTOMER VOLUME REPORT</small></span>
+                    <input type="text" id="daterangeCustomerVolume" class="font-small">
+                </div>
+                <div>
+                    <canvas id="myChart" style="width:100%;"></canvas>
+                </div>
+            </div>
+            <div class="row px-3">
+                <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+                    <span class="me-2 fw-800"><small>SALES REPORT</small></span>
+                    <input type="text" id="daterangeSales" class="font-small">
+                </div>
+                <div>
+                    <canvas id="chartSales" style="width:100%;"></canvas>
+                </div>
+            </div>
         </div>
     </main>
 
     {{!--DIALOG BOXES--}}
-    <div id="editEmployeeInfo" class="dialog bg-yellow m-auto" style="display: none;">
-        <div>
-            <div class="card p-4 bg-black">
-                <div class="text-center">
-                    <h6 class="fw-800"> EDIT EMPLOYEE INFORMATION </h6>
-                    <hr>
-                </div>
-                <div class="center-div pt-2">
-                    <div>
-                        <form action="view{{rows.OwnersID}}/editEmployeeInfo" id="editEmployeeInfoForm" method="POST">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="firstName"
-                                type="text" value="firstName" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="lastName"
-                                type="text" value="lastName" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact"
-                                type="text" value="contact" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="employeeType"
-                                type="text" value="employeeType" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="salaryType"
-                                type="text" value="salaryType" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="salaryValue"
-                                type="text" value="salaryValue" style="width: 300px;">
-                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
-                        </form>
-                        <div class="center-div pt-2" style="width: 300px;">
-                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
-                                onclick="document.getElementById('editEmployeeInfoForm').submit()">
-                                <small>SAVE</small></button>
-                            <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
-                                onclick="toggleDialog('editEmployeeInfo','ownerBarbershopViewPage')">
-                                <small>CANCEL</small></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div id="addEmployeeInfo" class="dialog bg-yellow m-auto" style="display: none;">
         <div>
-            <div class="card p-4 bg-black">
+            <div class="card p-4 bg-black position-relative">
+                <button class="position-absolute btn btn-link p-0" style="right: 1.5rem; margin-top: -.5rem;"
+                    onclick="toggleDialog('addEmployeeInfo')"><i class="bi bi-x"></i></button>
                 <div class="text-center">
                     <h6 class="fw-800"> ADD EMPLOYEE </h6>
                     <hr>
                 </div>
                 <div class="center-div pt-2">
-                    <div>
-                        <form action="view{{rows.OwnersID}}/addEmployeeInfo" id="addEmployeeInfoForm" method="POST">
+                    <form action="/owners/view{{ownerID}}/viewShop{{shopID}}" id="addEmployeeInfoForm" method="POST">
+                        <div class="tab addEmp">
+                            <p class="text-center"> <small> EMPLOYEE INFORMATION </small> </p>
                             <input class="form-control form-control-sm mb-2 font-small rounded-0" name="firstName"
-                                type="text" value="firstName" style="width: 300px;">
+                                type="text" placeholder="firstName" style="width: 300px;">
                             <input class="form-control form-control-sm mb-2 font-small rounded-0" name="lastName"
-                                type="text" value="lastName" style="width: 300px;">
+                                type="text" placeholder="lastName" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="email"
+                                type="text" placeholder="email" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="password"
+                                type="password" placeholder="Password" style="width: 300px;">
                             <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact"
-                                type="text" value="contact" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="employeeType"
-                                type="text" value="employeeType" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="salaryType"
-                                type="text" value="salaryType" style="width: 300px;">
+                                type="text" placeholder="contact" style="width: 300px;">
+                            <div style="width: 300px;">
+                                <select class="form-control form-control-sm mb-2 font-small rounded-0"
+                                    name="employeeType">
+                                    <option selected disabled hidden>Employee Type...</option>
+                                    {{#each rowsEmpType}}
+                                    <option value="{{this.EmployeeTypeID}}">{{this.Name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div style="width: 300px;">
+                                <select class="form-control form-control-sm mb-2 font-small rounded-0"
+                                    name="salaryType">
+                                    <option selected disabled hidden>Salary Type...</option>
+                                    {{#each rowsSalaryType}}
+                                    <option value="{{this.SalaryTypeID}}">{{this.Name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
                             <input class="form-control form-control-sm mb-2 font-small rounded-0" name="salaryValue"
-                                type="text" value="salaryValue" style="width: 300px;">
-                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
-                        </form>
-                        <div class="center-div pt-2" style="width: 300px;">
-                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
-                                onclick="document.getElementById('addEmployeeInfoForm').submit()">
-                                <small>SAVE</small></button>
-                            <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
-                                onclick="toggleDialog('addEmployeeInfo','ownerBarbershopViewPage')">
-                                <small>CANCEL</small></button>
+                                type="text" placeholder="salaryValue" style="width: 300px">
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                        <div class="tab addEmp">
+                            <p class="text-center"><small>EMPLOYEE SCHEDULE</small></p>
+                            {{#each rowsDays}}
+                            {{#if this.TimeIn}}
+                            <div class="row d-flex align-items-center" style="width: 400px;">
+                                <div class="col-4">
+                                    <input class="form-check-input" type="checkbox" name="{{this.Day}}"
+                                        value="{{this.Day}}">
+                                    <label class="form-check-label" for="inlineCheckbox1">
+                                        <small>{{this.Day}}</small></label>
+                                </div>
+                                <div class="col-8 justify-content-center">
+                                    <div class="row">
+                                        <div class="col-6 d-flex align-items-center">
+                                            <input class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                onchange="inputTime(this)" name="timeIn" type="time"
+                                                min="{{this.TimeIn}}" max="{{this.TimeOut}}">
+                                        </div>
+                                        <div class="col-6 d-flex align-items-center">
+                                            <input class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                onchange="inputTime(this)" name="timeOut" type="time"
+                                                min="{{this.TimeIn}}" max="{{this.TimeOut}}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{else}}
+                            <div style="display: none;">
+                                <div class="col-4">
+                                    <input class="form-check-input" type="checkbox" name="{{this.Day}}"
+                                        value="{{this.Day}}">
+                                    <label class="form-check-label" for="inlineCheckbox1">
+                                        <small>{{this.Day}}</small></label>
+                                </div>
+                                <div class="col-8 justify-content-center">
+                                    <div class="row">
+                                        <div class="col-6 d-flex align-items-center">
+                                            <input class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                name="timeIn" type="time">
+                                        </div>
+                                        <div class="col-6 d-flex align-items-center">
+                                            <input class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                name="timeOut" type="time">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{/if}}
+                            {{/each}}
+                        </div>
+                        <div class="tab addEmp">
+                            <p class="text-center"><small>EMPLOYEE SPECIALIZATION</small></p>
+                            {{#each rowsServArray}}
+                            <div>
+                                <input value="{{this.ShopServicesID}}" name="serviceName{{this.Index}}"
+                                    style="display: none;">
+                                <input class="form-check-input" type="checkbox" name="service{{this.Index}}" value="1">
+                                <label class="form-check-label" for="inlineCheckbox1">
+                                    <small>{{this.ServiceName}}</small></label>
+                            </div>
+                            {{/each}}
+                        </div>
 
-    <div id="editServices" class="dialog bg-yellow m-auto" style="display: none;">
-        <div>
-            <div class="card p-4 bg-black">
-                <div class="text-center">
-                    <h6 class="fw-800"> EDIT SERVICES </h6>
-                    <hr>
-                </div>
-                <div class="center-div pt-2">
-                    <div>
-                        <form action="view{{rows.OwnersID}}/editServices" id="editServices" method="POST">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="serviceName"
-                                type="text" value="serviceName" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="category"
-                                type="text" value="category" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="price"
-                                type="text" value="price" style="width: 300px;">
-                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
-                        </form>
-                        <div class="center-div pt-2" style="width: 300px;">
-                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
-                                onclick="document.getElementById('editServices').submit()"> <small>SAVE</small></button>
-                            <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
-                                onclick="toggleDialog('editServices','ownerBarbershopViewPage')">
-                                <small>CANCEL</small></button>
+                        {{!-- BUTTONS --}}
+                        <div style="display: block;">
+                            <div class="center-div p-2">
+                                <button class="btn btn-warning col-6 rounded-0 me-1 fw-800" style="width: 150px;"
+                                    type="button" id="prevBtnaddEmp"
+                                    onclick="toggleMultiForm.nextPrev(-1)">Previous</button>
+                                <button class="btn btn-warning col-6 rounded-0 me-1 fw-800" style="width: 150px;"
+                                    type="button" id="nextBtnaddEmp" onclick="toggleMultiForm.nextPrev(1)">Next</button>
+                            </div>
                         </div>
-                    </div>
+
+
+                        {{!-- Circles which indicates the steps of the form: --}}
+                        <div class="text-center pt-4">
+                            <span class="step addEmp"></span>
+                            <span class="step addEmp"></span>
+                            <span class="step addEmp"></span>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -340,22 +790,32 @@
                 </div>
                 <div class="center-div pt-2">
                     <div>
-                        <form action="view{{rows.OwnersID}}/addServices" id="addServices" method="POST">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="serviceName"
-                                type="text" value="serviceName" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="category"
-                                type="text" value="category" style="width: 300px;">
+                        <form action="/owners/view{{ownerID}}/viewShop{{shopID}}/addService" method="POST">
+                            <div class="col-auto my-1">
+                                <select class="form-control form-control-sm mb-2 font-small rounded-0" name="category"
+                                    onchange="changeServices(this,1)">
+                                    <option selected disabled hidden>Category</option>
+                                    {{#each rowsServCategory}}
+                                    <option value="{{this.CategoryID}}">{{this.Name}}</option>
+                                    {{/each}}
+                                </select>
+                                <select class="form-control form-control-sm mb-2 font-small rounded-0" name="service1"
+                                    id="service1">
+                                    <option value="" disabled selected hidden>Service</option>
+                                </select>
+                            </div>
                             <input class="form-control form-control-sm mb-2 font-small rounded-0" name="price"
-                                type="text" value="price" style="width: 300px;">
-                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
+                                type="text" placeholder="price" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="duration"
+                                min="15" step="15" type="number" placeholder="duration (minutes)">
+                            <div class="center-div pt-2" style="width: 300px;">
+                                <button class="btn btn-warning col-6 rounded-0 me-1 fw-800" type="submit">
+                                    <small>SAVE</small></button>
+                                <button class="btn btn-outline-warning col-6 rounded-0 fw-800" type="button"
+                                    onclick="toggleDialog('addServices')">
+                                    <small>CANCEL</small></button>
+                            </div>
                         </form>
-                        <div class="center-div pt-2" style="width: 300px;">
-                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
-                                onclick="document.getElementById('addServices').submit()"> <small>SAVE</small></button>
-                            <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
-                                onclick="toggleDialog('addServices','ownerBarbershopViewPage')">
-                                <small>CANCEL</small></button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -371,25 +831,65 @@
                 </div>
                 <div class="center-div pt-2">
                     <div>
-                        <form action="view{{rows.OwnersID}}/addAppointmentForm" id="addAppointmentForm" method="POST">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="date"
-                                type="text" placeholder="Date" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="time"
-                                type="text" placeholder="Time" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="service"
-                                type="text" placeholder="Service" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="price"
-                                type="text" placeholder="Price" style="width: 300px;">
-                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="attendingEmp"
-                                type="text" placeholder="Attending Employee" style="width: 300px;">
-                            {{!-- hindi ko na ininclude email since its part of login credentials --}}
+                        <form action="/owners/view{{ownerID}}/viewShop{{shopID}}/addAppointment" id="addAppointmentForm"
+                            method="POST">
+                            {{!-- CUSTOMER DETAILS --}}
+                            <fieldset style="border: 1px solid white; padding: 0 1rem .5rem 1rem" class="mb-2">
+                                <legend style="font-size: .9rem; background-color:none; float:none; width:fit-content;">
+                                    CUSTOMER INFORMATION:
+                                </legend>
+                                <input class="form-control form-control-sm mb-2 font-small rounded-0" name="name"
+                                    type="text" placeholder="Name" style="width: 300px;">
+                                <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact"
+                                    type="text" placeholder="Contact" style="width: 300px;">
+                            </fieldset>
+
+                            {{!-- SERVICE DETAILS --}}
+                            <fieldset style="border: 1px solid white; padding: 0 1rem .5rem 1rem" class="mb-2">
+                                <legend style="font-size: .9rem; background-color:none; float:none; width:fit-content;">
+                                    SERVICE DETAILS:
+                                </legend>
+                                <select class="form-control form-control-sm mb-2 font-small rounded-0" name="category"
+                                    id="category" onchange="changeApptServices(this,2, '{{shopID}}')">
+                                    <option selected disabled hidden>Category</option>
+                                    {{#each rowsServCategory}}
+                                    <option value="{{this.CategoryID}}">{{this.Name}}</option>
+                                    {{/each}}
+                                </select>
+                                <select class="form-control form-control-sm mb-2 font-small rounded-0" name="service"
+                                    id="service2" onchange="changeEmployee(this)">
+                                    <option selected disabled hidden>Service</option>
+                                </select>
+                                {{!-- <input class="form-control form-control-sm mb-2 font-small rounded-0" name="price"
+                                    type="text" placeholder="Price" style="width: 300px;"> --}}
+                            </fieldset>
+
+                            {{!-- WHO AND WHEN --}}
+                            <fieldset style="border: 1px solid white; padding: 0 1rem .5rem 1rem" class="mb-2">
+                                <legend style="font-size: .9rem; background-color:none; float:none; width:fit-content;">
+                                    APPOINTMENT DETAILS:
+                                </legend>
+                                <select class="form-control form-control-sm mb-2 font-small rounded-0" id="attendingEmp"
+                                    name="employee">
+                                    <option selected disabled hidden>Attending Employee</option>
+                                    {{#each rowsEmp}}
+                                    {{#if (isBarber EmployeeTypeID)}}
+                                    <option value="{{this.EmployeeID}}">{{this.FullName}}</option>
+                                    {{/if}}
+                                    {{/each}}
+                                </select>
+                                <input class="form-control form-control-sm mb-2 font-small rounded-0" name="date"
+                                    id="apptDate" type="date" placeholder="Date" style="width: 300px;">
+                                <input name="time" id="appointmentTime" style="width: 300px;">
+                            </fieldset>
+
                         </form>
-                        <div class="center-div pt-2" style="width: 300px;">
+                        <div class="m-auto center-div pt-2" style="width: 300px;">
                             <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
                                 onclick="document.getElementById('addAppointmentForm').submit()">
                                 <small>SAVE</small></button>
                             <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
-                                onclick="toggleDialog('addAppointment','ownerBarbershopViewPage')">
+                                onclick="toggleDialog('addAppointment')">
                                 <small>CANCEL</small></button>
                         </div>
                     </div>
@@ -400,26 +900,254 @@
 </div>
 
 <script>
-    function toggleMenu(id) {
-        $('#manageShop').css({ 'background-color': '', 'color': '', 'box-shadow': '' })
-        $('#manageAppts').css({ 'background-color': '', 'color': '', 'box-shadow': '' })
-        $('#manageReports').css({ 'background-color': '', 'color': '', 'box-shadow': '' })
-        $('#divShop').css('display', 'none')
-        $('#divAppts').css('display', 'none')
-        $('#divReports').css('display', 'none')
-        if (id == 'manageShop') {
-            $('#divShop').css('display', 'block')
-            $('#manageShop').css({ 'background-color': '#f1c644', 'color': 'black', 'box-shadow': 'none' })
-        }
-        else if (id == 'manageAppts') {
-            $('#divAppts').css('display', 'block')
-            $('#manageAppts').css({ 'background-color': '#f1c644', 'color': 'black', 'box-shadow': 'none' })
-        }
-        else {
-            $('#divReports').css('display', 'block')
-            $('#manageReports').css({ 'background-color': '#f1c644', 'color': 'black', 'box-shadow': 'none' })
+    //I DUNNO PERO PARA TO SA DISPLAY NG SERVICE NAME
+    function inputTime(el) {
+        var timeInput = el.value;
+        var timeIn = el.min;
+        var timeOut = el.max;
+        if (timeInput >= timeIn && timeInput <= timeOut) {
+            el.style.backgroundColor = "white";
+        } else {
+            alert("Time must be within: " + timeIn + " - " + timeOut + " only");
+            el.style.backgroundColor = "red";
         }
     }
 
+    //FOR CATEGORY AND SERVICES -- for changing services based on the selected category
+    function changeServices(b, n) {
+        const chosenCategory = b.value;
+        var service = document.getElementById("service" + n);
+        updateServices(chosenCategory, service);
+    }
 
+    function updateServices(category, service) {
+        console.log(service);
+        var services = [];
+        fetch("/getInfo/services")
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].CategoryID == category) {
+                        services.push(data[i]);
+                    }
+                }
+            })
+            .then((data) => {
+                var serviceOptions =
+                    "<option hidden disabled selected>Service</option>";
+                for (var i = 0; i < services.length; i++) {
+                    serviceOptions +=
+                        "<option value=" +
+                        services[i].ServicesID +
+                        "> " +
+                        services[i].Name +
+                        " </option>";
+                }
+                service.innerHTML = serviceOptions;
+            });
+    }
+
+    //FOR APPOINTMENTS -- CATEGORY AND SERVICES
+    var apptService;
+    function changeApptServices(b, n, id) {
+        const chosenCategory = b.value;
+        updateApptServices(chosenCategory, id);
+        apptService = document.getElementById("service" + n);
+    }
+
+    function updateApptServices(category, id) {
+        console.log(category, id);
+        var services = [];
+        fetch("/getInfo/shopservicesview")
+            .then((res) => res.json())
+            .then((data) => {
+                for (var i = 0; i < data.length; i++) {
+                    if (category == data[i].CategoryID && id == data[i].shopID) {
+                        services.push(data[i]);
+                    }
+                }
+            })
+            .then((data) => {
+                var serviceOptions =
+                    "<option hidden disabled selected>Service</option>";
+                services.forEach((element) => {
+                    serviceOptions +=
+                        "<option value=" +
+                        element.ID +
+                        "> " +
+                        element.Service +
+                        " </option>";
+                });
+                apptService.innerHTML = serviceOptions;
+            });
+    }
+
+    //FOR EMPLOYEE SPECIALIZATION
+    var employee = document.getElementById("attendingEmp");
+    function changeEmployee(el) {
+        var ableEmployees = [];
+        fetch("/getInfo/employeeSpecialization")
+            .then((res) => res.json())
+            .then((data) => {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].ShopServicesID == el.value) {
+                        ableEmployees.push(data[i]);
+                    }
+                }
+                console.log(ableEmployees);
+            })
+            .then((data) => {
+                var empOptions = "<option hidden disabled selected>Employee</option>";
+                ableEmployees.forEach((element) => {
+                    empOptions +=
+                        "<option value=" +
+                        element.EmployeeID +
+                        "> " +
+                        element.Name +
+                        " </option>";
+                });
+                employee.innerHTML = empOptions;
+            });
+    }
+
+    //FOR FLATPICKR -- For changing enabled dates per employee
+    //get select element that holds the barber list
+    const attendingEmp = document.querySelector("#attendingEmp");
+
+    //Listens to attendingEmp
+    attendingEmp.onchange = function () {
+        const employee = attendingEmp.value;
+        updateDatePicker(employee);
+    };
+
+    function updateDatePicker(employee) {
+        var days = [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+        ];
+        var nonWorkingDays = [];
+        var nwdNumberForm = [];
+        var scheduleData, appointments, shopservices;
+
+        fetch("/getInfo/shopservices")
+            .then((res) => res.json())
+            .then((data) => {
+                shopservices = data;
+            });
+
+        fetch("/getInfo/appointmentviews")
+            .then((res) => res.json())
+            .then((data) => {
+                appointments = data;
+            });
+
+        //get nonworking days
+        fetch("/getInfo/schedule")
+            .then((res) => res.json())
+            .then((data) => {
+                scheduleData = data;
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].EmployeeID == employee && data[i].TimeIn == null) {
+                        nonWorkingDays.push(data[i].Date);
+                    }
+                }
+            })
+            //get non working days index for flatpicker
+            .then((data) => {
+                for (var i = 0; i < nonWorkingDays.length; i++) {
+                    if (days.includes(nonWorkingDays[i])) {
+                        nwdNumberForm.push(days.indexOf(nonWorkingDays[i]));
+                    }
+                }
+            })
+            //initializes datepicker with dynamic disabled days
+            .then((data) => {
+                const myInput = document.querySelector("#apptDate");
+                const fp = flatpickr(myInput, {
+                    disable: [
+                        function (date) {
+                            return nwdNumberForm.includes(date.getDay());
+                        },
+                    ],
+                    onChange: function (selectedDates, dateStr, instance) {
+                        //1. get date
+                        var day = selectedDates[0].getDay();
+                        //2. get occupied time of chosen date
+                        var occupiedTimeSlot = [];
+                        for (var i = 0; i < appointments.length; i++) {
+                            //check if the appt is of the chosen employee
+                            if (appointments[i].EmployeeID == employee) {
+                                //check if the appt is of the same date
+                                var newDate = new Date(appointments[i].Date);
+                                var currentDate =
+                                    newDate.getFullYear() +
+                                    "-" +
+                                    (newDate.getMonth() + 1) +
+                                    "-" +
+                                    newDate.getDate();
+                                if (currentDate == dateStr) {
+                                    occupiedTimeSlot.push([
+                                        appointments[i].TimeIn,
+                                        appointments[i].TimeOut,
+                                    ]);
+                                }
+                            }
+                        }
+                        //3. get schedule of chosen date
+                        //---select timeIn and timeOut from tblsched where empId = employee
+                        var daySchedTimeIn, daySchedTimeOut;
+                        for (var i = 0; i < scheduleData.length; i++) {
+                            //check that the schedule to be returned is of the chosen employee
+                            if (scheduleData[i].EmployeeID == employee) {
+                                //chech if the returned sched must be the same as the day
+                                var a = scheduleData[i].Date;
+                                var dayIndex = days.indexOf(a);
+                                if (dayIndex == day) {
+                                    daySchedTimeIn = scheduleData[i].TimeIn;
+                                    daySchedTimeOut = scheduleData[i].TimeOut;
+                                    console.log(daySchedTimeOut + " " + daySchedTimeIn);
+                                }
+                            }
+                        }
+                        //4. get chosen service and duration
+                        var loc = window.location.href;
+                        var shopId = loc.charAt(loc.length - 1);
+                        var serviceId = document.getElementById("service2").value;
+                        var duration = 0;
+                        console.log(shopservices);
+                        for (var i = 0; i < shopservices.length; i++) {
+                            console.log(shopId, shopservices[i].shopID, ' this is shop and service')
+                            console.log(serviceId, shopservices[i].ServicesID, ' this is shop and service')
+                            if (
+                                shopservices[i].shopID == shopId &&
+                                shopservices[i].ServicesID == serviceId
+
+                            ) {
+                                duration = shopservices[i].Duration;
+                            }
+                        }
+                        console.log("aaaaaa");
+                        var pls = $("#appointmentTime")
+                        console.log(daySchedTimeIn)
+                        console.log(daySchedTimeOut)
+                        console.log(occupiedTimeSlot)
+                        console.log(duration)
+                        pls.timepicker({
+                            minTime: daySchedTimeIn,
+                            maxTime: daySchedTimeOut,
+                            disableTimeRanges: occupiedTimeSlot,
+                            step: duration,
+                            disableTextInput: true,
+                            timeFormat: "H:i:s"
+                        });
+                    }
+                });
+            });
+    }
 </script>

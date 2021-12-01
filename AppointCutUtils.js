@@ -1,7 +1,7 @@
-const mysql2 = require('mysql2/promise');
+const mysql2 = require("mysql2/promise");
 
 // Connection Pool
-let connection
+let connection;
 
 function startConnection() {
    if (!connection) {
@@ -10,45 +10,63 @@ function startConnection() {
          user: process.env.DB_USER,
          port: process.env.DB_PORT,
          password: process.env.DB_PASS,
-         database: process.env.DB_NAME
+         database: process.env.DB_NAME,
       });
    }
 }
 
 async function getAllFrom(table) {
-   let query = 'SELECT * FROM ' + table
-   var rows = await connection.query(query)
-   return rows[0]
+   let query = "SELECT * FROM " + table;
+   var rows = await connection.query(query);
+   return rows[0];
 }
 
 async function getAllFromWhere(table, where) {
-   let query = 'SELECT * FROM ' + table + ' WHERE ' + where
-   var rows = await connection.query(query)
-   return rows[0]
+   let query = "SELECT * FROM " + table + " WHERE " + where;
+   var rows = await connection.query(query);
+   return rows[0];
 }
 
 async function getOneFromWhere(table, where) {
-   let query = 'SELECT * FROM ' + table + ' WHERE ' + where
-   var rows = await connection.query(query)
-   return rows[0][0]
+   let query = "SELECT * FROM " + table + " WHERE " + where;
+   console.log(query);
+   var rows = await connection.query(query);
+   return rows[0][0];
 }
 
 async function getAllFromServices() {
-   var query = 'SELECT tblservices.ServicesID, tblservices.Name, tblcategory.Name as Category FROM tblservices INNER JOIN tblCategory ON tblservices.CategoryID = tblCategory.CategoryID'
-   var rows = await connection.query(query)
-   return rows[0]
+   var query =
+      "SELECT tblservices.ServicesID, tblservices.Name, tblcategory.Name as Category FROM tblservices INNER JOIN tblCategory ON tblservices.CategoryID = tblCategory.CategoryID";
+   var rows = await connection.query(query);
+   return rows[0];
 }
 
 async function getAllFromBarangay() {
-   var query = 'SELECT tblbarangay.BarangayID, tblbarangay.Name, tblcity.Name as City FROM tblcity INNER JOIN tblbarangay ON tblbarangay.CityID = tblCity.CityID'
-   var rows = await connection.query(query)
-   return rows[0]
+   var query =
+      "SELECT tblbarangay.BarangayID, tblbarangay.Name, tblcity.Name as City FROM tblcity INNER JOIN tblbarangay ON tblbarangay.CityID = tblCity.CityID";
+   var rows = await connection.query(query);
+   return rows[0];
+}
+
+async function insertInto(table, values) {
+   let query = "INSERT INTO " + table + " VALUES " + values;
+   var id = await connection.query(query).then(async (mess) => {
+      return await mess[0];
+   });
+   console.log(query);
+   return await id;
+}
+
+async function updateSet(table, values, where) {
+   let query = "UPDATE " + table + " SET " + values + " WHERE " + where;
+   console.log(query);
+   var rows = await connection.query(query);
 }
 
 class ModalConstructor {
    tableName;
    constructor(tableName) {
-      this.tableName = tableName
+      this.tableName = tableName;
    }
    /**Textbox input type */
    static TYPE_TEXT = "text";
@@ -79,12 +97,12 @@ class ModalConstructor {
     */
    addField(name, type, value = "", visibility = "", addOn = "") {
       let field = {
-         "name": name,
-         "type": type,
-         "value": value,
-         "visibility": visibility,
-         "addOn": addOn
-      }
+         name: name,
+         type: type,
+         value: value,
+         visibility: visibility,
+         addOn: addOn,
+      };
       this.#fields.set(name, field);
    }
 
@@ -94,7 +112,7 @@ class ModalConstructor {
     * @param {*} value the default value
     */
    setFieldValue(name, value) {
-      this.#fields.get(name).value = value
+      this.#fields.get(name).value = value;
    }
 
    /**
@@ -117,20 +135,28 @@ class ModalConstructor {
     * @returns array that the modal partial will use
     */
    construct() {
-
-      let fieldsArray = []
+      let fieldsArray = [];
       this.#fields.forEach((value, key) => {
          fieldsArray.push(value);
-      })
+      });
       let modal = {
-         "tableName": this.tableName,
-         "addAction": this.#addAction,
-         "editAction": this.#editAction,
-         "fieldsArray": fieldsArray
-      }
+         tableName: this.tableName,
+         addAction: this.#addAction,
+         editAction: this.#editAction,
+         fieldsArray: fieldsArray,
+      };
       return modal;
    }
-
 }
 
-module.exports = { getAllFrom, getAllFromWhere, getOneFromWhere, getAllFromServices, getAllFromBarangay, startConnection, ModalConstructor }
+module.exports = {
+   getAllFrom,
+   getAllFromWhere,
+   getOneFromWhere,
+   getAllFromServices,
+   getAllFromBarangay,
+   insertInto,
+   updateSet,
+   startConnection,
+   ModalConstructor,
+};
