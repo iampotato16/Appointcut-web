@@ -1,0 +1,106 @@
+<div id="editEmployeeInfo{{this.EmployeeID}}" class="dialog bg-yellow m-auto" style="display: none;">
+    <div>
+        <div class="card p-4 bg-black position-relative">
+            <button class="position-absolute btn btn-link p-0" style="right: 1.5rem; margin-top: -.5rem;"
+                onclick="toggleDialog('editEmployeeInfo{{this.EmployeeID}}')"><i class="bi bi-x"></i></button>
+            <div class="text-center">
+                <h6 class="fw-800"> EDIT EMPLOYEE INFORMATION </h6>
+                <hr>
+            </div>
+            <div class="pt-2">
+                <form action="/owners/view{{../ownerID}}/viewShop{{../shopID}}/editEmp{{this.EmployeeID}}"
+                    id="editEmployeeInfoForm{{this.EmployeeID}}" method="POST">
+                    <div class="tab editEmp{{this.EmployeeID}}">
+                        <div class="d-flex justify-content-center">
+                            <div>
+                                <p class="text-center"> <small> EMPLOYEE INFORMATION
+                                    </small>
+                                </p>
+                                <input class="form-control form-control-sm mb-2 font-small rounded-0" name="firstName"
+                                    type="text" value="{{this.firstName}}" style="width: 300px;">
+                                <input class="form-control form-control-sm mb-2 font-small rounded-0" name="lastName"
+                                    type="text" value="{{this.lastName}}" style="width: 300px;">
+                                <input class="form-control form-control-sm mb-2 font-small rounded-0" name="email"
+                                    type="text" value="{{this.Email}}" style="width: 300px;">
+                                <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact"
+                                    type="text" value="{{this.Contact}}" style="width: 300px;">
+                                <div>
+                                    <select class="form-control form-control-sm mb-2 font-small rounded-0"
+                                        name="employeeType" style="width: 300px;">
+                                        <option selected disabled hidden>
+                                            {{this.EmployeeType}}
+                                        </option>
+                                        {{#each ../rowsEmpType}}
+                                        <option value="{{this.EmployeeTypeID}}">
+                                            {{this.Name}}
+                                        </option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <div>
+                                    <select class="form-control form-control-sm mb-2 font-small rounded-0"
+                                        name="salaryType" style="width: 300px;">
+                                        <option selected disabled hidden>{{this.SalaryType}}
+                                        </option>
+                                        {{#each ../rowsSalaryType}}
+                                        <option value="{{this.SalaryTypeID}}">{{this.Name}}
+                                        </option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <input class="form-control form-control-sm mb-2 font-small rounded-0" name="salaryValue"
+                                    type="text" value="{{this.SalaryValue}}" style="width: 300px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab editEmp{{this.EmployeeID}}">
+                        <p class="text-center"><small>EMPLOYEE SCHEDULE</small></p>
+                        {{#each ../rowSched}}
+                        {{#if (withinShop this.EmployeeID ../this.EmployeeID)}}
+                        <div class="row m-auto" style="width: 400px">
+                            <div class="col-4">
+                                <input class="form-check-input" type="checkbox" name="{{this.Date}}"
+                                    value="{{this.Date}}" {{#if this.TimeIn}} checked {{/if}}>
+                                <label class="form-check-label" for="inlineCheckbox1">
+                                    <small>{{this.Date}}</small></label>
+                            </div>
+                            <div class="col-8 justify-content-center">
+                                <div class="row">
+                                    <div class="col-6 d-flex align-items-center">
+                                        <input class="form-control form-control-sm mb-2 font-small rounded-0"
+                                            name="timeIn" type="time" value="{{this.TimeIn}}">
+                                    </div>
+                                    <div class="col-6 d-flex align-items-center">
+                                        <input class="form-control form-control-sm mb-2 font-small rounded-0"
+                                            name="timeOut" type="time" value="{{this.TimeOut}}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/if}}
+                        {{/each}}
+                    </div>
+
+                    {{!-- BUTTONS --}}
+                    <div style="overflow:auto;">
+                        <div class="center-div p-2">
+                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800" style="width: 150px;"
+                                type="button" id="prevBtneditEmp{{this.EmployeeID}}"
+                                onclick="toggleMultiForm.nextPrev(-1)">Previous</button>
+                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800" style="width: 150px;"
+                                type="button" id="nextBtneditEmp{{this.EmployeeID}}"
+                                onclick="toggleMultiForm.nextPrev(1)">Next</button>
+                        </div>
+                    </div>
+
+                    {{!--
+                    <!-- Circles which indicates the steps of the form: --> --}}
+                    <div class="text-center pt-4">
+                        <span class="step"></span>
+                        <span class="step"></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
