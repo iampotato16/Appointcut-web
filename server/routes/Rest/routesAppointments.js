@@ -46,11 +46,10 @@ router.route('/')
 
 //Path : /rest/appointments/recordpayment
 router.route('/recordpayment/:token-:aptid-:shopid-:amt')
-.post(async (req,res) =>{
+.get(async (req,res) =>{
     //get the request
-    const request = req.body
-    //store payment details
-    const payment = new Payment(request.aptid,request.shopid,request.amt)
+    const request = req.params
+    console.log(JSON.stringify(request))
 
     //verify token
     var verification = await tm.verifyToken(request.token)
@@ -58,7 +57,10 @@ router.route('/recordpayment/:token-:aptid-:shopid-:amt')
         res.sendStatus(401)//unauthorized
     }
 
+    console.log(JSON.stringify(verification))
     //save to db
+    //store payment details
+    const payment = new Payment(request.aptid, request.shopid, verification.userID, request.amt)
     await apm.payAppointment(payment)
 })
 

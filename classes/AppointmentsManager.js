@@ -54,14 +54,15 @@ class AppointmentManager{
     async payAppointment(/**@type {Payment}*/payment){
         const date = `${payment.date.getFullYear()}-${payment.date.getMonth()+1}-${payment.date.getDate()}`
         const time = `${payment.date.getHours()}:${payment.date.getMinutes()}`
+        const transId = `${payment.customerId}-${payment.shopId}-${date}-${time}`
 
         const insert = `insert into tbltransactions`
-        const columns = "(AppointmentID, shopID, Amount, Date, Time)"
-        const values = `values (${payment.appointmentId}, ${payment.shopId}, ${payment.amount},`+
+        const columns = "(TransactionID, AppointmentID, shopID, Amount, Date, Time)"
+        const values = `values ('${transId}', ${payment.appointmentId}, ${payment.shopId}, ${payment.amount},`+
             ` '${date}', '${time}')`
 
-        await con.query(`${insert} ${columns} ${values}`)
         console.log(`D/AptMan: ${insert} ${columns} ${values}`)
+        await this.connection.query(`${insert} ${columns} ${values}`)
     }
 }
 

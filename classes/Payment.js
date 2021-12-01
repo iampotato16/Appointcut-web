@@ -1,7 +1,9 @@
 class Payment{
     appointmentId
+    customerId
     shopId
-    /**@Type Date*/date
+    /**@Type Date*/
+    date
     amount
 
     /**
@@ -10,11 +12,12 @@ class Payment{
      * @param {int} shopId 
      * @param {int} amount 
      */
-    constructor(appointmentId, shopId, amount){
+    constructor(appointmentId, shopId, customerId, amount){
         this.appointmentId = appointmentId
         this.shopId = shopId
         this.amount = amount
-        date = Date.now
+        this.customerId = customerId
+        this.date = new Date(Date())
     }
 }
 
