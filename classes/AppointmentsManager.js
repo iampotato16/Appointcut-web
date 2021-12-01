@@ -54,14 +54,35 @@ class AppointmentManager{
     async payAppointment(/**@type {Payment}*/payment){
         const date = `${payment.date.getFullYear()}-${payment.date.getMonth()+1}-${payment.date.getDate()}`
         const time = `${payment.date.getHours()}:${payment.date.getMinutes()}`
+        const transId = `${payment.customerId}-${payment.shopId}-${date}-${time}`
 
         const insert = `insert into tbltransactions`
-        const columns = "(AppointmentID, shopID, Amount, Date, Time)"
-        const values = `values (${payment.appointmentId}, ${payment.shopId}, ${payment.amount},`+
+        const columns = "(TransactionID, AppointmentID, shopID, Amount, Date, Time)"
+        const values = `values ('${transId}', ${payment.appointmentId}, ${payment.shopId}, ${payment.amount},`+
             ` '${date}', '${time}')`
 
-        await con.query(`${insert} ${columns} ${values}`)
         console.log(`D/AptMan: ${insert} ${columns} ${values}`)
+        await this.connection.query(`${insert} ${columns} ${values}`)
+    }
+
+    /**
+     * Checks for conflict in specified barber's appintments
+     * @param {int} barberId ID of barber to be checked
+     * @param {string} timeIn starting time of the appointment
+     * @param {string} timeOut ending time of the appointment, this should be -1
+     * \nto avoid conflict with other start times
+     * @returns number of appointments conflicting
+     */
+    async checkConflict(barberId, year, month, day, timeIn, timeOut){
+        const selectStatement = "select AppointmentID from tblappointment"
+        const emplClause = `EmployeeID = ${barberId}`
+        const dateClause = `Date = '${year}-${month}-${day}'`
+        const timeClause = `TimeIn between '${timeIn}' and '${timeOut}'`
+        const whereStatement = `where ${emplClause} and ${dateClause} and ${timeClause}`
+
+        console.log(`D/AptMan: ${selectStatement} ${whereStatement};`)
+        const conflicts = await this.connection.query(`${selectStatement} ${whereStatement};`)
+        return conflicts[0].length
     }
 }
 
