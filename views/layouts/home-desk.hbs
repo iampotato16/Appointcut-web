@@ -7,10 +7,7 @@
    <meta name="description" content="">
    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
    <meta name="generator" content="Hugo 0.84.0">
-   <title>{{title}}</title>
-
-   {{!--
-   <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sidebars/"> --}}
+   <title>{{ownerName}}</title>
 
    <!-- Bootstrap core CSS -->
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -39,64 +36,76 @@
    <script type="text/javascript" src="/scripts/timepicker.js"></script>
 
    <!-- Custom styles for this template -->
-   <link href="/css/sidebars.css" rel="stylesheet">
    <link href="/css/styles.css" rel="stylesheet">
+   <link href="/css/sidebars.css" rel="stylesheet">
 
 </head>
 
-<body class="row m-0" style="width: 100%;">
+<body class="row g-0">
    <aside class="container col-lg-3 vh-100 bg-black sticky-top" id="aside">
       <div class="flex-shrink-0 p-3 bg-black">
          <a href="/" class="d-flex align-items-center text-decoration-none link-custom">
             <i class="bi bi-scissors" style="margin-right:.5rem;"></i>
-            <span class="fs-5 fw-semibold pl-1">Administrator</span>
+            <span class="fs-5 fw-semibold pl-1">{{shopName}}</span>
          </a>
          <small class="font-small">Date/Time: <span id="datetime"></span></small>
          <hr>
          <ul class="list-unstyled ps-0">
             <li class="mb-1">
-               <button class="btn btn-toggle align-items-center collapsed" data-bs-toggle="collapse"
-                  data-bs-target="#accounts-collapse" aria-expanded="false" id="bt-accounts-collapse">
-                  Accounts
+               <button class="btn btn-toggle align-items-center" data-bs-toggle="collapse"
+                  data-bs-target="#shops-collapse" aria-expanded="false" id="bt-shops-collapse">
+                  Manage Barbershop
                </button>
-               <div class="collapse" id="accounts-collapse">
+               <div class="collapse" id="shops-collapse">
                   <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                     <li><a href="/customers" class="link-light rounded" id="customers">Customers</a></li>
-                     <li><a href="/owners" class="link-light rounded" id="owners">Owners</a></li>
-                     <li><a href="/shops" class="link-light rounded" id="shops">Shops</a></li>
-                     <li><a href="/barberApps" class="link-light rounded" id="barberApps">Barbershop
-                           Applications</a></li>
+                     <li><a href="/deskAccount/{{shopID}}/employees" class="link-light rounded"
+                           id="deskEmployees">Employees</a></li>
+                     <li><a href="/deskAccount/{{shopID}}/services" class="link-light rounded"
+                           id="deskServices">Services</a>
+                     </li>
+                     <li><a href="/deskAccount/{{shopID}}/schedule" class="link-light rounded"
+                           id="deskSchedule">Barbershop
+                           Schedule</a></li>
+                  </ul>
+               </div>
+            </li>
+            <li class="mb-1">
+               <button class="btn btn-toggle align-items-center collapsed" data-bs-toggle="collapse"
+                  data-bs-target="#appointments-collapse" aria-expanded="false" id="bt-appointments-collapse">
+                  Manage Appointments
+               </button>
+               <div class="collapse" id="appointments-collapse">
+                  <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                     <li><a href="/deskAccount/{{shopID}}/appointments" class="link-light rounded"
+                           id="deskAppointments">Appointments</a>
+                     </li>
+                     <li><a href="/deskAccount/{{shopID}}/appointmentHistory" class="link-light rounded"
+                           id="deskAppointmentHistory">Appointment
+                           History</a></li>
                   </ul>
                </div>
             </li>
             <li class="mb-1">
                <button class="btn align-items-center" id="fm">
-                  <a class="btn-toggle-custom text-decoration-none" href="/fileMaintenance" id="fm-link">File
-                     Maintenance</a>
+                  <a class="btn-toggle-custom text-decoration-none" href="/deskAccount/{{shopID}}"
+                     id="deskReports">Reports</a>
                </button>
             </li>
             <hr>
          </ul>
       </div>
    </aside>
-   <main class="col-lg-9">
+   <main class="col-9">
       {{{body}}}
    </main>
-
-   {{!-- gumagana kahit wala ka --}}
-   <script src="/sidebar.js"></script>
 
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"></script>
 
-   <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
-   <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-
-   <script src="/masonry.js"></script>
    <script src="/index.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
 </body>
+
 
 </html>

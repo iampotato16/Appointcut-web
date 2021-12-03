@@ -1,0 +1,84 @@
+<div class="min-vh-100 p-3" id="shopsViewPage">
+    <div class="row py-0 px-3">
+
+        <div class="row px-3">
+            <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="me-2 fw-800"><small>BARBERSHOP SCHEDULE</small></span>
+                </div>
+            </div>
+            <div class="bg-gray p-4 pt-2 mb-3">
+                <table class="table table-hover table-striped table-sm m-0">
+                    <thead>
+                        <tr>
+                            <th scope="col"> <small>DAY</small></th>
+                            <th scope="col"> <small>TIME IN</small></th>
+                            <th scope="col"> <small>TIME OUT</small></th>
+                            <th scope="col" class="justify-content-end" style="width: 40px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each rowsDays}}
+                        <tr class="align-items-center">
+                            <td class="align-middle">{{this.Day}}</td>
+                            {{#if this.TimeIn}}
+                            <td class="align-middle">{{this.TimeIn}}</td>
+                            <td class="align-middle">{{this.TimeOut}}</td>
+                            {{else}}
+                            <td class="align-middle">NO SCHEDULE</td>
+                            <td class="align-middle">NO SCHEDULE</td>
+                            {{/if}}
+                            <td>
+                                <button class="btn btn-dark btn-sm"
+                                    onclick="toggleDialog('editShopSchedule{{this.shopSchedulesID}}')"><i
+                                        class=" bi bi-pencil"></i></button>
+                            </td>
+                        </tr>
+                        <div id="editShopSchedule{{this.shopSchedulesID}}" class="dialog bg-yellow m-auto"
+                            style="display: none;">
+                            <div>
+                                <div class="card p-4 bg-black">
+                                    <div class="text-center">
+                                        <h6 class="fw-800"> EDIT SCHEDULE </h6>
+                                        <hr>
+                                    </div>
+                                    <div class="center-div pt-2">
+                                        <div>
+                                            <form action="editShopSchedule{{this.shopSchedulesID}}" method="POST">
+                                                <input class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                    name="day" type="" value="{{this.Day}}"
+                                                    style="width: 300px; background-color: rgb(214, 223, 141)" disabled>
+                                                <input class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                    name="timeIn" type="time" value="{{this.TimeIn}}"
+                                                    style="width: 300px;">
+                                                <input class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                    name="timeOut" type="time" value="{{this.TimeOut}}"
+                                                    style="width: 300px;">
+                                                <div>
+                                                    <input class="form-check-input" type="checkbox" name="status"
+                                                        value="1" {{#if this.Status}} checked {{/if}}>
+                                                    <label class="form-check-label" for="inlineCheckbox1">
+                                                        <small>ACTIVE</small></label>
+                                                </div>
+                                                <div class="center-div pt-2" style="width: 300px;">
+                                                    <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                                        type="submit">
+                                                        <small>SAVE</small></button>
+                                                    <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                                        type="button"
+                                                        onclick="toggleDialog('editShopSchedule{{this.shopSchedulesID}}')">
+                                                        <small>CANCEL</small></button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

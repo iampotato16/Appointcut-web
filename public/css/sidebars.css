@@ -47,7 +47,6 @@ main {
 .btn-toggle[aria-expanded="true"]::before {
    transform: rotate(90deg);
    fill: #f1c644;
-   /* filter: invert(79%) sepia(39%) saturate(725%) hue-rotate(355deg) brightness(97%) contrast(94%); */
 }
 
 .btn-toggle-nav a {

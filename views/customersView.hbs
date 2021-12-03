@@ -1,235 +1,225 @@
-<div class="col-lg-9 g-0" style="position:relative">
-   <main class="min-vh-100 p-3" id="customersViewPage">
-      <div class="mt-4 text-decoration-none">
-         <div class="d-flex justify-content-between">
-            <span class="fs-5 fw-semibold">
-               <nav aria-label="breadcrumb">
-                  <ol class="breadcrumb">
-                     <li class="breadcrumb-item"><a href="/customers">Customers</a></li>
-                     <li class="breadcrumb-item active" aria-current="page">{{rowCust.FullName}}</li>
-                  </ol>
-               </nav>
-            </span>
-            <button class="btn btn-dark btn-sm" onclick="toggleDialog('editCustomerInfo')" style="height:32px;">
-               <i class="bi bi-pencil"></i><small>EDIT CUSTOMER INFORMATION</small>
-            </button>
-         </div>
-      </div>
-      <hr class="mt-0">
-      <div>
-         <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
-            <div>
-               <span class="me-2 fw-800"><small>APPOINTMENTS</small></span>
-               <button class="btn btn-sm btn-outline-light" onclick="toggleDialog('addAppointment')"><i
-                     class="bi bi-plus"></i></button>
-            </div>
-            <form class="d-flex">
-               <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search" placeholder="Search"
-                  aria-label="Search" />
-               <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small> </button>
-            </form>
-         </div>
-         <div class="bg-gray p-4 pt-2 mb-3">
-            <table class="table table-hover table-striped table-sm m-0">
-               <thead>
-                  <tr>
-                     <th scope="col"> <small>DATE</small></th>
-                     <th scope="col"> <small>TIME</small></th>
-                     <th scope="col"> <small>SERVICE</small></th>
-                     <th scope="col"> <small>SHOP</small></th>
-                     <th scope="col"> <small>BARBER</small></th>
-                     <th scope="col"> <small>STATUS</small></th>
-                     <th scope="col" class="justify-content-end" style="width: 40px;"></th>
-                  </tr>
-               </thead>
-               <tbody>
-                  {{#each rowAppt}}
-                  <tr class="align-items-center">
-                     <td class="align-middle dateDisplay">{{this.Date}}</td>
-                     <td class="align-middle">{{this.TimeIn}} - {{this.TimeOut}}</td>
-                     <td class="align-middle">{{this.Service}}</td>
-                     <td class="align-middle">{{this.ShopName}}</td>
-                     <td class="align-middle">{{this.EmployeeName}}</td>
-                     <td class="align-middle">{{this.AppointmentStatus}}</td>
-                     <td>
-                        {{!-- <button class="btn btn-dark btn-sm"
-                           onclick="toggleDialog('editAppointment','customersViewPage')"><i
-                              class="bi bi-pencil"></i></button> --}}
-                        <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
-                     </td>
-                  </tr>
-                  {{/each}}
-               </tbody>
-            </table>
-         </div>
-      </div>
-      <div>
-         <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
-            <div>
-               <span class="me-2 fw-800"><small>APPOINTMENT HISTORY</small></span>
-               <button class="btn btn-sm btn-outline-light" onclick="toggleDialog('addAppointment')"><i
-                     class="bi bi-plus"></i></button>
-            </div>
-            <form class="d-flex">
-               <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search" placeholder="Search"
-                  aria-label="Search" />
-               <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small> </button>
-            </form>
-         </div>
-         <div class="bg-gray p-4 pt-2 mb-3">
-            <table class="table table-hover table-striped table-sm m-0">
-               <thead>
-                  <tr>
-                     <th scope="col"> <small>DATE</small></th>
-                     <th scope="col"> <small>TIME</small></th>
-                     <th scope="col"> <small>SERVICE</small></th>
-                     <th scope="col"> <small>SHOP</small></th>
-                     <th scope="col"> <small>BARBER</small></th>
-                     <th scope="col"> <small>STATUS</small></th>
-                  </tr>
-               </thead>
-               <tbody>
-                  {{#each rowAppt}}
-                  <tr class="align-items-center">
-                     <td class="align-middle dateDisplay">{{this.Date}}</td>
-                     <td class="align-middle">{{this.TimeIn}} - {{this.TimeOut}}</td>
-                     <td class="align-middle">{{this.Service}}</td>
-                     <td class="align-middle">{{this.ShopName}}</td>
-                     <td class="align-middle">{{this.EmployeeName}}</td>
-                     <td class="align-middle">{{this.AppointmentStatus}}</td>
-                     <td>
-                        {{!-- <button class="btn btn-dark btn-sm"
-                           onclick="toggleDialog('editAppointment','customersViewPage')"><i
-                              class="bi bi-pencil"></i></button>
-                        --}}
-                        <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
-                     </td>
-                  </tr>
-                  {{/each}}
-               </tbody>
-            </table>
-         </div>
-      </div>
-   </main>
-
-   {{! DIALOG BOXES }}
-   <div id="editCustomerInfo" class="dialog bg-black m-auto" style="display: none;">
-      <div>
-         <div class="card p-4 bg-black">
-            <div class="text-center">
-               <h6 class="fw-800"> EDIT CUSTOMER INFORMATION </h6>
-               <hr>
-            </div>
-            <div class="center-div pt-2">
-               <div>
-                  <form action="view{{rowCust.CustomersID}}/editCustomerInfo" id="editCustomerInfoForm" method="POST">
-                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
-                        value="{{rowCust.firstName}}" name="firstName" style="width: 300px;" />
-                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
-                        value="{{rowCust.lastName}}" name="lastName" style="width: 300px;" />
-                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
-                        value="{{rowCust.Email}}" name="email" style="width: 300px;" />
-                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
-                        value="{{rowCust.Contact}}" name="contact" style="width: 300px;" />
-                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="1" id="status" name="status" {{#if
-                           rowCust.Status}} checked {{/if}}>
-                        <label class="form-check-label" for="status">
-                           Active
-                        </label>
-                     </div>
-                     {{! hindi ko na ininclude email since its part of login credentials }}
-                  </form>
-                  <div class="center-div pt-2" style="width: 300px;">
-                     <button class="btn btn-warning rounded-0 col-6 me-1"
-                        onclick="document.getElementById('editCustomerInfoForm').submit()">SAVE</button>
-                     <button class="btn btn-outline-warning rounded-0 col-6"
-                        onclick="toggleDialog('editCustomerInfo','customersViewPage')">CANCEL</button>
-                  </div>
-               </div>
-            </div>
-         </div>
+<div class="min-vh-100 p-3" id="customersViewPage">
+   <div class="mt-4 text-decoration-none">
+      <div class="d-flex justify-content-between">
+         <span class="fs-5 fw-semibold">
+            <nav aria-label="breadcrumb">
+               <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="/customers">Customers</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">{{rowCust.FullName}}</li>
+               </ol>
+            </nav>
+         </span>
+         <button class="btn btn-dark btn-sm" onclick="toggleDialog('editCustomerInfo')" style="height:32px;">
+            <i class="bi bi-pencil"></i><small>EDIT CUSTOMER INFORMATION</small>
+         </button>
       </div>
    </div>
+   <hr class="mt-0">
+   <div>
+      <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+         <div>
+            <span class="me-2 fw-800"><small>APPOINTMENTS</small></span>
+            <button class="btn btn-sm btn-outline-light" onclick="toggleDialog('addAppointment')"><i
+                  class="bi bi-plus"></i></button>
+         </div>
+         <form class="d-flex">
+            <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search" placeholder="Search"
+               aria-label="Search" />
+            <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small> </button>
+         </form>
+      </div>
+      <div class="bg-gray p-4 pt-2 mb-3">
+         <table class="table table-hover table-striped table-sm m-0">
+            <thead>
+               <tr>
+                  <th scope="col"> <small>DATE</small></th>
+                  <th scope="col"> <small>TIME</small></th>
+                  <th scope="col"> <small>SERVICE</small></th>
+                  <th scope="col"> <small>SHOP</small></th>
+                  <th scope="col"> <small>BARBER</small></th>
+                  <th scope="col"> <small>APPOINTMENT STATUS</small></th>
+                  <th scope="col" class="justify-content-end" style="width: 40px;"></th>
+               </tr>
+            </thead>
+            <tbody>
+               {{#each rowApptApproved}}
+               <tr class="align-items-center">
+                  <td class="align-middle dateDisplay">{{this.Date}}</td>
+                  <td class="align-middle">{{this.TimeIn}} - {{this.TimeOut}}</td>
+                  <td class="align-middle">{{this.Service}}</td>
+                  <td class="align-middle">{{this.ShopName}}</td>
+                  <td class="align-middle">{{this.EmployeeName}}</td>
+                  <td class="align-middle">{{this.AppointmentStatus}}</td>
+                  <td>
+                     <a type="button" class="btn btn-dark btn-sm"
+                        href="view{{this.CustomersID}}/cancelAppt{{this.AppointmentID}}"><i class="bi bi-x"></i></a>
+                  </td>
+               </tr>
+               {{/each}}
+            </tbody>
+         </table>
+      </div>
+   </div>
+   <div>
+      <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+         <div>
+            <span class="me-2 fw-800"><small>APPOINTMENT HISTORY</small></span>
+            <button class="btn btn-sm btn-outline-light" onclick="toggleDialog('addAppointment')"><i
+                  class="bi bi-plus"></i></button>
+         </div>
+         <form class="d-flex">
+            <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search" placeholder="Search"
+               aria-label="Search" />
+            <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small> </button>
+         </form>
+      </div>
+      <div class="bg-gray p-4 pt-2 mb-3">
+         <table class="table table-hover table-striped table-sm m-0">
+            <thead>
+               <tr>
+                  <th scope="col"> <small>DATE</small></th>
+                  <th scope="col"> <small>TIME</small></th>
+                  <th scope="col"> <small>SERVICE</small></th>
+                  <th scope="col"> <small>SHOP</small></th>
+                  <th scope="col"> <small>BARBER</small></th>
+                  <th scope="col"> <small>STATUS</small></th>
+               </tr>
+            </thead>
+            <tbody>
+               {{#each rowApptNot}}
+               <tr class="align-items-center">
+                  <td class="align-middle dateDisplay">{{this.Date}}</td>
+                  <td class="align-middle">{{this.TimeIn}} - {{this.TimeOut}}</td>
+                  <td class="align-middle">{{this.Service}}</td>
+                  <td class="align-middle">{{this.ShopName}}</td>
+                  <td class="align-middle">{{this.EmployeeName}}</td>
+                  <td class="align-middle">{{this.AppointmentStatus}}</td>
+               </tr>
+               {{/each}}
+            </tbody>
+         </table>
+      </div>
+   </div>
+</div>
 
-   <div id="addAppointment" class="dialog bg-yellow m-auto" style="display: none;">
-      <div>
-         <div class="card p-4 bg-black">
-            <div class="text-center">
-               <h6 class="fw-800"> ADD APPOINTMENT </h6>
-               <hr>
-            </div>
-            <div class="center-div pt-2">
-               <div>
-                  <form action="/customers/view{{rowCust.CustomersID}}/addCustomerAppointment"
-                     id="addCustomerAppointmentForm" method="POST">
-                     {{!-- SHOP DETAILS --}}
-                     <fieldset style="border: 1px solid white; padding: 0 1rem .5rem 1rem" class="mb-2">
-                        <legend style="font-size: .9rem; background-color:none; float:none; width:fit-content;">
-                           SHOP NAME:
-                        </legend>
-                        <select class="form-control form-control-sm mb-2 font-small rounded-0" name="shop" id="shop">
-                           <option selected disabled hidden>Shop Name</option>
-                           {{#each rowsShops}}
-                           <option value="{{this.ShopID}}">{{this.shopName}}</option>
-                           {{/each}}
-                        </select>
-                     </fieldset>
-
-                     {{!-- SERVICE DETAILS --}}
-                     <fieldset style="border: 1px solid white; padding: 0 1rem .5rem 1rem" class="mb-2">
-                        <legend style="font-size: .9rem; background-color:none; float:none; width:fit-content;">
-                           SERVICE DETAILS:
-                        </legend>
-                        <select class="form-control form-control-sm mb-2 font-small rounded-0" name="category"
-                           id="category" onchange="changeCustomerApptServices(this)">
-                           <option selected disabled hidden>Category</option>
-                           {{#each rowsCategory}}
-                           <option value="{{this.CategoryID}}">{{this.Name}}</option>
-                           {{/each}}
-                        </select>
-                        <select class="form-control form-control-sm mb-2 font-small rounded-0" name="service"
-                           id="customerService" onchange="changeEmployee(this, 'customerAttendingEmp')">
-                           <option selected disabled hidden>Service</option>
-                        </select>
-                        {{!-- <input class="form-control form-control-sm mb-2 font-small rounded-0" name="price"
-                           type="text" 23qwplaceholder="Price" style="width: 300px;"> --}}
-                     </fieldset>
-
-                     {{!-- WHO AND WHEN --}}
-                     <fieldset style="border: 1px solid white; padding: 0 1rem .5rem 1rem" class="mb-2">
-                        <legend style="font-size: .9rem; background-color:none; float:none; width:fit-content;">
-                           APPOINTMENT DETAILS:
-                        </legend>
-                        <select class="form-control form-control-sm mb-2 font-small rounded-0" id="customerAttendingEmp"
-                           name="employee">
-                           <option selected disabled hidden>Attending Employee</option>
-                           {{#each rowsEmployee}}
-                           {{#if (isBarber EmployeeTypeID)}}
-                           <option value="{{this.EmployeeID}}">{{this.FullName}}</option>
-                           {{/if}}
-                           {{/each}}
-                        </select>
-                        <input class="form-control form-control-sm mb-2 font-small rounded-0" name="date"
-                           id="customerApptDate" type="date" placeholder="Date" style="width: 300px;">
-                        <input name="time" id="customerAppointmentTime" style="width: 300px;">
-                     </fieldset>
-
-                  </form>
-                  <div class="m-auto center-div pt-2" style="width: 300px;">
-                     <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
-                        onclick="document.getElementById('addCustomerAppointmentForm').submit()">
-                        <small>SAVE</small></button>
-                     <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
-                        onclick="toggleDialog('addAppointment')">
-                        <small>CANCEL</small></button>
+{{! DIALOG BOXES }}
+<div id="editCustomerInfo" class="dialog bg-black m-auto" style="display: none;">
+   <div>
+      <div class="card p-4 bg-black">
+         <div class="text-center">
+            <h6 class="fw-800"> EDIT CUSTOMER INFORMATION </h6>
+            <hr>
+         </div>
+         <div class="center-div pt-2">
+            <div>
+               <form action="view{{rowCust.CustomersID}}/editCustomerInfo" id="editCustomerInfoForm" method="POST">
+                  <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                     value="{{rowCust.firstName}}" name="firstName" style="width: 300px;" />
+                  <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                     value="{{rowCust.lastName}}" name="lastName" style="width: 300px;" />
+                  <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                     value="{{rowCust.Email}}" name="email" style="width: 300px;" />
+                  <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                     value="{{rowCust.Contact}}" name="contact" style="width: 300px;" />
+                  <div class="form-check form-check-inline">
+                     <input class="form-check-input" type="checkbox" value="1" id="status" name="status" {{#if
+                        rowCust.Status}} checked {{/if}}>
+                     <label class="form-check-label" for="status">
+                        Active
+                     </label>
                   </div>
+                  {{! hindi ko na ininclude email since its part of login credentials }}
+               </form>
+               <div class="center-div pt-2" style="width: 300px;">
+                  <button class="btn btn-warning rounded-0 col-6 me-1"
+                     onclick="document.getElementById('editCustomerInfoForm').submit()">SAVE</button>
+                  <button class="btn btn-outline-warning rounded-0 col-6"
+                     onclick="toggleDialog('editCustomerInfo','customersViewPage')">CANCEL</button>
                </div>
             </div>
          </div>
       </div>
    </div>
 </div>
+
+<div id="addAppointment" class="dialog bg-yellow m-auto" style="display: none;">
+   <div>
+      <div class="card p-4 bg-black">
+         <div class="text-center">
+            <h6 class="fw-800"> ADD APPOINTMENT </h6>
+            <hr>
+         </div>
+         <div class="center-div pt-2">
+            <div>
+               <form action="/customers/view{{rowCust.CustomersID}}/addCustomerAppointment"
+                  id="addCustomerAppointmentForm" method="POST">
+                  {{!-- SHOP DETAILS --}}
+                  <fieldset style="border: 1px solid white; padding: 0 1rem .5rem 1rem" class="mb-2">
+                     <legend style="font-size: .9rem; background-color:none; float:none; width:fit-content;">
+                        SHOP NAME:
+                     </legend>
+                     <select class="form-control form-control-sm mb-2 font-small rounded-0" name="shop" id="shop">
+                        <option selected disabled hidden>Shop Name</option>
+                        {{#each rowsShops}}
+                        <option value="{{this.ShopID}}">{{this.shopName}}</option>
+                        {{/each}}
+                     </select>
+                  </fieldset>
+
+                  {{!-- SERVICE DETAILS --}}
+                  <fieldset style="border: 1px solid white; padding: 0 1rem .5rem 1rem" class="mb-2">
+                     <legend style="font-size: .9rem; background-color:none; float:none; width:fit-content;">
+                        SERVICE DETAILS:
+                     </legend>
+                     <select class="form-control form-control-sm mb-2 font-small rounded-0" name="category"
+                        id="category" onchange="changeCustomerApptServices(this)">
+                        <option selected disabled hidden>Category</option>
+                        {{#each rowsCategory}}
+                        <option value="{{this.CategoryID}}">{{this.Name}}</option>
+                        {{/each}}
+                     </select>
+                     <select class="form-control form-control-sm mb-2 font-small rounded-0" name="service"
+                        id="customerService" onchange="changeEmployee(this, 'customerAttendingEmp')">
+                        <option selected disabled hidden>Service</option>
+                     </select>
+                     {{!-- <input class="form-control form-control-sm mb-2 font-small rounded-0" name="price"
+                        type="text" 23qwplaceholder="Price" style="width: 300px;"> --}}
+                  </fieldset>
+
+                  {{!-- WHO AND WHEN --}}
+                  <fieldset style="border: 1px solid white; padding: 0 1rem .5rem 1rem" class="mb-2">
+                     <legend style="font-size: .9rem; background-color:none; float:none; width:fit-content;">
+                        APPOINTMENT DETAILS:
+                     </legend>
+                     <select class="form-control form-control-sm mb-2 font-small rounded-0" id="customerAttendingEmp"
+                        name="employee">
+                        <option selected disabled hidden>Attending Employee</option>
+                        {{#each rowsEmployee}}
+                        {{#if (isBarber EmployeeTypeID)}}
+                        <option value="{{this.EmployeeID}}">{{this.FullName}}</option>
+                        {{/if}}
+                        {{/each}}
+                     </select>
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" name="date"
+                        id="customerApptDate" type="date" placeholder="Date" style="width: 300px;">
+                     <input name="time" id="customerAppointmentTime" style="width: 300px;">
+                  </fieldset>
+
+               </form>
+               <div class="m-auto center-div pt-2" style="width: 300px;">
+                  <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                     onclick="document.getElementById('addCustomerAppointmentForm').submit()">
+                     <small>SAVE</small></button>
+                  <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                     onclick="toggleDialog('addAppointment')">
+                     <small>CANCEL</small></button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
 
 <script>
    function changeCustomerApptServices(el) {
@@ -420,5 +410,3 @@
          });
    }
 </script>
-
-{{!-- --}}

@@ -28,9 +28,9 @@ router
          status = 0;
       }
       acu.startConnection();
-      console.log(lastName, firstName, email, contact, guest, status);
+      console.log(lastName, firstName, email, contact);
       await acu.insertInto(
-         "tblcustomers (firstName, lastName, email, contact, isGuest, status)",
+         "tblcustomers (firstName, lastName, email, contact, status)",
          '( "' +
             firstName +
             '", "' +
@@ -39,11 +39,7 @@ router
             email +
             '", "' +
             contact +
-            '", "' +
-            guest +
-            '", "' +
-            status +
-            '" )'
+            '", 1 )'
       );
       res.redirect("/customers");
    });
@@ -66,13 +62,7 @@ router.get("/setActive:id", async (req, res) => {
 
 //CUSTOMER => EDIT CUSTOMER
 router.post("/edit:id", async (req, res) => {
-   var { lastName, firstName, email, contact, guest, status } = req.body;
-   if (guest == null) {
-      guest = 0;
-   }
-   if (status == null) {
-      status = 0;
-   }
+   var { lastName, firstName, email, contact } = req.body;
    acu.startConnection();
    await acu.updateSet(
       "tblcustomers",
@@ -84,10 +74,6 @@ router.post("/edit:id", async (req, res) => {
          email +
          '", contact = "' +
          contact +
-         '", isGuest = "' +
-         guest +
-         '", status = "' +
-         status +
          '"',
       "CustomersID = " + req.params.id
    );
@@ -102,9 +88,13 @@ router.get("/view:id", async (req, res) => {
       "CustomersID = " + req.params.id
    );
    const rowCust = row1[0];
-   const rowAppt = await acu.getAllFromWhere(
+   const rowApptApproved = await acu.getAllFromWhere(
       "appointcutdb.appointment",
-      "CustomersID = " + req.params.id
+      "CustomersID = " + req.params.id + ' AND appointmentstatus = "Approved"'
+   );
+   const rowApptNot = await acu.getAllFromWhere(
+      "appointcutdb.appointment",
+      "CustomersID = " + req.params.id + ' AND appointmentstatus != "Approved"'
    );
    const rowsShops = await acu.getAllFrom("tblshop");
    const rowsCategory = await acu.getAllFrom("tblcategory");
@@ -114,7 +104,8 @@ router.get("/view:id", async (req, res) => {
       layout: "home-admin",
       title: title,
       rowCust,
-      rowAppt,
+      rowApptApproved,
+      rowApptNot,
       rowsShops,
       rowsCategory,
       rowsEmployee,
@@ -123,6 +114,9 @@ router.get("/view:id", async (req, res) => {
 
 router.post("/view:id/editCustomerInfo", async (req, res) => {
    var { lastName, firstName, email, contact, status } = req.body;
+   if (status == undefined) {
+      status = 0;
+   }
    acu.startConnection();
    await acu.updateSet(
       "tblcustomers",
@@ -187,4 +181,15 @@ router.post("/view:id/addCustomerAppointment", async (req, res) => {
    res.redirect("/customers/view" + req.params.id);
 });
 
+//CANCEL APPOINTMENTS
+router.get("/view:customerID/cancelAppt:id", async (req, res) => {
+   var id = req.params.id;
+   acu.startConnection();
+   await acu.updateSet(
+      "tblappointment",
+      "appStatusID = 3",
+      "AppointmentID = " + id
+   );
+   res.redirect("/customers/view" + req.params.customerID);
+});
 module.exports = router;

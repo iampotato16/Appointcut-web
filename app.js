@@ -44,6 +44,22 @@ hbs.handlebars.registerHelper(
    }
 );
 
+//Login
+const routesLogin = require("./server/routes/routesLogin");
+app.use("/", routesLogin);
+
+//Sign Up
+const routesSignup = require("./server/routes/routesSignup");
+app.use("/signup", routesSignup);
+
+//Owner Account
+const routesOwnerAccount = require("./server/routes/routesOwnerAccount");
+app.use("/ownerAccount", routesOwnerAccount);
+
+//Desk Account
+const routesDeskAccount = require("./server/routes/routesDeskAccount");
+app.use("/deskAccount", routesDeskAccount);
+
 //Employee Maintenance
 const routesEmployees = require("./server/routes/routesEmployees");
 app.use("/employees", routesEmployees);
@@ -63,14 +79,6 @@ app.use("/shops", routesShops);
 //File Maintenance
 const routesFileMaintenance = require("./server/routes/routesFileMaintenance");
 app.use("/fileMaintenance", routesFileMaintenance);
-
-//Login
-const routesLogin = require("./server/routes/routesLogin");
-app.use("/login", routesLogin);
-
-//Sign Up
-const routesSignup = require("./server/routes/routesSignup");
-app.use("/signup", routesSignup);
 
 //Barber Apps Maintenance
 const routesBarberApps = require("./server/routes/routesBarberApps");
