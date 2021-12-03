@@ -36,14 +36,14 @@ async function getOneFromWhere(table, where) {
 
 async function getAllFromServices() {
    var query =
-      "SELECT tblservices.ServicesID, tblservices.Name, tblcategory.Name as Category FROM tblservices INNER JOIN tblCategory ON tblservices.CategoryID = tblCategory.CategoryID";
+      "SELECT tblservices.ServicesID, tblservices.Name, tblcategory.Name as Category FROM tblservices INNER JOIN tblcategory ON tblservices.CategoryID = tblcategory.CategoryID";
    var rows = await connection.query(query);
    return rows[0];
 }
 
 async function getAllFromBarangay() {
    var query =
-      "SELECT tblbarangay.BarangayID, tblbarangay.Name, tblcity.Name as City FROM tblcity INNER JOIN tblbarangay ON tblbarangay.CityID = tblCity.CityID";
+      "SELECT tblbarangay.BarangayID, tblbarangay.Name, tblcity.Name as City FROM tblcity INNER JOIN tblbarangay ON tblbarangay.CityID = tblcity.CityID";
    var rows = await connection.query(query);
    return rows[0];
 }
