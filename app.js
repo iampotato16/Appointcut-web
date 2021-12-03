@@ -82,6 +82,9 @@ const getInfo = require("./server/routes/getInfo");
 app.use("/getInfo", getInfo);
 
 //REST
+//Register
+const routesReg = require('./server/routes/Rest/routesRegister')
+app.use('/rest/register', routesReg)
 //Tokens
 const routesRestToken = require('./server/routes/Rest/routesToken')
 app.use('/rest/token', routesRestToken)

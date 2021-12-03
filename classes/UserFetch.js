@@ -40,7 +40,7 @@ class UserFetch {
             barb = await this.connection.query('SELECT * FROM tblemployee WHERE Email = ?', [email])}
 
         if (cust[0].length > 0) {//customer
-            let pass = await this.connection.query('SELECT * FROM tblcustomers WHERE PasswordHash = ?', [password])
+            let pass = await this.connection.query(`SELECT * FROM tblcustomers WHERE PasswordHash = SHA2('${password}',256)`)
             if (pass[0].length > 0) {//valid user
                 return UserAuthStatus.CUSTOMER
             }
@@ -107,6 +107,21 @@ class UserFetch {
             "firstName": user.firstName,
             "lastName": user.lastName
         }
+    }
+
+    /**
+     * Registers the user to the database
+     * @param {*} first First name
+     * @param {*} last Last name
+     * @param {*} email E-mail address
+     * @param {*} pass Password
+     * @param {*} cont Contact
+     */
+    async registerUser(first, last, email, pass, cont){
+        const insert = "insert into tblcustomers"
+        const columns = "(firstName, lastName, Email, PasswordHash, Contact)"
+        const values = `values ('${first}', '${last}', '${email}', SHA2('${pass}',256), '${cont}')`
+        await this.connection.query(`${insert} ${columns} ${values};`)
     }
 
 }
