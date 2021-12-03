@@ -1,11 +1,11 @@
-<div class="col-lg-9 g-0" style="position:relative">
-   <main class="min-vh-100 p-3" id="ownersPage">
+{{!-- <div class="col-lg-9 g-0" style="position:relative"> --}}
+   <div class="min-vh-100 p-3" id="ownersPage">
       <div class="mt-4 text-decoration-none">
          <div class="d-flex justify-content-between">
             <span class="fs-5 fw-semibold">
                <nav aria-label="breadcrumb">
                   <ol class="breadcrumb">
-                     <li class="breadcrumb-item active" aria-current="page">Owners</li>
+                     <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
                   </ol>
                </nav>
             </span>
@@ -94,7 +94,7 @@
             </table>
          </div>
       </div>
-   </main>
+   </div>
 
    {{!-- DIALOG BOXES --}}
    <div id="addOwner" class="dialog bg-black m-auto" style="display: none;">
@@ -115,8 +115,8 @@
                         style="width: 300px;" placeholder="Contact Number" />
                      <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" name="email"
                         style="width: 300px;" placeholder="Email" />
-                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" name="password"
-                        style="width: 300px;" placeholder="Password" />
+                     <input class="form-control form-control-sm mb-2 font-small rounded-0" type="password"
+                        name="password" style="width: 300px;" placeholder="Password" />
                      <div class="col-auto my-1">
                         <select class="form-control form-control-sm mb-2 font-small rounded-0" name="shop">
                            <option selected>Barbershop...</option>
@@ -146,4 +146,5 @@
          </div>
       </div>
    </div>
-</div>
+   {{!--
+</div> --}}

@@ -1,49 +1,46 @@
-<main class="col-lg-9 container p-0" id="main">
-   <div class="mt-4 p-3 text-decoration-none">
-      <div class="d-flex justify-content-between">
-         <span class="fs-5 fw-semibold">{{title}}</span>
-         <div class="d-flex float-right" style="height: 2rem">
-            <form class="d-flex">
-               <input class="form-control form-control-sm me-1 p-1 rounded-0" type="search" placeholder="Search"
-                  aria-label="Search" />
-               <button class="btn btn-sm btn-dark me-1" type="submit"><small>SEARCH</small> </button>
-            </form>
-            <button href="javascript:;" class="btn btn-dark btn-sm me-1 i-plus" id="Customers-add">
-               <i class="bi bi-plus"></i>
-            </button>
-         </div>
-      </div>
-      <hr>
-      <div class="bg-gray p-4 mb-3">
-         <table class="table table-hover table-striped table-sm m-0">
-            <thead>
-               {{!-- Table Headers --}}
-               <tr>
-                  <th scope="col"> <small>ID</small> </th>
-                  <th scope="col"> <small>FIRST NAME</small> </th>
-                  <th scope="col"> <small>LAST NAME</small> </th>
-                  <th scope="col"> <small>EMAIL</small> </th>
-                  <th scope="col"> <small>CONTACT</small> </th>
-                  <th scope="col" class="align-content-end" style="width: 76px"></th>
-               </tr>
-            </thead>
-            <tbody>
-               {{#each rows}}
-               <tr class="align-items-center">
-                  <td id="BarberApps-OwnerID-{{this.OwnerID}}" class="align-middle">{{this.OwnerID}}</td>
-                  <td id="BarberApps-givenName-{{this.OwnerID}}" class="align-middle">{{this.firstName}}</td>
-                  <td id="BarberApps-familyName-{{this.OwnerID}}" class="align-middle">{{this.lastName}}</td>
-                  <td id="BarberApps-e-mail-{{this.OwnerID}}" class="align-middle">{{this.email}}</td>
-                  <td id="BarberApps-contact-{{this.OwnerID}}" class="align-middle">{{this.contact}}</td>
-                  <td>
-                     <button class="btn btn-dark btn-sm"><i class="bi bi-check"></i></button>
-                     <button class="btn btn-dark btn-sm"><i class="bi bi-x"></i></button>
-                  </td>
-               </tr>
-               {{/each}}
-            </tbody>
-         </table>
+<div class="mt-4 p-3 text-decoration-none">
+   <div class="d-flex justify-content-between">
+      <span class="fs-5 fw-semibold">{{title}}</span>
+      <div class="d-flex float-right" style="height: 2rem">
+         <form class="d-flex">
+            <input class="form-control form-control-sm me-1 p-1 rounded-0" type="search" placeholder="Search"
+               aria-label="Search" />
+            <button class="btn btn-sm btn-dark me-1" type="submit"><small>SEARCH</small> </button>
+         </form>
+         <button href="javascript:;" class="btn btn-dark btn-sm me-1 i-plus" id="Customers-add">
+            <i class="bi bi-plus"></i>
+         </button>
       </div>
    </div>
-</main>
-{{>modal-dialogbox modalInfo=ownerModal}}
+   <hr>
+   <div class="bg-gray p-4 mb-3">
+      <table class="table table-hover table-striped table-sm m-0">
+         <thead>
+            {{!-- Table Headers --}}
+            <tr>
+               <th scope="col"> <small>ID</small> </th>
+               <th scope="col"> <small>FIRST NAME</small> </th>
+               <th scope="col"> <small>LAST NAME</small> </th>
+               <th scope="col"> <small>EMAIL</small> </th>
+               <th scope="col"> <small>CONTACT</small> </th>
+               <th scope="col" class="align-content-end" style="width: 76px"></th>
+            </tr>
+         </thead>
+         <tbody>
+            {{#each rows}}
+            <tr class="align-items-center">
+               <td id="BarberApps-OwnerID-{{this.OwnerID}}" class="align-middle">{{this.OwnerID}}</td>
+               <td id="BarberApps-givenName-{{this.OwnerID}}" class="align-middle">{{this.firstName}}</td>
+               <td id="BarberApps-familyName-{{this.OwnerID}}" class="align-middle">{{this.lastName}}</td>
+               <td id="BarberApps-e-mail-{{this.OwnerID}}" class="align-middle">{{this.email}}</td>
+               <td id="BarberApps-contact-{{this.OwnerID}}" class="align-middle">{{this.contact}}</td>
+               <td>
+                  <button class="btn btn-dark btn-sm"><i class="bi bi-check"></i></button>
+                  <button class="btn btn-dark btn-sm"><i class="bi bi-x"></i></button>
+               </td>
+            </tr>
+            {{/each}}
+         </tbody>
+      </table>
+   </div>
+</div>

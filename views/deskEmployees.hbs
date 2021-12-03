@@ -1,0 +1,548 @@
+<div class="min-vh-100 p-3" id="shopsViewPage">
+    <div class="row px-3">
+        <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+            <div>
+                <span class="me-2 fw-800"><small>EMPLOYEES</small></span>
+                <button class="btn btn-sm btn-outline-light"
+                    onclick="toggleMultiDialog('addEmployeeInfo', 'addEmp', 'addEmployeeInfoForm')"><i
+                        class="bi bi-plus"></i></button>
+            </div>
+            <form class="d-flex">
+                <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search" placeholder="Search"
+                    aria-label="Search">
+                <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small> </button>
+            </form>
+        </div>
+        <div class="bg-gray p-4 pt-2 mb-3">
+            <table class="table table-hover table-striped table-sm m-0">
+                <thead>
+                    <tr>
+                        <th scope="col"> <small>NAME</small></th>
+                        <th scope="col"> <small>CONTACT</small></th>
+                        <th scope="col"> <small>EMAIL</small></th>
+                        <th scope="col"> <small>ROLE</small></th>
+                        <th scope="col"> <small>SALARY TYPE</small></th>
+                        <th scope="col"> <small>VALUE</small></th>
+                        <th scope="col"> <small>STATUS</small></th>
+                        <th scope="col" class="justify-content-end" style="width: 40px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each rowEmp}}
+                    <tr class="align-items-center">
+                        <td class="align-middle">{{this.FullName}}</td>
+                        <td class="align-middle">{{this.Contact}}</td>
+                        <td class="align-middle">{{this.Email}}</td>
+                        <td class="align-middle">{{this.EmployeeType}}</td>
+                        <td class="align-middle">{{this.SalaryType}}</td>
+                        <td class="align-middle">{{this.SalaryValue}}</td>
+                        <td class="align-middle">
+                            {{#if this.Status}}
+                            <a href="setInactiveEmp{{this.EmployeeID}}" class="btn btn-sm btn-success" type="button">
+                                ACTIVE</a>
+                            {{else}}
+                            <a href="setActiveEmp{{this.EmployeeID}}" class="btn btn-sm btn-warning" type="button">
+                                INACTIVE</a>
+                            {{/if}}
+                        </td>
+                        <td>
+                            <button class="btn btn-dark btn-sm"
+                                onclick="toggleMultiDialog('editEmployeeInfo{{this.EmployeeID}}', 'editEmp{{this.EmployeeID}}', 'editEmployeeInfoForm{{this.EmployeeID}}');"><i
+                                    class=" bi bi-pencil"></i></button>
+                            {{!-- <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
+                            --}}
+                        </td>
+                    </tr>
+                    {{!-- EDIT EMPLOYEE INFO --}}
+                    <div id="editEmployeeInfo{{this.EmployeeID}}" class="dialog bg-yellow m-auto"
+                        style="display: none;">
+                        <div>
+                            <div class="card p-4 bg-black position-relative">
+                                <button class="position-absolute btn btn-link p-0"
+                                    style="right: 1.5rem; margin-top: -.5rem;"
+                                    onclick="toggleDialog('editEmployeeInfo{{this.EmployeeID}}')">
+                                    <i class="bi bi-x"></i></button>
+                                <div class="text-center">
+                                    <h6 class="fw-800"> EDIT EMPLOYEE INFORMATION </h6>
+                                    <hr>
+                                </div>
+                                <div class="pt-2">
+                                    <form action="editEmployee{{this.EmployeeID}}"
+                                        id="editEmployeeInfoForm{{this.EmployeeID}}" method="POST">
+                                        <div class="tab editEmp{{this.EmployeeID}}">
+                                            <div class="d-flex justify-content-center">
+                                                <div>
+                                                    <p class="text-center"> <small> EMPLOYEE INFORMATION
+                                                        </small>
+                                                    </p>
+                                                    <input
+                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                        name="firstName" type="text" value="{{this.firstName}}"
+                                                        style="width: 300px;">
+                                                    <input
+                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                        name="lastName" type="text" value="{{this.lastName}}"
+                                                        style="width: 300px;">
+                                                    <input
+                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                        name="email" type="text" value="{{this.Email}}"
+                                                        style="width: 300px;">
+                                                    <input
+                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                        name="contact" type="text" value="{{this.Contact}}"
+                                                        style="width: 300px;">
+                                                    <div>
+                                                        <select
+                                                            class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                            name="employeeType" style="width: 300px;">
+                                                            <option selected disabled hidden>
+                                                                {{this.EmployeeType}}
+                                                            </option>
+                                                            {{#each ../rowsEmpType}}
+                                                            <option value="{{this.EmployeeTypeID}}">
+                                                                {{this.Name}}
+                                                            </option>
+                                                            {{/each}}
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <select
+                                                            class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                            name="salaryType" style="width: 300px;">
+                                                            <option selected disabled hidden>{{this.SalaryType}}
+                                                            </option>
+                                                            {{#each ../rowsSalaryType}}
+                                                            <option value="{{this.SalaryTypeID}}">{{this.Name}}
+                                                            </option>
+                                                            {{/each}}
+                                                        </select>
+                                                    </div>
+                                                    <input
+                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                        name="salaryValue" type="text" value="{{this.SalaryValue}}"
+                                                        style="width: 300px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab editEmp{{this.EmployeeID}}">
+                                            <p class="text-center"><small>EMPLOYEE SCHEDULE</small></p>
+                                            {{#each ../rowsEmpSchedule}}
+                                            {{#if (withinShop this.EmployeeID ../this.EmployeeID)}}
+                                            {{#if this.dayStatus}}
+                                            <div class="row m-auto" style="width: 400px">
+                                                <div class="col-4">
+                                                    <input class="form-check-input" type="checkbox" name="{{this.Date}}"
+                                                        value="{{this.Date}}" {{#if this.TimeIn}} checked {{/if}}>
+                                                    <label class="form-check-label" for="inlineCheckbox1">
+                                                        <small>{{this.Date}}</small></label>
+                                                </div>
+                                                <div class="col-8 justify-content-center">
+                                                    <div class="row">
+                                                        <div class="col-6 d-flex align-items-center">
+                                                            <input
+                                                                class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                                name="timeIn" type="time" onchange="inputTime(this)"
+                                                                value="{{this.TimeIn}}" min="{{../this.TimeIn}}"
+                                                                max="{{../this.TimeOut}}">
+                                                        </div>
+                                                        <div class="col-6 d-flex align-items-center">
+                                                            <input
+                                                                class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                                name="timeOut" type="time" onchange="inputTime(this)"
+                                                                value="{{this.TimeOut}}" min="{{../this.TimeIn}}"
+                                                                max="{{../this.TimeOut}}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {{else}}
+                                            <div class="row m-auto" style="display: none">
+                                                <div class="col-4">
+                                                    <input class="form-check-input" type="checkbox" name="{{this.Date}}"
+                                                        value="{{this.Date}}" {{#if this.TimeIn}} checked {{/if}}>
+                                                    <label class="form-check-label" for="inlineCheckbox1">
+                                                        <small>{{this.Date}}</small></label>
+                                                </div>
+                                                <div class="col-8 justify-content-center">
+                                                    <div class="row">
+                                                        <div class="col-6 d-flex align-items-center">
+                                                            <input
+                                                                class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                                name="timeIn" type="time" value="{{this.TimeIn}}"
+                                                                disabled>
+                                                        </div>
+                                                        <div class="col-6 d-flex align-items-center">
+                                                            <input
+                                                                class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                                name="timeOut" type="time" value="{{this.TimeOut}}"
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {{/if}}
+                                            {{/if}}
+                                            {{/each}}
+                                        </div>
+                                        <div class="tab editEmp{{this.EmployeeID}}">
+                                            <p class="text-center"><small>EMPLOYEE SPECIALIZATION</small></p>
+                                            {{#each ../rowsEmpSpecArray}}
+                                            {{#if (withinShop this.EmployeeID ../this.EmployeeID)}}
+                                            <div>
+                                                <input value={{this.ShopServicesID}} name="serviceName{{this.Index}}"
+                                                    style="display: none">
+                                                <input class="form-check-input" type="checkbox"
+                                                    name="service{{this.Index}}" value="{{this.Status}}" {{#if
+                                                    this.Status}} checked {{/if}}>
+                                                <label class="form-check-label" for="inlineCheckbox1">
+                                                    <small>{{this.ServiceName}}</small></label>
+                                            </div>
+                                            {{/if}}
+                                            {{/each}}
+                                        </div>
+
+                                        {{!-- BUTTONS --}}
+                                        <div style="overflow:auto;">
+                                            <div class="center-div p-2">
+                                                <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                                    style="width: 150px;" type="button"
+                                                    id="prevBtneditEmp{{this.EmployeeID}}"
+                                                    onclick="toggleMultiForm.nextPrev(-1)">Previous</button>
+                                                <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                                    style="width: 150px;" type="button"
+                                                    id="nextBtneditEmp{{this.EmployeeID}}"
+                                                    onclick="toggleMultiForm.nextPrev(1)">Next</button>
+                                            </div>
+                                        </div>
+                                        {{!-- Circles which indicates the steps of the form: --}}
+                                        <div class="text-center pt-4">
+                                            <span class="step editEmp{{this.EmployeeID}}"></span>
+                                            <span class="step editEmp{{this.EmployeeID}}"></span>
+                                            <span class="step editEmp{{this.EmployeeID}}"></span>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div id="addEmployeeInfo" class="dialog bg-yellow m-auto" style="display: none;">
+        <div>
+            <div class="card p-4 bg-black position-relative">
+                <button class="position-absolute btn btn-link p-0" style="right: 1.5rem; margin-top: -.5rem;"
+                    onclick="toggleDialog('addEmployeeInfo')"><i class="bi bi-x"></i></button>
+                <div class="text-center">
+                    <h6 class="fw-800"> ADD EMPLOYEE </h6>
+                    <hr>
+                </div>
+                <div class="center-div pt-2">
+                    <form action="employees/addEmployee" id="addEmployeeInfoForm" method="POST">
+                        <div class="tab addEmp">
+                            <p class="text-center"> <small> EMPLOYEE INFORMATION </small> </p>
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="firstName"
+                                type="text" placeholder="firstName" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="lastName"
+                                type="text" placeholder="lastName" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="email"
+                                type="text" placeholder="email" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="password"
+                                type="password" placeholder="Password" style="width: 300px;">
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact"
+                                type="text" placeholder="contact" style="width: 300px;">
+                            <div style="width: 300px;">
+                                <select class="form-control form-control-sm mb-2 font-small rounded-0"
+                                    name="employeeType">
+                                    <option selected disabled hidden>Employee Type...</option>
+                                    {{#each rowsEmpType}}
+                                    <option value="{{this.EmployeeTypeID}}">{{this.Name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div style="width: 300px;">
+                                <select class="form-control form-control-sm mb-2 font-small rounded-0"
+                                    name="salaryType">
+                                    <option selected disabled hidden>Salary Type...</option>
+                                    {{#each rowsSalaryType}}
+                                    <option value="{{this.SalaryTypeID}}">{{this.Name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <input class="form-control form-control-sm mb-2 font-small rounded-0" name="salaryValue"
+                                type="text" placeholder="salaryValue" style="width: 300px">
+                        </div>
+                        <div class="tab addEmp">
+                            <p class="text-center"><small>EMPLOYEE SCHEDULE</small></p>
+                            {{#each rowsDays}}
+                            {{#if this.TimeIn}}
+                            <div class="row d-flex align-items-center" style="width: 400px;">
+                                <div class="col-4">
+                                    <input class="form-check-input" type="checkbox" name="{{this.Day}}"
+                                        value="{{this.Day}}">
+                                    <label class="form-check-label" for="inlineCheckbox1">
+                                        <small>{{this.Day}}</small></label>
+                                </div>
+                                <div class="col-8 justify-content-center">
+                                    <div class="row">
+                                        <div class="col-6 d-flex align-items-center">
+                                            <input class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                onchange="inputTime(this)" name="timeIn" type="time"
+                                                min="{{this.TimeIn}}" max="{{this.TimeOut}}">
+                                        </div>
+                                        <div class="col-6 d-flex align-items-center">
+                                            <input class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                onchange="inputTime(this)" name="timeOut" type="time"
+                                                min="{{this.TimeIn}}" max="{{this.TimeOut}}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{else}}
+                            <div style="display: none;">
+                                <div class="col-4">
+                                    <input class="form-check-input" type="checkbox" name="{{this.Day}}"
+                                        value="{{this.Day}}">
+                                    <label class="form-check-label" for="inlineCheckbox1">
+                                        <small>{{this.Day}}</small></label>
+                                </div>
+                                <div class="col-8 justify-content-center">
+                                    <div class="row">
+                                        <div class="col-6 d-flex align-items-center">
+                                            <input class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                name="timeIn" type="time">
+                                        </div>
+                                        <div class="col-6 d-flex align-items-center">
+                                            <input class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                name="timeOut" type="time">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{/if}}
+                            {{/each}}
+                        </div>
+                        <div class="tab addEmp">
+                            <p class="text-center"><small>EMPLOYEE SPECIALIZATION</small></p>
+                            {{#each rowsServArray}}
+                            <div>
+                                <input value="{{this.ShopServicesID}}" name="serviceName{{this.Index}}"
+                                    style="display: none;">
+                                <input class="form-check-input" type="checkbox" name="service{{this.Index}}" value="1">
+                                <label class="form-check-label" for="inlineCheckbox1">
+                                    <small>{{this.ServiceName}}</small></label>
+                            </div>
+                            {{/each}}
+                        </div>
+
+                        {{!-- BUTTONS --}}
+                        <div style="display: block;">
+                            <div class="center-div p-2">
+                                <button class="btn btn-warning col-6 rounded-0 me-1 fw-800" style="width: 150px;"
+                                    type="button" id="prevBtnaddEmp"
+                                    onclick="toggleMultiForm.nextPrev(-1)">Previous</button>
+                                <button class="btn btn-warning col-6 rounded-0 me-1 fw-800" style="width: 150px;"
+                                    type="button" id="nextBtnaddEmp" onclick="toggleMultiForm.nextPrev(1)">Next</button>
+                            </div>
+                        </div>
+
+
+                        {{!-- Circles which indicates the steps of the form: --}}
+                        <div class="text-center pt-4">
+                            <span class="step addEmp"></span>
+                            <span class="step addEmp"></span>
+                            <span class="step addEmp"></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //I DUNNO PERO PARA TO SA DISPLAY NG SERVICE NAME
+    function inputTime(el) {
+        var timeInput = el.value;
+        var timeIn = el.min;
+        var timeOut = el.max;
+        if (timeInput >= timeIn && timeInput <= timeOut) {
+            el.style.backgroundColor = "white";
+        } else {
+            alert("Time must be within: " + timeIn + " - " + timeOut + " only");
+            el.style.backgroundColor = "red";
+        }
+    }
+
+    //FOR EMPLOYEE SPECIALIZATION
+    var employee = document.getElementById("attendingEmp");
+    function changeEmployee(el) {
+        var ableEmployees = [];
+        fetch("/getInfo/employeeSpecialization")
+            .then((res) => res.json())
+            .then((data) => {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].ShopServicesID == el.value) {
+                        ableEmployees.push(data[i]);
+                    }
+                }
+                console.log(ableEmployees);
+            })
+            .then((data) => {
+                var empOptions = "<option hidden disabled selected>Employee</option>";
+                ableEmployees.forEach((element) => {
+                    empOptions +=
+                        "<option value=" +
+                        element.EmployeeID +
+                        "> " +
+                        element.Name +
+                        " </option>";
+                });
+                employee.innerHTML = empOptions;
+            });
+    }
+
+    //FOR FLATPICKR -- For changing enabled dates per employee
+    //get select element that holds the barber list
+    const attendingEmp = document.querySelector("#attendingEmp");
+
+    //Listens to attendingEmp
+    attendingEmp.onchange = function () {
+        const employee = attendingEmp.value;
+        updateDatePicker(employee);
+    };
+
+    function updateDatePicker(employee) {
+        var days = [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+        ];
+        var nonWorkingDays = [];
+        var nwdNumberForm = [];
+        var scheduleData, appointments, shopservices;
+
+        fetch("/getInfo/shopservices")
+            .then((res) => res.json())
+            .then((data) => {
+                shopservices = data;
+            });
+
+        fetch("/getInfo/appointmentviews")
+            .then((res) => res.json())
+            .then((data) => {
+                appointments = data;
+            });
+
+        //get nonworking days
+        fetch("/getInfo/schedule")
+            .then((res) => res.json())
+            .then((data) => {
+                scheduleData = data;
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].EmployeeID == employee && data[i].TimeIn == null) {
+                        nonWorkingDays.push(data[i].Date);
+                    }
+                }
+            })
+            //get non working days index for flatpicker
+            .then((data) => {
+                for (var i = 0; i < nonWorkingDays.length; i++) {
+                    if (days.includes(nonWorkingDays[i])) {
+                        nwdNumberForm.push(days.indexOf(nonWorkingDays[i]));
+                    }
+                }
+            })
+            //initializes datepicker with dynamic disabled days
+            .then((data) => {
+                const myInput = document.querySelector("#apptDate");
+                const fp = flatpickr(myInput, {
+                    disable: [
+                        function (date) {
+                            return nwdNumberForm.includes(date.getDay());
+                        },
+                    ],
+                    onChange: function (selectedDates, dateStr, instance) {
+                        //1. get date
+                        var day = selectedDates[0].getDay();
+                        //2. get occupied time of chosen date
+                        var occupiedTimeSlot = [];
+                        for (var i = 0; i < appointments.length; i++) {
+                            //check if the appt is of the chosen employee
+                            if (appointments[i].EmployeeID == employee) {
+                                //check if the appt is of the same date
+                                var newDate = new Date(appointments[i].Date);
+                                var currentDate =
+                                    newDate.getFullYear() +
+                                    "-" +
+                                    (newDate.getMonth() + 1) +
+                                    "-" +
+                                    newDate.getDate();
+                                if (currentDate == dateStr) {
+                                    occupiedTimeSlot.push([
+                                        appointments[i].TimeIn,
+                                        appointments[i].TimeOut,
+                                    ]);
+                                }
+                            }
+                        }
+                        //3. get schedule of chosen date
+                        //---select timeIn and timeOut from tblsched where empId = employee
+                        var daySchedTimeIn, daySchedTimeOut;
+                        for (var i = 0; i < scheduleData.length; i++) {
+                            //check that the schedule to be returned is of the chosen employee
+                            if (scheduleData[i].EmployeeID == employee) {
+                                //chech if the returned sched must be the same as the day
+                                var a = scheduleData[i].Date;
+                                var dayIndex = days.indexOf(a);
+                                if (dayIndex == day) {
+                                    daySchedTimeIn = scheduleData[i].TimeIn;
+                                    daySchedTimeOut = scheduleData[i].TimeOut;
+                                    console.log(daySchedTimeOut + " " + daySchedTimeIn);
+                                }
+                            }
+                        }
+                        //4. get chosen service and duration
+                        var loc = window.location.href;
+                        var shopId = loc.charAt(loc.length - 1);
+                        var serviceId = document.getElementById("service4").value;
+                        var duration = 0;
+                        console.log(shopservices);
+                        for (var i = 0; i < shopservices.length; i++) {
+                            console.log(shopId, shopservices[i].shopID, ' this is shop and service')
+                            console.log(serviceId, shopservices[i].ServicesID, ' this is shop and service')
+                            if (
+                                shopservices[i].shopID == shopId &&
+                                shopservices[i].ServicesID == serviceId
+
+                            ) {
+                                duration = shopservices[i].Duration;
+                            }
+                        }
+                        console.log("aaaaaa");
+                        var pls = $("#appointmentTime")
+                        console.log(daySchedTimeIn)
+                        console.log(daySchedTimeOut)
+                        console.log(occupiedTimeSlot)
+                        console.log(duration)
+                        pls.timepicker({
+                            minTime: daySchedTimeIn,
+                            maxTime: daySchedTimeOut,
+                            disableTimeRanges: occupiedTimeSlot,
+                            step: duration,
+                            disableTextInput: true,
+                            timeFormat: "H:i:s"
+                        });
+                    }
+                });
+            });
+    }
+</script>

@@ -1,0 +1,51 @@
+<div class="min-vh-100 p-3" id="shopsViewPage">
+    <div id="divAppts">
+        <div class="row px-3">
+            <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="me-2 fw-800"><small>APPOINTMENT HISTORY</small></span>
+                </div>
+                <form class="d-flex">
+                    <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search" placeholder="Search"
+                        aria-label="Search">
+                    <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small>
+                    </button>
+                </form>
+            </div>
+            <div class="bg-gray p-4 pt-2 mb-3">
+                <table class="table table-hover table-striped table-sm m-0">
+                    <thead>
+                        <tr>
+                            <th scope="col"> <small>CUSTOMER</small></th>
+                            <th scope="col"> <small>DATE</small></th>
+                            <th scope="col"> <small>TIME</small></th>
+                            <th scope="col"> <small>SERVICE</small></th>
+                            <th scope="col"> <small>PRICE</small></th>
+                            <th scope="col"> <small>ATTENDING EMP</small></th>
+                            <th scope="col"> <small>STATUS</small></th>
+                            {{!-- <th scope="col" class="justify-content-end" style="width: 40px;"></th>
+                            --}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each rowsApptHistory}}
+                        <tr class="align-items-center">
+                            <td class="align-middle">{{this.CustomerName}}</td>
+                            <td class="align-middle dateDisplay">{{this.Date}}</td>
+                            <td class="align-middle">{{this.TimeIn}} - {{this.TimeOut}}</td>
+                            <td class="align-middle">{{this.Service}}</td>
+                            <td class="align-middle">{{this.Amount}}</td>
+                            <td class="align-middle">{{this.EmployeeName}}</td>
+                            <td class="align-middle">{{this.AppointmentStatus}}</td>
+                            </td>
+                            {{!-- <td>
+                                <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
+                            </td> --}}
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

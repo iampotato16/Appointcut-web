@@ -1,135 +1,38 @@
 const acu = require("../../AppointCutUtils");
+const ModalConstructor = acu.ModalConstructor;
 const express = require("express");
 const router = express.Router();
-const ModalConstructor = acu.ModalConstructor;
-const mysql2 = require("mysql2/promise");
 
-let connection = mysql2.createPool({
-   host: process.env.DB_HOST,
-   user: process.env.DB_USER,
-   port: process.env.DB_PORT,
-   password: process.env.DB_PASS,
-   database: process.env.DB_NAME,
-});
-
-router
-   .route("/")
-   .get(async (req, res) => {
-      let title = "Shops";
-      acu.startConnection();
-      const rows = await acu.getAllFrom("appointcutdb.shop");
-      const rowsCity = await acu.getAllFrom("tblcity");
-      const rowsBrgy = await acu.getAllFrom("tblbarangay");
-      const rowsShopSchedule = await acu.getAllFrom("tblshopschedules");
-      const days = [
-         { name: "Monday" },
-         { name: "Tuesday" },
-         { name: "Wednesday" },
-         { name: "Thursday" },
-         { name: "Friday" },
-         { name: "Saturday" },
-         { name: "Sunday" },
-      ];
-      res.render("shops", {
-         layout: "home-admin",
-         title,
-         rows,
-         rowsCity,
-         rowsBrgy,
-         rowsShopSchedule,
-         days,
-      });
-   })
-   .post((req, res) => {
-      var addInput = req.body;
-      connection
-         .query(
-            `INSERT INTO tblshop SET shopName = ?, OwnerID = ?, longtitude = ?, latitude = ?, address = ?, contact = ?, email = ?, BarangayID = ?, CityID = ?`,
-            [
-               addInput["Shop Name"],
-               addInput["Owner ID"],
-               addInput["Longtitude"],
-               addInput["Latitude"],
-               addInput["Address"],
-               addInput["Contact"],
-               addInput["E-mail"],
-               addInput["Barangay ID"],
-               addInput["City ID"],
-            ]
-         )
-         .then((mess) => {
-            res.redirect("/shops");
-         })
-         .catch((err) => {
-            console.log(err);
-         });
-   });
-
-router.post("/edit", (req, res) => {
-   var request = req.body;
-   connection
-      .query(
-         `UPDATE tblshop SET shopName = ?, OwnerID = ?, longtitude = ?, latitude = ?, address = ?, contact = ?, email = ?, BarangayID = ?, CityID = ? WHERE ShopID = ?`,
-         [
-            request["Shop Name"],
-            request["Owner ID"],
-            request["Longtitude"],
-            request["Latitude"],
-            request["Address"],
-            request["Contact"],
-            request["E-mail"],
-            request["Barangay ID"],
-            request["City ID"],
-            request["Shop ID"],
-         ]
-      )
-      .then((mess) => {
-         res.redirect("/shops");
-      })
-      .catch((err) => {
-         console.log(err);
-      });
-});
-
-//views
-router.get("/view:id", async (req, res) => {
+async function getShopName(shopID) {
    acu.startConnection();
-   const rowsApptApproved = await acu.getAllFromWhere(
-      "appointcutdb.appointment",
-      "shopID = " + req.params.id + ' AND appointmentstatus = "Approved"'
-   );
-   const rowsApptHistory = await acu.getAllFromWhere(
-      "appointcutdb.appointment",
-      "shopID = " + req.params.id + ' AND appointmentstatus != "Approved"'
-   );
-   const rows = await acu.getOneFromWhere(
-      "appointcutdb.shop",
-      "ShopID = " + req.params.id
-   );
-   const rowOwners = await acu.getAllFromWhere(
-      "appointcutdb.shopownership",
-      "ShopID = " + req.params.id
-   );
+   var rowsShop = await acu.getAllFromWhere("tblshop", "ShopID = " + shopID);
+   return rowsShop[0].shopName;
+}
+
+router.route("/:shopID").get(async (req, res) => {
+   var shopID = req.params.shopID;
+   var shopName = await getShopName(shopID);
+   res.render("deskReports", {
+      layout: "home-desk",
+      title: shopName,
+      shopName,
+      shopID,
+   });
+});
+
+//EMPLOYEES
+router.route("/:shopID/employees").get(async (req, res) => {
+   var shopID = req.params.shopID;
+   var shopName = await getShopName(shopID);
+   acu.startConnection();
    const rowEmp = await acu.getAllFromWhere(
       "appointcutdb.employee",
-      "ShopID = " + req.params.id
+      "ShopID = " + shopID
    );
-   const rowServ = await acu.getAllFromWhere(
-      "appointcutdb.services",
-      "ShopID = " + req.params.id
-   );
-   /* const rowsApptPending = await acu.getAllFromWhere(
-      "appointcutdb.appointment",
-      "shopID = " + req.params.id + ' AND appointmentstatus = "Pending"'
-   ); */
-   const rowsAppt = await acu.getAllFromWhere(
-      "appointcutdb.appointment",
-      "shopID = " + req.params.id + ' AND appointmentstatus != "Pending"'
-   );
+
    const rowsEmpSpec = await acu.getAllFrom(
       "appointcutdb.employeespecialization"
    );
-
    const rowsEmpSchedule = await acu.getAllFrom("tblschedule");
    var rowsEmpSpecArray = rowsEmpSpec;
    var id = rowsEmpSpec[0].EmployeeID;
@@ -150,7 +53,7 @@ router.get("/view:id", async (req, res) => {
 
    const rowsServ = await acu.getAllFromWhere(
       "appointcutdb.services",
-      "shopID = " + req.params.id
+      "shopID = " + shopID
    );
 
    var rowsServArray = rowsServ;
@@ -160,115 +63,27 @@ router.get("/view:id", async (req, res) => {
 
    const rowsDays = await acu.getAllFromWhere(
       "tblshopschedules",
-      "ShopID = " + req.params.id
+      "ShopID = " + shopID
    );
-
-   const days = [
-      { name: "Monday" },
-      { name: "Tuesday" },
-      { name: "Wednesday" },
-      { name: "Thursday" },
-      { name: "Friday" },
-      { name: "Saturday" },
-      { name: "Sunday" },
-   ];
-
    const rowsEmpType = await acu.getAllFrom("tblemployeetype");
    const rowsSalaryType = await acu.getAllFrom("tblsalarytype");
-   const rowsServCategory = await acu.getAllFrom("tblcategory");
-   var title = rows.ShopName;
-   res.render("shopsView", {
-      layout: "home-admin",
-      title: title,
-      rows,
-      rowOwners,
+   res.render("deskEmployees", {
+      layout: "home-desk",
+      title: "Shop Name",
+      shopID,
       rowEmp,
-      rowServ,
-      //rowsApptPending,
-      rowsAppt,
-      days,
-      rowsDays,
-      rowsEmpSpecArray,
-      rowsServArray,
-      rowsEmpSchedule,
-      rowsApptApproved,
-      rowsApptHistory,
       rowsEmpType,
       rowsSalaryType,
-      rowsServCategory,
+      rowsEmpSchedule,
+      rowsEmpSpecArray,
+      rowsDays,
+      rowsServArray,
+      shopName,
    });
 });
 
-//CUSTOMER VIEWS => ADD OWNER
-router.post("/view:shopID/addOwner", async (req, res) => {
-   acu.startConnection();
-   var { lastName, firstName, email, password, contact } = req.body;
-   var shop = req.params.shopID;
-   var newOwner = await acu.insertInto(
-      "tblowner (firstName, lastName, email, password, contact, status)",
-      '( "' +
-         firstName +
-         '", "' +
-         lastName +
-         '", "' +
-         email +
-         '", "' +
-         password +
-         '", "' +
-         contact +
-         '", 1 )'
-   );
-   await acu.insertInto(
-      "tblshopownership (shopID, ownerID)",
-      '( "' + shop + '", "' + newOwner.insertId + '" )'
-   );
-   res.redirect("/shops/view" + req.params.shopID);
-});
-
-//CUSTOMER VIEWS => EDIT OWNER INFORMATION
-router.post("/view:shopID/editOwner:ownerID", async (req, res) => {
-   var { lastName, firstName, email, contact } = req.body;
-   acu.startConnection();
-   await acu.updateSet(
-      "tblowner",
-      'firstName = "' +
-         firstName +
-         '", lastName = "' +
-         lastName +
-         '", email = "' +
-         email +
-         '", contact = "' +
-         contact +
-         '"',
-      "OwnerID = " + req.params.ownerID
-   );
-   res.redirect("/shops/view" + req.params.shopID);
-});
-
-//CUSTOMER VIEWS => SET OWNER AS INACTIVE
-router.get("/view:shopID/setInactiveOwner:ownerID", async (req, res) => {
-   acu.startConnection();
-   await acu.updateSet(
-      "tblowner",
-      "status = 0",
-      "OwnerID = " + req.params.ownerID
-   );
-   res.redirect("/shops/view" + req.params.shopID);
-});
-
-//CUSTOMER VIEWS => SET OWNER AS ACTIVE
-router.get("/view:shopID/setActiveOwner:ownerID", async (req, res) => {
-   acu.startConnection();
-   await acu.updateSet(
-      "tblowner",
-      "status = 1",
-      "OwnerID = " + req.params.ownerID
-   );
-   res.redirect("/shops/view" + req.params.shopID);
-});
-
 //OWNER BARBERSHOP VIEWS => ADD EMPLOYEE
-router.post("/view:shopID/addEmployee", async (req, res) => {
+router.post("/:shopID/employees/addEmployee", async (req, res) => {
    acu.startConnection();
    var {
       lastName,
@@ -367,11 +182,11 @@ router.post("/view:shopID/addEmployee", async (req, res) => {
             '")'
       );
    }
-   res.redirect("/shops/view" + req.params.shopID);
+   res.redirect("/deskAccount/" + req.params.shopID + "/employees");
 });
 
-//CUSIOMER VIEWS => EDIT EMPOLYEE INFORMATION
-router.post("/view:shopID/editEmployee:empID", async (req, res) => {
+//EDIT EMPOLYEE INFORMATION
+router.post("/:shopID/editEmployee:empID", async (req, res) => {
    acu.startConnection();
    var {
       lastName,
@@ -477,50 +292,72 @@ router.post("/view:shopID/editEmployee:empID", async (req, res) => {
          );
       }
    }
-   res.redirect("/shops/view" + req.params.shopID);
+   res.redirect("/deskAccount/" + req.params.shopID + "/employees");
 });
 
-router.get("/view:shopID/setActiveEmp:empID", async (req, res) => {
+//SET ACTIVE
+router.get("/:shopID/setActiveEmp:empID", async (req, res) => {
    acu.startConnection();
    await acu.updateSet(
       "tblemployee",
       "Status = 1",
       "EmployeeID = " + req.params.empID
    );
-   res.redirect("/shops/view" + req.params.shopID);
+   res.redirect("/deskAccount/" + req.params.shopID + "/employees");
 });
 
-router.get("/view:shopID/setInactiveEmp:empID", async (req, res) => {
+router.get("/:shopID/setInactiveEmp:empID", async (req, res) => {
    acu.startConnection();
    await acu.updateSet(
       "tblemployee",
       "Status = 0",
       "EmployeeID = " + req.params.empID
    );
-   res.redirect("/shops/view" + req.params.shopID);
+   res.redirect("/deskAccount/" + req.params.shopID + "/employees");
 });
 
-//SHOP VIEWS => ADD SERVICE
-router.post("/view:shopID/addService", async (req, res) => {
-   var { service1, price, duration } = req.body;
+//SERVICES
+router.get("/:shopID/services", async (req, res) => {
+   //// all the stuff needed for services
+   var shopID = req.params.shopID;
+   var shopName = await getShopName(shopID);
+   acu.startConnection();
+   const rowServ = await acu.getAllFromWhere(
+      "appointcutdb.shopservices",
+      "ShopID = " + req.params.shopID
+   );
+   const rowsServCategory = await acu.getAllFrom("tblcategory");
+   /*  alert(rowsServCategory); */
+   res.render("deskServices", {
+      layout: "home-desk",
+      title: "Shop Name",
+      shopID,
+      rowServ,
+      rowsServCategory,
+      shopName,
+   });
+});
+
+router.post("/:shopID/addService", async (req, res) => {
+   var { service7, price, duration } = req.body;
    acu.startConnection();
    await acu.insertInto(
       "tblshopservices (shopID, servicesID, price, duration)",
       '( "' +
          req.params.shopID +
          '", "' +
-         service1 +
+         service7 +
          '", "' +
          price +
          '", "' +
          duration +
          '" )'
    );
-   res.redirect("/shops/view" + req.params.shopID);
+   res.redirect("/deskAccount/" + req.params.shopID + "/services");
 });
 
 //owner => barbershop views => edit service
-router.post("/view:shopID/editService:serviceID", async (req, res) => {
+router.post("/:shopID/editService:serviceID", async (req, res) => {
    var { editService, editPrice, editDuration } = req.body;
    acu.startConnection();
    await acu.updateSet(
@@ -536,50 +373,105 @@ router.post("/view:shopID/editService:serviceID", async (req, res) => {
          '"',
       " ShopServicesID = " + req.params.serviceID
    );
-   res.redirect(res.redirect("/shops/view" + req.params.shopID));
+   res.redirect("/deskAccount/" + req.params.shopID + "/services");
 });
 
-//OWNERS BARBERSHOP VIEWS => EDIT BARBERSHOP SCHEDULE
-router.post(
-   "/view:shopID/editShopSchedule:shopScheduleID",
-   async (req, res) => {
-      var { timeIn, timeOut, status } = req.body;
-      acu.startConnection();
-      if (status == undefined) {
-         status = 0;
-         timeIn = null;
-         timeOut = null;
-         await acu.updateSet(
-            "tblshopschedules",
-            "shopID = '" +
-               req.params.shopID +
-               "', TimeIn = " +
-               timeIn +
-               ", TimeOut = " +
-               timeOut +
-               ", Status = " +
-               status,
-            "shopSchedulesID = '" + req.params.shopScheduleID + "'"
-         );
-      } else {
-         await acu.updateSet(
-            "tblshopschedules",
-            "shopID = '" +
-               req.params.shopID +
-               "', TimeIn = '" +
-               timeIn +
-               "', TimeOut = '" +
-               timeOut +
-               "', Status = " +
-               status,
-            "shopSchedulesID = '" + req.params.shopScheduleID + "'"
-         );
-      }
-      res.redirect("/shops/view" + req.params.shopID);
-   }
-);
+router.get("/:shopID/setInactiveServ:id", async (req, res) => {
+   var id = req.params.id;
+   acu.startConnection();
+   await acu.updateSet(
+      "tblshopservices",
+      "status = 0",
+      "shopServicesID = " + id
+   );
+   res.redirect("/deskAccount/" + req.params.shopID + "/services");
+});
 
-router.post("/view:shopID/addAppointment", async (req, res) => {
+router.get("/:shopID/setActiveServ:id", async (req, res) => {
+   var id = req.params.id;
+   acu.startConnection();
+   await acu.updateSet(
+      "tblshopservices",
+      "status = 1",
+      "shopServicesID = " + id
+   );
+   res.redirect("/deskAccount/" + req.params.shopID + "/services");
+});
+
+//SCHEDULE
+router.get("/:shopID/schedule", async (req, res) => {
+   var shopID = req.params.shopID;
+   var shopName = await getShopName(shopID);
+   acu.startConnection();
+   const rowsDays = await acu.getAllFromWhere(
+      "tblshopschedules",
+      "ShopID = " + shopID
+   );
+   res.render("deskSchedule", {
+      layout: "home-desk",
+      title: "Shop Name",
+      shopID,
+      rowsDays,
+      shopName,
+   });
+});
+
+router.post("/:shopID/editShopSchedule:schedID", async (req, res) => {
+   var { timeIn, timeOut, status } = req.body;
+   acu.startConnection();
+   if (status == undefined) {
+      status = 0;
+      timeIn = null;
+      timeOut = null;
+      await acu.updateSet(
+         "tblshopschedules",
+         "shopID = '" +
+            req.params.shopID +
+            "', TimeIn = " +
+            timeIn +
+            ", TimeOut = " +
+            timeOut +
+            ", Status = " +
+            status,
+         "shopSchedulesID = '" + req.params.schedID + "'"
+      );
+   } else {
+      await acu.updateSet(
+         "tblshopschedules",
+         "shopID = '" +
+            req.params.shopID +
+            "', TimeIn = '" +
+            timeIn +
+            "', TimeOut = '" +
+            timeOut +
+            "', Status = " +
+            status,
+         "shopSchedulesID = '" + req.params.schedID + "'"
+      );
+   }
+   res.redirect("/deskAccount/" + req.params.shopID + "/schedule");
+});
+
+//APPOINTMENT HISTORY
+router.get("/:shopID/appointmentHistory", async (req, res) => {
+   var shopID = req.params.shopID;
+   var shopName = await getShopName(shopID);
+   acu.startConnection();
+   const rowsApptHistory = await acu.getAllFromWhere(
+      "appointcutdb.appointment",
+      "shopID = " + shopID + ' AND appointmentstatus != "Approved"'
+   );
+   res.render("deskAppointmentHistory", {
+      layout: "home-desk",
+      title: "Shop Name",
+      shopID,
+      rowsApptHistory,
+      shopName,
+   });
+});
+
+//OWNER BARBERSHOP VIEWS => ADD APOINTMENT
+router.post("/:shopID/addAppointment", async (req, res) => {
    var { name, contact, category, service, employee, date, time } = req.body;
 
    //Para kumuha ng values sa loob ng shop services
@@ -602,7 +494,7 @@ router.post("/view:shopID/addAppointment", async (req, res) => {
       ":" +
       (Math.floor(timeHolder.getTime() / 1000) % 60);
 
-   var shopID = req.params.shopId;
+   var shopID = req.params.shopID;
    console.log(ss, shopServiceID, amountDue, timeIn, timeOut, shopID);
    await acu.insertInto(
       "tblappointment (Name, ShopID, EmployeeID, ShopServicesID, TimeIn, TimeOut, Date, AmountDue, AppStatusID, appointmentType )",
@@ -624,29 +516,110 @@ router.post("/view:shopID/addAppointment", async (req, res) => {
          amountDue +
          '", 1, 0)'
    );
-   res.redirect("/shops/view" + req.params.shopID);
+   res.redirect("/deskAccount/" + req.params.shopID + "/appointments");
+});
+
+//APPOINTMENTS
+router.get("/:shopID/appointments", async (req, res) => {
+   var shopID = req.params.shopID;
+   var shopName = await getShopName(shopID);
+   acu.startConnection();
+   const rowsApptApproved = await acu.getAllFromWhere(
+      "appointcutdb.appointment",
+      "shopID = " + shopID + ' AND appointmentstatus = "Approved"'
+   );
+   console.log(rowsApptApproved);
+   const rowsEmp = await acu.getAllFromWhere(
+      "appointcutdb.employee",
+      "ShopID = " + shopID
+   );
+   const rowsServCategory = await acu.getAllFrom("tblcategory");
+   res.render("deskAppointments", {
+      layout: "home-desk",
+      title: "Shop Name",
+      shopID,
+      rowsApptApproved,
+      rowsEmp,
+      rowsServCategory,
+      shopName,
+   });
 });
 
 //CANCEL APPOINTMENTS
-router.get("/view:shopID/cancelAppt:apptID", async (req, res) => {
+router.get("/:shopID/cancelAppt:id", async (req, res) => {
+   var id = req.params.id;
    acu.startConnection();
    await acu.updateSet(
       "tblappointment",
       "appStatusID = 3",
-      "AppointmentID = " + req.params.apptID
+      "AppointmentID = " + id
    );
-   res.redirect("/shops/view" + req.params.shopID);
+   res.redirect("/deskAccount/" + req.params.shopID + "/appointments");
 });
 
 //COMPLETE APPOINTMENTS
-router.post("/view:shopID/completeAppt:apptID", async (req, res) => {
+router.post("/:shopID/completeAppt:id", async (req, res) => {
+   var id = req.params.id;
    var appointmentStatus = req.body.appointmentStatus;
    acu.startConnection();
+   //update appointment first
    await acu.updateSet(
       "tblappointment",
       "appStatusID = " + appointmentStatus,
-      "AppointmentID = " + req.params.apptID
+      "AppointmentID = " + id
    );
-   res.redirect("/shops/view" + req.params.shopID);
+   if (appointmentStatus == 2) {
+      var transaction = await acu.getOneFromWhere(
+         "tbltransactions",
+         "AppointmentID = " + id
+      );
+      if (transaction == null) {
+         var appointment = await acu.getOneFromWhere(
+            "tblappointment",
+            "AppointmentID = " + id
+         );
+
+         var dateHolder = appointment.Date;
+         var appointmentDate = dateHolder.toISOString().split("T")[0];
+
+         function addZero(i) {
+            if (i < 10) {
+               i = "0" + i;
+            }
+            return i;
+         }
+
+         const d = new Date();
+         let h = addZero(d.getHours());
+         let m = addZero(d.getMinutes());
+         let s = addZero(d.getSeconds());
+         let time = h + ":" + m + ":" + s;
+
+         await acu.insertInto(
+            "tbltransactions (TransactionID, AppointmentID, ShopID, Amount, Date, Time)",
+            '( "' +
+               appointment.CustomerID +
+               "-" +
+               req.params.shopId +
+               "-" +
+               appointmentDate +
+               "-" +
+               time +
+               '", "' +
+               req.params.id +
+               '", "' +
+               req.params.shopId +
+               '", "' +
+               appointment.amountDue +
+               '", "' +
+               appointmentDate +
+               '", "' +
+               time +
+               '" )'
+         );
+      }
+   }
+   res.redirect("/deskAccount/" + req.params.shopID + "/appointments");
 });
+
 module.exports = router;

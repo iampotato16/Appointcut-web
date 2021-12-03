@@ -570,9 +570,25 @@ function highlight() {
    //HIGHLIGHT FILE MAINTENANCE
    if (/fileMaintenance/.test(loc)) {
       document.getElementById("fm-link").style.color = "#f1c644";
+
+      //HIGHLIGHT DESK PAGES
+   } else if (/deskAccount/.test(loc)) {
+      if (/employees/.test(loc)) {
+         emphasize("shops", "deskEmployees");
+      } else if (/deskAccount/.test(loc) && /services/.test(loc)) {
+         emphasize("shops", "deskServices");
+      } else if (/deskAccount/.test(loc) && /schedule/.test(loc)) {
+         emphasize("shops", "deskSchedule");
+      } else if (/deskAccount/.test(loc) && /appointments/.test(loc)) {
+         emphasize("appointments", "deskAppointments");
+      } else if (/deskAccount/.test(loc) && /appointmentHistory/.test(loc)) {
+         emphasize("appointments", "deskAppointmentHistory");
+      } else {
+         document.getElementById("deskReports").style.color = "#f1c644";
+      }
    }
 
-   //HIGHLIGHT ACCOUNTS
+   //HIGHLIGHT ADMIN PAGES
    else if (/customers/.test(loc)) {
       emphasize("accounts", "customers");
    } else if (/owners/.test(loc)) {
@@ -583,15 +599,6 @@ function highlight() {
       emphasize("accounts", "employees");
    } else if (/barberApps/.test(loc)) {
       emphasize("accounts", "barberApps");
-   }
-
-   //HIGHLIGHT INFORMATION MODULES
-   else if (/hairTrends/.test(loc)) {
-      emphasize("information", "hairTrends");
-   } else if (/hairStylingTips/.test(loc)) {
-      emphasize("information", "hairStylingTips");
-   } else if (/haircutPreview/.test(loc)) {
-      emphasize("information", "haircutPreview");
    }
 }
 

@@ -51,4 +51,9 @@ router.route("/appointmentviews").get(async (req, res) => {
    res.send(rows);
 });
 
+router.route("/usersview").get(async (req, res) => {
+   acu.startConnection();
+   const rows = await acu.getAllFrom("appointcutdb.users");
+   res.send(rows);
+});
 module.exports = router;
