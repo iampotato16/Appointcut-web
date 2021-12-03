@@ -37,8 +37,8 @@ class BarberFetch{
      * @param {*} specializationId 
      */
     async getBarbersWithSpecialization(shopSpecializationId){
-        const select = `SELECT * FROM tblEmployeeSpecialization` 
-        const condition = `where shopServicesID = ${shopSpecializationId} and Status = 1`
+        const select = `SELECT * FROM tblemployeespecialization` 
+        const condition = `where shopServicesID = ${shopSpecializationId}`
         var shops = await this.connection.query(`${select} ${condition}`)
         return shops[0]
     }
