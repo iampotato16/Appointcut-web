@@ -8,7 +8,7 @@ const title = "Barbershop Applications";
 router.route("/").get(async (req, res) => {
    acu.startConnection();
    var rowsShopApplication = await acu.getAllFrom(
-      "appointcutdb.shopApplication"
+      "appointcutdb.shopapplication"
    );
    res.render("barbershopApplications", {
       layout: "home-admin",
