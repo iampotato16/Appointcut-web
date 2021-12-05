@@ -320,11 +320,16 @@ router.get("/view:id", async (req, res) => {
    const rowsEmpType = await acu.getAllFrom("tblemployeetype");
    const rowsSalaryType = await acu.getAllFrom("tblsalarytype");
    const rowsServCategory = await acu.getAllFrom("tblcategory");
+   const transactions = await acu.getAllFromWhere(
+      "appointcutdb.transactions",
+      "ShopID = " + req.params.id
+   );
    var title = rows.ShopName;
    res.render("shopsView", {
       layout: "home-admin",
       title: title,
       rows,
+      transactions,
       rowOwners,
       rowEmp,
       rowServ,
@@ -856,7 +861,8 @@ router.post("/view:shopID/completeAppt:id", async (req, res) => {
 
          await acu.insertInto(
             "tbltransactions (TransactionID, AppointmentID, ShopID, Amount, Date, Time)",
-            '( W"' +
+            '( "' +
+               "W" +
                appointment.AppointmentID +
                "-" +
                req.params.shopID +

@@ -321,9 +321,14 @@ router
          "tblshopschedules",
          "ShopID = " + shopID
       );
+      const transactions = await acu.getOneFromWhere(
+         "appointcutdb.transactions",
+         "ShopID = " + req.params.shopID
+      );
       res.render("ownersBarbershopsView", {
          layout: "home-owner",
          title: title,
+         transactions,
          days,
          ownerID,
          shopID,
@@ -867,7 +872,8 @@ router.post(
 
             await acu.insertInto(
                "tbltransactions (TransactionID, AppointmentID, ShopID, Amount, Date, Time)",
-               '( W"' +
+               '( "' +
+                  "W" +
                   appointment.AppointmentID +
                   "-" +
                   req.params.shopId +

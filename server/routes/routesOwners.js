@@ -165,7 +165,7 @@ router
          "appointcutdb.shopownership",
          "OwnerID = " + shopId + " AND appStatus != 1"
       );
-      console.log(rowsBSApplications);
+
       const rowsCity = await acu.getAllFrom("tblcity");
       const rowsShopSchedule = await acu.getAllFrom("tblshopschedules");
       const rowsBrgy = await acu.getAllFrom("tblbarangay");
@@ -420,10 +420,15 @@ router
          "tblshopschedules",
          "ShopID = " + req.params.shopId
       );
+      const transactions = await acu.getOneFromWhere(
+         "appointcutdb.transactions",
+         "ShopID = " + req.params.shopId
+      );
       res.render("ownersBarbershopsView", {
          layout: "home-admin",
          title: title,
          days,
+         transactions,
          ownerID,
          shopID,
          rowServices,
