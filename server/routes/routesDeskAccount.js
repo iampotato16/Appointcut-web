@@ -67,10 +67,15 @@ router.route("/:shopID/employees").get(async (req, res) => {
    );
    const rowsEmpType = await acu.getAllFrom("tblemployeetype");
    const rowsSalaryType = await acu.getAllFrom("tblsalarytype");
+   const transactions = await acu.getAllFromWhere(
+      "appointcutdb.transactions",
+      "ShopID = " + shopID
+   );
    res.render("deskEmployees", {
       layout: "home-desk",
       title: "Shop Name",
       shopID,
+      transactions,
       rowEmp,
       rowsEmpType,
       rowsSalaryType,

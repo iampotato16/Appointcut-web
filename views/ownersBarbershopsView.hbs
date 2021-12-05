@@ -508,13 +508,14 @@
                             </td>
                             <td>
                                 <a type="button" class="btn btn-dark btn-sm"
-                                    onclick="toggleDialog('appointmentStatus')"><i class="bi bi-check"></i></a>
+                                    onclick="toggleDialog('appointmentStatus{{this.AppointmentID}}')"><i
+                                        class="bi bi-check"></i></a>
                                 <a type="button" class="btn btn-dark btn-sm"
                                     href="viewShop{{../shopID}}/cancelAppt{{this.AppointmentID}}"><i
                                         class="bi bi-x"></i></a>
                             </td>
                         </tr>
-                        <div id="appointmentStatus" class="dialog" style="display: none;">
+                        <div id="appointmentStatus{{this.AppointmentID}}" class="dialog" style="display: none;">
                             <div>
                                 <div class="card p-4 bg-black">
                                     <div class="text-center">
@@ -629,6 +630,37 @@
                 <canvas id="chartSales" style="width:100%;"></canvas>
             </div>
         </div>
+    </div>
+    <div class="bg-gray p-4 pt-2 mb-3">
+        <table class="table table-hover table-striped table-sm m-0">
+            <table class="table table-hover table-striped table-sm m-0">
+                <thead>
+                    <tr>
+                        <th scope="col"> <small>TRANSACTION ID</small></th>
+                        <th scope="col"> <small>CUSTOMER NAME</small></th>
+                        <th scope="col"> <small>DATE</small></th>
+                        <th scope="col"> <small>TIME</small></th>
+                        <th scope="col"> <small>AMOUNT</small></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each transactions}}
+                    {{#if this.TransactionID}}
+                    <tr class="align-items-center">
+                        <td class="align-middle">{{this.TransactionID}}</td>
+                        {{#if this.customerName}}
+                        <td class="align-middle">{{this.customerName}}</td>
+                        {{else}}
+                        <td class="align-middle">{{this.WalkIn}}</td>
+                        {{/if}}
+                        <td class="align-middle dateDisplay">{{this.Date}}</td>
+                        <td class="align-middle">{{this.Time}}</td>
+                        <td class="align-middle">{{this.Amount}}</td>
+                    </tr>
+                    {{/if}}
+                    {{/each}}
+                </tbody>
+            </table>
     </div>
 </div>
 
@@ -1107,7 +1139,7 @@
                         }
                         //4. get chosen service and duration
                         var loc = window.location.href;
-                        var shopId = loc.chafrAt(loc.length - 1);
+                        var shopId = loc.charAt(loc.length - 1);
                         var serviceId = document.getElementById("service22").value;
                         var duration = 15;
                         console.log(shopservices);

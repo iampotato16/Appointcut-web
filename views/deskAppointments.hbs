@@ -43,12 +43,14 @@
                             </td>
                             <td>
                                 <a type="button" class="btn btn-dark btn-sm"
-                                    onclick="toggleDialog('appointmentStatus')"><i class="bi bi-check"></i></a>
+                                    onclick="toggleDialog('appointmentStatus{{this.AppointmentID}}')"><i
+                                        class="bi bi-check"></i></a>
                                 <a type="button" class="btn btn-dark btn-sm" href="cancelAppt{{this.AppointmentID}}"><i
                                         class="bi bi-x"></i></a>
                             </td>
                         </tr>
-                        <div id="appointmentStatus" class="dialog bg-yellow m-auto" style="display: none;">
+                        <div id="appointmentStatus{{this.AppointmentID}}" class="dialog bg-yellow m-auto"
+                            style="display: none;">
                             <div>
                                 <div class="card p-4 bg-black">
                                     <div class="text-center">

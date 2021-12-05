@@ -714,6 +714,36 @@
                 <canvas id="chartSales" style="width:100%;"></canvas>
             </div>
         </div>
+        <div class="bg-gray p-4 pt-2 mb-3">
+            <table class="table table-hover table-striped table-sm m-0">
+                <thead>
+                    <tr>
+                        <th scope="col"> <small>TRANSACTION ID</small></th>
+                        <th scope="col"> <small>CUSTOMER NAME</small></th>
+                        <th scope="col"> <small>DATE</small></th>
+                        <th scope="col"> <small>TIME</small></th>
+                        <th scope="col"> <small>AMOUNT</small></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each transactions}}
+                    {{#if this.TransactionID}}
+                    <tr class="align-items-center">
+                        <td class="align-middle">{{this.TransactionID}}</td>
+                        {{#if this.customerName}}
+                        <td class="align-middle">{{this.customerName}}</td>
+                        {{else}}
+                        <td class="align-middle">{{this.WalkIn}}</td>
+                        {{/if}}
+                        <td class="align-middle dateDisplay">{{this.Date}}</td>
+                        <td class="align-middle">{{this.Time}}</td>
+                        <td class="align-middle">{{this.Amount}}</td>
+                    </tr>
+                    {{/if}}
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
