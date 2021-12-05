@@ -12,9 +12,14 @@ async function getShopName(shopID) {
 router.route("/:shopID").get(async (req, res) => {
    var shopID = req.params.shopID;
    var shopName = await getShopName(shopID);
+   const transactions = await acu.getAllFromWhere(
+      "appointcutdb.transactions",
+      "ShopID = " + shopID
+   );
    res.render("deskReports", {
       layout: "home-desk",
       title: shopName,
+      transactions,
       shopName,
       shopID,
    });
@@ -67,15 +72,11 @@ router.route("/:shopID/employees").get(async (req, res) => {
    );
    const rowsEmpType = await acu.getAllFrom("tblemployeetype");
    const rowsSalaryType = await acu.getAllFrom("tblsalarytype");
-   const transactions = await acu.getAllFromWhere(
-      "appointcutdb.transactions",
-      "ShopID = " + shopID
-   );
+
    res.render("deskEmployees", {
       layout: "home-desk",
       title: "Shop Name",
       shopID,
-      transactions,
       rowEmp,
       rowsEmpType,
       rowsSalaryType,
@@ -199,9 +200,17 @@ router.post("/:shopID/editEmployee:empID", async (req, res) => {
       email,
       contact,
       employeeType,
+      employeeTypeHolder,
       salaryType,
+      salaryTypeHolder,
       salaryValue,
    } = req.body;
+   if (employeeType == undefined) {
+      employeeType = employeeTypeHolder;
+   }
+   if (salaryType == undefined) {
+      salaryType = salaryTypeHolder;
+   }
    await acu.updateSet(
       "tblemployee",
       'firstName = "' +

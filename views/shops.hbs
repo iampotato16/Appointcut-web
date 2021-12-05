@@ -84,6 +84,8 @@
                                           name="contact" type="text" value="{{this.ShopContact}}" style="width: 300px;">
                                        {{!-- <input class="form-control form-control-sm mb-2 font-small rounded-0"
                                           name="street" type="text" value="{{this.Street}}" style="width: 300px;"> --}}
+                                       <input type="text" style="display: none;" value="{{this.CityID}}"
+                                          name="cityHolder">
                                        <select class="form-control form-control-sm mb-2 font-small rounded-0"
                                           name="city" id="city" onchange="changeBrgy(this, 2)">
                                           <option selected disabled hidden>
@@ -93,6 +95,8 @@
                                           <option value="{{this.CityID}}">{{this.Name}}</option>
                                           {{/each}}
                                        </select>
+                                       <input type="text" style="display: none;" value="{{this.BarangayID}}"
+                                          name="barangayHolder">
                                        <select class="form-control form-control-sm mb-2 font-small rounded-0"
                                           name="barangay" id="barangay2" style="width: 300px;">
                                           <option selected disabled hidden>{{this.Barangay}}</option>

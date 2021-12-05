@@ -150,7 +150,22 @@ router.post("/addBarbershop", async (req, res) => {
 
 //EDIT BARBERSHOP INFORMATION
 router.post("/edit:shopId", async (req, res) => {
-   var { shopName, email, contact, city, barangay, street } = req.body;
+   var {
+      shopName,
+      email,
+      contact,
+      city,
+      cityHolder,
+      barangay,
+      barangayHolder,
+      street,
+   } = req.body;
+   if (city == undefined) {
+      city = cityHolder;
+   }
+   if (barangay == undefined) {
+      barangay = barangayHolder;
+   }
    acu.startConnection();
    await acu.updateSet(
       "tblshop",
@@ -528,9 +543,17 @@ router.post("/view:shopID/editEmployee:empID", async (req, res) => {
       email,
       contact,
       employeeType,
+      employeeTypeHolder,
       salaryType,
+      salaryTypeHolder,
       salaryValue,
    } = req.body;
+   if (employeeType == undefined) {
+      employeeType = employeeTypeHolder;
+   }
+   if (salaryType == undefined) {
+      salaryType = salaryTypeHolder;
+   }
    await acu.updateSet(
       "tblemployee",
       'firstName = "' +
@@ -681,7 +704,10 @@ router.post("/view:shopID/addService", async (req, res) => {
 
 //owner => barbershop views => edit service
 router.post("/view:shopID/editService:serviceID", async (req, res) => {
-   var { editService, editPrice, editDuration } = req.body;
+   var { editService, editServiceHolder, editPrice, editDuration } = req.body;
+   if (editService == undefined) {
+      editService = editServiceHolder;
+   }
    acu.startConnection();
    await acu.updateSet(
       "tblshopservices",

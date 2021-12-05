@@ -47,6 +47,7 @@
                 </thead>
                 <tbody>
                     {{#each rowsBS}}
+
                     <tr class="align-items-center">
                         <td class="align-middle">{{this.ShopName}}</td>
                         <td class="align-middle">{{this.Street}}, {{this.Barangay}}, {{this.City}}</td>
@@ -106,6 +107,8 @@
                                                         class="form-control form-control-sm mb-2 font-small rounded-0"
                                                         name="street" type="text" value="{{this.Street}}"
                                                         style="width: 300px;"> --}}
+                                                    <input type="text" style="display: none;" value="{{this.CityID}}"
+                                                        name="cityHolder">
                                                     <select
                                                         class="form-control form-control-sm mb-2 font-small rounded-0"
                                                         name="city" id="city" onchange="changeBrgy(this, 2)">
@@ -116,6 +119,8 @@
                                                         <option value="{{this.CityID}}">{{this.Name}}</option>
                                                         {{/each}}
                                                     </select>
+                                                    <input type="text" style="display: none;"
+                                                        value="{{this.BarangayID}}" name="barangayHolder">
                                                     <select
                                                         class="form-control form-control-sm mb-2 font-small rounded-0"
                                                         name="barangay" id="barangay2" style="width: 300px;">
@@ -212,8 +217,7 @@
         <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
             <div>
                 <span class="me-2 fw-800"><small>BARBERSHOP APPLICATIONS</small></span>
-                <button class="btn btn-sm btn-outline-light"
-                    onclick="toggleMultiDialog('addShopInfo', 'addShop', 'addShopInfoForm')">
+                <button class="btn btn-sm btn-outline-light" onclick="toggleDialog('addShopInfo')">
                     <i class="bi bi-plus"></i></button>
             </div>
 
@@ -237,6 +241,7 @@
                 </thead>
                 <tbody>
                     {{#each rowsBSApplications}}
+                    {{#unless (isBarber this.appStatusID)}}
                     <tr class="align-items-center">
                         <td class="align-middle">{{this.ShopName}}</td>
                         <td class="align-middle">{{this.Street}}, {{this.Barangay}}, {{this.City}}</td>
@@ -246,6 +251,7 @@
                         <td class="align-middle"><a type="button" class="btn btn-dark btn-sm"><i
                                     class=" bi bi-x"></i></a></td>
                     </tr>
+                    {{/unless}}
                     {{/each}}
                 </tbody>
             </table>

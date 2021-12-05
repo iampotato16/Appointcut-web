@@ -245,7 +245,22 @@ router
 
 //OWNERSVIEW => EDIT BARBERSHOP INFORMATION
 router.post("/view:ownerId/editShopInfo:shopId", async (req, res) => {
-   var { shopName, email, contact, city, barangay, street } = req.body;
+   var {
+      shopName,
+      email,
+      contact,
+      city,
+      cityHolder,
+      barangay,
+      barangayHolder,
+      street,
+   } = req.body;
+   if (city == undefined) {
+      city = cityHolder;
+   }
+   if (barangay == undefined) {
+      barangay = barangayHolder;
+   }
    acu.startConnection();
    await acu.updateSet(
       "tblshop",
@@ -296,7 +311,7 @@ router.post("/view:ownerId/editShopInfo:shopId", async (req, res) => {
                timeIn[i] +
                '", timeOut = "' +
                timeOut[i] +
-               '" status = 1',
+               '", status = 1',
             'Day = "' +
                dayName[i] +
                '" AND shopID = "' +
@@ -420,7 +435,7 @@ router
          "tblshopschedules",
          "ShopID = " + req.params.shopId
       );
-      const transactions = await acu.getOneFromWhere(
+      const transactions = await acu.getAllFromWhere(
          "appointcutdb.transactions",
          "ShopID = " + req.params.shopId
       );
@@ -575,9 +590,17 @@ router.post("/view:ownerId/viewShop:shopId/editEmp:empId", async (req, res) => {
       email,
       contact,
       employeeType,
+      employeeTypeHolder,
       salaryType,
+      salaryTypeHolder,
       salaryValue,
    } = req.body;
+   if (employeeType == undefined) {
+      employeeType = employeeTypeHolder;
+   }
+   if (salaryType == undefined) {
+      salaryType = salaryTypeHolder;
+   }
    await acu.updateSet(
       "tblemployee",
       'firstName = "' +
@@ -861,7 +884,11 @@ router.post("/view:ownerId/viewShop:shopId/addService", async (req, res) => {
 router.post(
    "/view:ownerId/viewShop:shopId/editService:servId",
    async (req, res) => {
-      var { editService, editPrice, editDuration } = req.body;
+      var { editService, editServiceHolder, editPrice, editDuration } =
+         req.body;
+      if (editService == undefined) {
+         editService = editServiceHolder;
+      }
       acu.startConnection();
       await acu.updateSet(
          "tblshopservices",

@@ -214,6 +214,9 @@
                                                             name="contact" type="text" value="{{this.Contact}}"
                                                             style="width: 300px;">
                                                         <div>
+                                                            <input type="text" style="display: none;"
+                                                                value="{{this.EmployeeTypeID}}"
+                                                                name="employeeTypeHolder">
                                                             <select
                                                                 class="form-control form-control-sm mb-2 font-small rounded-0"
                                                                 name="employeeType" style="width: 300px;">
@@ -228,6 +231,8 @@
                                                             </select>
                                                         </div>
                                                         <div>
+                                                            <input type="text" style="display: none;"
+                                                                value="{{this.SalaryTypeID}}" name="salaryTypeHolder">
                                                             <select
                                                                 class="form-control form-control-sm mb-2 font-small rounded-0"
                                                                 name="salaryType" style="width: 300px;">
@@ -417,6 +422,8 @@
                                             <form action="/shops/view{{../rows.ShopID}}/editService{{this.ID}}"
                                                 method="POST">
                                                 <div class="col-auto my-1">
+                                                    <input type="text" style="display: none;"
+                                                        value="{{this.CategoryID}}" name="editCategoryHolder">
                                                     <select
                                                         class="form-control form-control-sm mb-2 font-small rounded-0"
                                                         name="editCategory" onchange="changeServices(this,{{this.ID}})">
@@ -426,6 +433,8 @@
                                                         {{/each}}
 
                                                     </select>
+                                                    <input type="text" style="display: none;"
+                                                        value="{{this.ServicesID}}" name="editServiceHolder">
                                                     <select
                                                         class="form-control form-control-sm mb-2 font-small rounded-0"
                                                         name="editService" id="service{{this.ID}}">
