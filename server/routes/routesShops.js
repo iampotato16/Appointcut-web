@@ -501,35 +501,36 @@ router.post("/view:shopID/addEmployee", async (req, res) => {
          );
       }
    }
-
-   //EMPLOYEE SPECIALIZATION
-   //hanapin lahat nung services -- variable creation
-   const rowsServ = await acu.getAllFromWhere(
-      "appointcutdb.services",
-      "shopID = " + req.params.shopID
-   );
-   for (var i = 0; i < rowsServ.length; i++) {
-      eval("var serviceName" + i + " = req.body.serviceName" + i);
-      eval("var service" + i + " = req.body.service" + i);
-   }
-   //check if nacheckan ba yung checkbox
-   for (var i = 0; i < rowsServ.length; i++) {
-      var status = 1;
-      if (eval("service" + i) != undefined) {
-         status = 1;
-      } else {
-         status = 0;
-      }
-      await acu.insertInto(
-         "tblemployeespecialization (shopServicesID, employeeID, status)",
-         '( "' +
-            eval("serviceName" + i) +
-            '", "' +
-            newEmp.insertId +
-            '", "' +
-            status +
-            '")'
+   if (employeeType == 1) {
+      //EMPLOYEE SPECIALIZATION
+      //hanapin lahat nung services -- variable creation
+      const rowsServ = await acu.getAllFromWhere(
+         "appointcutdb.services",
+         "shopID = " + req.params.shopID
       );
+      for (var i = 0; i < rowsServ.length; i++) {
+         eval("var serviceName" + i + " = req.body.serviceName" + i);
+         eval("var service" + i + " = req.body.service" + i);
+      }
+      //check if nacheckan ba yung checkbox
+      for (var i = 0; i < rowsServ.length; i++) {
+         var status = 1;
+         if (eval("service" + i) != undefined) {
+            status = 1;
+         } else {
+            status = 0;
+         }
+         await acu.insertInto(
+            "tblemployeespecialization (shopServicesID, employeeID, status)",
+            '( "' +
+               eval("serviceName" + i) +
+               '", "' +
+               newEmp.insertId +
+               '", "' +
+               status +
+               '")'
+         );
+      }
    }
    res.redirect("/shops/view" + req.params.shopID);
 });

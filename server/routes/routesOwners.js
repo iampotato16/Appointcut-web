@@ -155,6 +155,7 @@ router
          "appointcutdb.owner",
          "OwnerID = " + req.params.ownerId
       );
+      console.log(rows);
       var shopId = rows.OwnerID;
       const rowsBS = await acu.getAllFromWhere(
          "appointcutdb.shopownership",
@@ -477,6 +478,7 @@ router
          salaryType,
          salaryValue,
       } = req.body;
+
       var newEmp = await acu.insertInto(
          "tblemployee (firstname, lastname, email, password, contact, employeeTypeID,  salaryTypeID, salaryTypeValue, status, balance, shopID)",
          '( "' +
@@ -546,35 +548,36 @@ router
             );
          }
       }
-
-      //EMPLOYEE SPECIALIZATION
-      //hanapin lahat nung services -- variable creation
-      const rowsServ = await acu.getAllFromWhere(
-         "appointcutdb.services",
-         "shopID = " + req.params.shopId
-      );
-      for (var i = 0; i < rowsServ.length; i++) {
-         eval("var serviceName" + i + " = req.body.serviceName" + i);
-         eval("var service" + i + " = req.body.service" + i);
-      }
-      //check if nacheckan ba yung checkbox
-      for (var i = 0; i < rowsServ.length; i++) {
-         var status = 1;
-         if (eval("service" + i) != undefined) {
-            status = 1;
-         } else {
-            status = 0;
-         }
-         await acu.insertInto(
-            "tblemployeespecialization (shopServicesID, employeeID, status)",
-            '( "' +
-               eval("serviceName" + i) +
-               '", "' +
-               newEmp.insertId +
-               '", "' +
-               status +
-               '")'
+      if (employeeType == 1) {
+         //EMPLOYEE SPECIALIZATION
+         //hanapin lahat nung services -- variable creation
+         const rowsServ = await acu.getAllFromWhere(
+            "appointcutdb.services",
+            "shopID = " + req.params.shopId
          );
+         for (var i = 0; i < rowsServ.length; i++) {
+            eval("var serviceName" + i + " = req.body.serviceName" + i);
+            eval("var service" + i + " = req.body.service" + i);
+         }
+         //check if nacheckan ba yung checkbox
+         for (var i = 0; i < rowsServ.length; i++) {
+            var status = 1;
+            if (eval("service" + i) != undefined) {
+               status = 1;
+            } else {
+               status = 0;
+            }
+            await acu.insertInto(
+               "tblemployeespecialization (shopServicesID, employeeID, status)",
+               '( "' +
+                  eval("serviceName" + i) +
+                  '", "' +
+                  newEmp.insertId +
+                  '", "' +
+                  status +
+                  '")'
+            );
+         }
       }
       res.redirect(
          "/owners/view" + req.params.ownerId + "/viewShop" + req.params.shopId
