@@ -121,7 +121,9 @@
                         <select class="form-control form-control-sm mb-2 font-small rounded-0" name="shop">
                            <option selected>Barbershop...</option>
                            {{#each rowShop}}
+                           {{#if (isBarber this.appStatus)}}
                            <option value="{{this.ShopID}}">{{this.ShopName}}</option>
+                           {{/if}}
                            {{/each}}
                         </select>
                      </div>

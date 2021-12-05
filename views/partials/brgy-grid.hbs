@@ -11,11 +11,20 @@
       {{!-- ADD BARANGAY FORM --}}
       <div id="addBrgy" style="display: none;" class="bg-black">
          <form class="row g-0 pt-2" action="/fileMaintenance/addBrgy" method="POST">
-            <div class="col-9 g-0">
+            <div class="col-5 g-2">
                <input type="text" class="form-control font-small rounded-0 mb-3" id="inputAddBrgy" name="inputAddBrgy"
-                  placeholder="Baranggay">
+                  placeholder="Barangay">
             </div>
-            <div class="col-3 g-0" style="padding-left: 1rem;">
+            <div class="col-5 g-2">
+               <select name="inputAddCity" id="inputAddCity" placeholder="City"
+                  class="form-control font-small rounded-0 mb-3">
+                  {{#each rowCity}}
+                  <option value="{{this.CityID}}">{{this.Name}}</option>
+                  {{/each}}
+               </select>
+            </div>
+
+            <div class="col-2 g-2" style="padding-left: 1rem;">
                <button class="btn btn-dark font-small w-100 rounded-0 " type="submit" style="height: 40px;">Add</button>
             </div>
          </form>

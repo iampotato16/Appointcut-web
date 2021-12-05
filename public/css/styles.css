@@ -225,11 +225,10 @@ input {
 }
 
 .dialog {
-   position: absolute;
+   position: fixed;
    margin: auto;
    z-index: 3;
    width: 500px;
-   position: absolute;
    top: 50%;
    left: 50%;
    transform: translate(-50%, -50%);

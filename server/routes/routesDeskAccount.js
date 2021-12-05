@@ -339,20 +339,32 @@ router.get("/:shopID/services", async (req, res) => {
 });
 
 router.post("/:shopID/addService", async (req, res) => {
-   var { service7, price, duration } = req.body;
+   var { service13, price, duration } = req.body;
    acu.startConnection();
-   await acu.insertInto(
+   var newService = await acu.insertInto(
       "tblshopservices (shopID, servicesID, price, duration)",
-      '( "' +
+      "(" +
          req.params.shopID +
-         '", "' +
-         service7 +
-         '", "' +
+         ", " +
+         service13 +
+         ", " +
          price +
-         '", "' +
+         ", " +
          duration +
-         '" )'
+         ")"
    );
+   var shopServicesID = newService.insertId;
+   var employeeList = await acu.getAllFromWhere(
+      "tblemployee",
+      "shopID = " + req.params.shopID
+   );
+   //EmployeeID
+   for (var i = 0; i < employeeList.length; i++) {
+      await acu.insertInto(
+         "tblemployeespecialization (shopServicesID, employeeID, Status)",
+         '( "' + shopServicesID + '", "' + employeeList[i].EmployeeID + '", 0 )'
+      );
+   }
    res.redirect("/deskAccount/" + req.params.shopID + "/services");
 });
 
@@ -597,10 +609,10 @@ router.post("/:shopID/completeAppt:id", async (req, res) => {
 
          await acu.insertInto(
             "tbltransactions (TransactionID, AppointmentID, ShopID, Amount, Date, Time)",
-            '( "' +
-               appointment.CustomerID +
+            '( W"' +
+               appointment.AppointmentID +
                "-" +
-               req.params.shopId +
+               req.params.shopID +
                "-" +
                appointmentDate +
                "-" +
@@ -608,7 +620,7 @@ router.post("/:shopID/completeAppt:id", async (req, res) => {
                '", "' +
                req.params.id +
                '", "' +
-               req.params.shopId +
+               req.params.shopID +
                '", "' +
                appointment.amountDue +
                '", "' +

@@ -1,5 +1,8 @@
 //const { min } = require("moment");
 //const e = require("express");
+function trytrytry() {
+   alert("aaaaaaaa");
+}
 
 highlight();
 
@@ -75,7 +78,13 @@ function initializeChart(chart) {
                   ],
                },
                options: {
-                  legend: { display: false },
+                  legend: { display: true },
+                  plugins: {
+                     title: {
+                        display: true,
+                        text: "This is a title",
+                     },
+                  },
                },
             });
          });

@@ -1,0 +1,65 @@
+<div class="mt-4 p-3 text-decoration-none">
+   <div class="d-flex justify-content-between">
+      <span class="fs-5 fw-semibold">{{title}}</span>
+      <div class="d-flex float-right" style="height: 2rem">
+         <form class="d-flex">
+            <input class="form-control form-control-sm me-1 p-1 rounded-0" type="search" placeholder="Search"
+               aria-label="Search" />
+            <button class="btn btn-sm btn-dark me-1" type="submit"><small>SEARCH</small> </button>
+         </form>
+      </div>
+   </div>
+   <hr>
+   <div class="bg-gray p-4 mb-3">
+      <table class="table table-hover table-striped table-sm m-0">
+         <thead>
+            <tr>
+               <th scope="col"> <small>SHOP NAME</small> </th>
+               <th scope="col"> <small>ADDRESS</small> </th>
+               <th scope="col"> <small>OWNER NAME</small> </th>
+               <th scope="col"> <small>OWNER CONTACT</small> </th>
+               <th scope="col" class="align-content-end" style="width: 112px"></th>
+            </tr>
+         </thead>
+         <tbody>
+            {{#each rowsShopApplication}}
+            {{#unless this.appStatus}}
+            <tr class="align-items-center">
+               <td class="align-middle">{{this.shopName}}</td>
+               <td class="align-middle">{{this.address}}</td>
+               <td class="align-middle">{{this.ownerName}}</td>
+               <td class="align-middle">{{this.ownerContact}}</td>
+               <td>
+                  <button class="btn btn-dark btn-sm"
+                     onclick="toggleDialog('revealPermit{{this.shopApplicationID}}')"><i class="bi bi-eye"></i></button>
+                  <a type="button" class="btn btn-dark btn-sm" href="/barberApps/acceptApplication{{this.shopID}}"><i
+                        class="bi bi-check"></i></a>
+                  <a type="button" class="btn btn-dark btn-sm" href="/barberApps/rejectApplication{{this.shopID}}"><i
+                        class="bi bi-x"></i></a>
+               </td>
+               <div id="revealPermit{{this.shopApplicationID}}" class="dialog bg-black p-3"
+                  style="display: none; width: 800px">
+                  <div class="p-1 position-relative">
+                     <button class="position-absolute btn btn-link p-0" style="right: 0; top: 0;"
+                        onclick="toggleDialog('revealPermit{{this.shopApplicationID}}')"><i
+                           class="bi bi-x"></i></button>
+                     <h5 class="text-center">BUSINESS PERMITS</h5>
+                  </div>
+                  <div class="row">
+                     <div class="col">
+                        BIR PERMIT:
+                        <img src="{{this.BIR_fileName}}" alt="{{this.shopName}} BIR Permit" class="img-fluid">
+                     </div>
+                     <div class="col">
+                        BUSINESS PERMIT:
+                        <img src="{{this.BP_fileName}}" alt="{{this.shopName}} Busines Permit" class="img-fluid">
+                     </div>
+                  </div>
+               </div>
+            </tr>
+            {{/unless}}
+            {{/each}}
+         </tbody>
+      </table>
+   </div>
+</div>
