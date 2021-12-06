@@ -106,7 +106,7 @@ class AppointmentManager{
         console.log(`Appointment: ${JSON.stringify(appointment[0])}`)
         const date = appointment[0][0].Date
         const time = appointment[0][0].TimeIn.split(":")
-        date.setDate(date.getDate()+1)
+        
         date.setHours(parseInt(time[0]))
         date.setMinutes(parseInt(time[1]))
         const hoursRemaining = (date.getTime() - Date.now())/3600000
