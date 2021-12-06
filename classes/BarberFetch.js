@@ -67,7 +67,8 @@ class BarberFetch{
 
     /**
      * Fetches the full details of appointments for given date
-     * @param {*} barberId 
+     * @param {*} barberName
+     * @param {*} day
      * @param {*} month 
      * @param {*} year 
      */
@@ -110,13 +111,28 @@ class BarberFetch{
     }
 
     async computeCommission(employee, year, month){
+        const sched = await this.getBarberSched(employee.EmployeeID)
+        const calendar = new Date(year, month)
+        var wage = 0.0
+        var multiplier = employee.salaryTypeValue/100
 
+        const select = "select Amount from appointment"
+        const where = `where MONTH(Date) = ${month+1} and YEAR(Date) = ${year} and EmployeeID = ${employee.EmployeeID} and AppointmentStatus = "Completed"`
+        const appointments = await this.connection.query(`${select} ${where};`)
+        console.log(`amount ${JSON.stringify(appointments[0])}`)
+
+        for(var i = 0; i < appointments[0].length; i++){
+            console.log(`Amount: ${appointments[0][i].Amount}`)
+            wage += appointments[0][i].Amount * multiplier
+            console.log(`Amount: ${wage}`)
+        }
+        return wage
     }
 
     async computeHourly(employee, year, month){
         const sched = await this.getBarberSched(employee.EmployeeID)
         const calendar = new Date(year, month)
-        var wage = 0
+        var wage = 0.0
         var multiplier = employee.salaryTypeValue
 
         while(calendar.getMonth() == month){
@@ -158,14 +174,17 @@ class BarberFetch{
             const minuteOut = currentSched.TimeOut.split(":")[1]
             const minuteIn = currentSched.TimeIn.split(":")[1]
 
-            const hoursComputed = parseInt(hourOut) - parseInt(hourIn)
+            var hoursComputed = parseInt(hourOut) - parseInt(hourIn)
             const minuteComputed = (60 - parseInt(minuteIn) + parseInt(minuteOut))/60
+            //correction for time in
+            if(parseInt(minuteIn) > 0){hoursComputed--}
             console.log(`Hours: ${hoursComputed}, Minutes: ${minuteComputed}`)
             wage += (hoursComputed + minuteComputed) * multiplier
             console.log(`Wage: ${wage}`)
 
             calendar.setDate(calendar.getDate()+1)
         }
+        return wage
     }
 }
 
