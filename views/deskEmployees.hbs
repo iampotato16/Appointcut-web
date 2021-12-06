@@ -129,7 +129,7 @@
                                             </div>
                                         </div>
                                         <div class="tab editEmp{{this.EmployeeID}}">
-                                            {{#if (isBarber this.EmployeeTypeID)}}
+
                                             <p class="text-center"><small>EMPLOYEE SCHEDULE</small></p>
                                             {{#each ../rowsEmpSchedule}}
                                             {{#if (withinShop this.EmployeeID ../this.EmployeeID)}}
@@ -163,7 +163,7 @@
                                                 </div>
                                             </div>
                                             {{else}}
-                                            {{/if}}
+
                                             <div class="row m-auto" style="display: none">
                                                 <div class="col-4">
                                                     <input class="form-check-input" type="checkbox" name="{{this.Date}}"
@@ -193,6 +193,7 @@
                                             {{/each}}
                                         </div>
                                         <div class="tab editEmp{{this.EmployeeID}}">
+                                            {{#if (isBarber this.EmployeeTypeID)}}
                                             <p class="text-center"><small>EMPLOYEE SPECIALIZATION</small></p>
                                             {{#each ../rowsEmpSpecArray}}
                                             {{#if (withinShop this.EmployeeID ../this.EmployeeID)}}
@@ -207,6 +208,7 @@
                                             </div>
                                             {{/if}}
                                             {{/each}}
+                                            {{/if}}
                                         </div>
 
                                         {{!-- BUTTONS --}}
