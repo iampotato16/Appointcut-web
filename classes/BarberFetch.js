@@ -59,7 +59,7 @@ class BarberFetch{
      */
     async getBarberAppointmentForMonthYear(barberId, month, year){
         const select = `select Date, \`TimeIn\`, \`TimeOut\` from tblappointment`
-        const where = `where MONTH(Date) = ${month} and YEAR(Date) = ${year} and EmployeeID = ${barberId};`
+        const where = `where MONTH(Date) = ${month} and YEAR(Date) = ${year} and EmployeeID = ${barberId} and appStatusID = 1;`
         const appointments = await this.connection.query(`${select} ${where};`)
         
         return appointments[0]
@@ -75,8 +75,9 @@ class BarberFetch{
     async getBarberAppointmentView(barberName,day, month, year){
         const select = `select * from appointment`
         const where = `where DAY(Date) = ${day} and MONTH(Date) = ${month} and YEAR(Date) = ${year} and EmployeeName = ${barberName}`
+        const order = "ORDER BY TimeIn"
         console.log(`${select} ${where};`)
-        const appointments = await this.connection.query(`${select} ${where};`)
+        const appointments = await this.connection.query(`${select} ${where} ${order};`)
         
         return appointments
     }

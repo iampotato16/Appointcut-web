@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="center-div pt-2">
                                     <div>
-                                        <form action="editService{{this.ServicesID}}" method="POST">
+                                        <form action="editService{{this.ID}}" method="POST">
                                             <div class="col-auto my-1">
                                                 <input type="text" style="display: none;" name="editCategoryHolder"
                                                     value="{{this.CategoryID}}">
@@ -120,14 +120,14 @@
                         <form action="addService" method="POST">
                             <div class="col-auto my-1">
                                 <select class="form-control form-control-sm mb-2 font-small rounded-0" name="category"
-                                    onchange="changeServices(this,13)">
+                                    onchange="changeServices(this,16)">
                                     <option selected disabled hidden>Category</option>
                                     {{#each rowsServCategory}}
                                     <option value="{{this.CategoryID}}">{{this.Name}}</option>
                                     {{/each}}
                                 </select>
-                                <select class="form-control form-control-sm mb-2 font-small rounded-0" name="service13"
-                                    id="service13">
+                                <select class="form-control form-control-sm mb-2 font-small rounded-0" name="service16"
+                                    id="service16">
                                     <option disabled selected hidden>Service</option>
                                 </select>
                             </div>

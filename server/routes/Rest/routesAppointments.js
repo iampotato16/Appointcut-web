@@ -121,4 +121,21 @@ router.route('/customer/approved/:token')
     res.json(list)
 })
 
+//Path: /rest/appointments/cancel
+router.route('/cancel/:token-:id')
+.get(async (req, res) => {
+    const tokenInfo = await tm.verifyToken(req.params.token)
+    //invalid token
+    if(tokenInfo == UserFetch.UserAuthStatus.TOKEN){
+        console.log("D/CancelAppt: Unauthorized user")
+        res.sendStatus(401)
+        return
+    }
+
+    const customerId = tokenInfo.userID
+    console.log(`cancelAppt(${customerId}, ${req.params.id})`)
+    const response = await apm.cancelAppointment(customerId, req.params.id)
+    res.json(response)
+})
+
 module.exports = router

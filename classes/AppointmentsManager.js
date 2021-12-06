@@ -78,7 +78,7 @@ class AppointmentManager{
         const emplClause = `EmployeeID = ${barberId}`
         const dateClause = `Date = '${year}-${month}-${day}'`
         const timeClause = `TimeIn between '${timeIn}' and '${timeOut}'`
-        const whereStatement = `where ${emplClause} and ${dateClause} and ${timeClause}`
+        const whereStatement = `where ${emplClause} and ${dateClause} and ${timeClause} and appStatusID = 1`
 
         console.log(`D/AptMan: ${selectStatement} ${whereStatement};`)
         const conflicts = await this.connection.query(`${selectStatement} ${whereStatement};`)
@@ -97,6 +97,28 @@ class AppointmentManager{
         const list = await this.connection.query(`${select} ${where};`)
 
         return list[0]
+    }
+
+    async cancelAppointment(customerId, appointmentId){
+        const appointment = await this.connection.query(
+            `select Date, TimeIn from appointment where AppointmentID = ${appointmentId}`
+        )
+        console.log(`Appointment: ${JSON.stringify(appointment[0])}`)
+        const date = appointment[0][0].Date
+        const time = appointment[0][0].TimeIn.split(":")
+        
+        date.setHours(parseInt(time[0]))
+        date.setMinutes(parseInt(time[1]))
+        const hoursRemaining = (date.getTime() - Date.now())/3600000
+        console.log(`Date ${date}`)
+        console.log(`Remaining ${hoursRemaining}`)
+        if(hoursRemaining < 5){
+            return "TIME"
+        }
+        await this.connection.query(
+            `update tblappointment set appStatusID = 3 where CustomerID = ${customerId} and AppointmentID = ${appointmentId}`
+        )
+        return "SUCCESS"
     }
 }
 

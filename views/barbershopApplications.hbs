@@ -23,7 +23,7 @@
          </thead>
          <tbody>
             {{#each rowsShopApplication}}
-            <tr class="align-items-center">
+            <tr class="align-items-center" style="position: relative;">
                <td class="align-middle">{{this.shopName}}</td>
                <td class="align-middle">{{this.address}}</td>
                <td class="align-middle">{{this.ownerName}}</td>
@@ -37,7 +37,7 @@
                         class="bi bi-x"></i></a>
                </td>
                <div id="revealPermit{{this.shopApplicationID}}" class="dialog bg-black p-3"
-                  style="display: none; width: 800px">
+                  style="display: none; width: 800px;">
                   <div class="p-1 position-relative">
                      <button class="position-absolute btn btn-link p-0" style="right: 0; top: 0;"
                         onclick="toggleDialog('revealPermit{{this.shopApplicationID}}')"><i

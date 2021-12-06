@@ -798,6 +798,12 @@ router.post("/view:shopID/addAppointment", async (req, res) => {
       "tblshopservices",
       "shopServicesID = " + service + " AND shopID = " + shopID
    );
+   /*  var x = new Date(date);
+   var newDate = new Date(x.setDate(x.getDate() + 1));
+   var mm = newDate.getMonth() + 1;
+   var dd = newDate.getDate();
+   var yy = newDate.getFullYear();
+   var myDateString = yy + "-" + mm + "-" + dd; */
    console.log(ss);
    var shopServiceID = ss.shopServicesID;
    var amountDue = ss.Price;
@@ -872,7 +878,13 @@ router.post("/view:shopID/completeAppt:id", async (req, res) => {
          );
 
          var dateHolder = appointment.Date;
-         var appointmentDate = dateHolder.toISOString().split("T")[0];
+         var newDate = new Date(dateHolder);
+
+         //var newDate = new Date(x.setDate(x.getDate() + 1));
+         var mm = newDate.getMonth() + 1;
+         var dd = newDate.getDate();
+         var yy = newDate.getFullYear();
+         var appointmentDate = yy + "-" + mm + "-" + dd;
 
          function addZero(i) {
             if (i < 10) {

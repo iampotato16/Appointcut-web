@@ -5,6 +5,7 @@ window.onload = function () {
    setDaterange("daterangeCustomerVolume", -7);
    initializeChart("sales");
    setDaterange("daterangeSales", -7);
+   setMonthPicker();
 };
 
 //SET DATE RANGE
@@ -25,6 +26,14 @@ function setDaterange(daterange, num) {
          addDays.format("MM/DD/YYYY"); // Set the value of the class attribute
    }
    document.getElementById(daterange).setAttributeNode(att);
+}
+
+//SET MONTH PICKER
+function setMonthPicker() {
+   var picker = document.getElementById("monthPicker");
+   var date = new Date();
+   picker.value = date.getFullYear() + "-" + (date.getMonth() + 1);
+   setSalaryReport(picker);
 }
 
 //DATA FOR SALARY REPORTS
@@ -174,13 +183,22 @@ async function setSalaryReport(el) {
    var tableDataRow = "";
    var tableData = document.getElementsByName("salaryData");
    for (var i = 0; i < salaryInfo.length; i++) {
+      var salaryType;
+      if (salaryInfo[i].salaryTypeID == 1) {
+         salaryType = "Commission";
+      } else if (salaryInfo[i].salaryTypeID == 2) {
+         salaryType = "Monthly";
+      } else {
+         salaryType = "Hourly";
+      }
       tableDataRow +=
          '<tr class="align-items-center">' +
          '<td class="align-middle">' +
          salaryInfo[i].employee +
          "</td>" +
          '<td class="align-middle">' +
-         salaryInfo[i].salaryTypeID +
+         //salaryInfo[i].salaryTypeID +
+         salaryType +
          "</td>" +
          '<td class="align-middle">' +
          salaryInfo[i].salaryTypeValue +
@@ -214,7 +232,10 @@ function initializeChart(chart) {
                for (var j = 0; j < data.length; j++) {
                   var temp = moment(data[j].Date.substring(0, 10));
                   temp.add(1, "days");
-                  if (temp.format("YYYY-MM-DD") === xValues[i]) {
+                  if (
+                     temp.format("YYYY-MM-DD") === xValues[i] &&
+                     data[j].appStatusID == 2
+                  ) {
                      apptsTotal++;
                   }
                }
@@ -235,15 +256,6 @@ function initializeChart(chart) {
                         data: yValues,
                      },
                   ],
-               },
-               options: {
-                  legend: { display: true },
-                  plugins: {
-                     title: {
-                        display: true,
-                        text: "This is a title",
-                     },
-                  },
                },
             });
          });
