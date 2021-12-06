@@ -125,6 +125,7 @@ async function setSalaryReport(el) {
          });
          console.log(shopEmployee[i].firstName + "teeeeest");
       } else {
+         console.log(shopEmployee[i].firstName);
          //COMMISH
          //shopEmployee[i]
          //const sched = await this.getBarberSched(employee.EmployeeID);
@@ -147,13 +148,14 @@ async function setSalaryReport(el) {
                      shopEmployee[i].EmployeeID == data[j].EmployeeID &&
                      data[j].appStatusID == 2
                   ) {
+                     console.log(shopEmployee[i].firstName);
                      console.log("PUMASOK DITO");
                      appointments.push(data[j]);
                   }
                }
             });
-         for (var i = 0; i < appointments.length; i++) {
-            wage += appointments[i].amountDue * multiplier;
+         for (var x = 0; x < appointments.length; x++) {
+            wage += appointments[x].amountDue * multiplier;
          }
 
          salaryInfo.push({
