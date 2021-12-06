@@ -818,7 +818,7 @@ router.post(
 
             await acu.insertInto(
                "tbltransactions (TransactionID, AppointmentID, ShopID, Amount, Date, Time)",
-               '( W"' +
+               '("' + "W" +
                   appointment.AppointmentID +
                   "-" +
                   req.params.shopId +
@@ -922,9 +922,10 @@ router.post(
       acu.startConnection();
       var ss = await acu.getOneFromWhere(
          "tblshopservices",
-         "servicesID = " + service + " AND shopID = " + req.params.shopId
+         "shopServicesID = " + service + " AND shopID = " + req.params.shopId
       );
-      var shopServiceID = ss.shopID;
+	   console.log(`ss: ${JSON.stringify(ss)}`)
+      var shopServiceID = ss.shopServicesID;
       var amountDue = ss.Price;
       var timeIn = time;
       var timeHolder = new Date("1970-01-01 " + timeIn);
