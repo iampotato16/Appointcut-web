@@ -187,7 +187,7 @@
             .then((res) => res.json())
             .then((data) => {
                 for (var i = 0; i < data.length; i++) {
-                    if (category == data[i].CategoryID && id == data[i].shopID) {
+                    if (category == data[i].CategoryID && id == data[i].shopID && data[i].Status == 1) {
                         services.push(data[i]);
                     }
                 }

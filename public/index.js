@@ -27,6 +27,55 @@ function setDaterange(daterange, num) {
    document.getElementById(daterange).setAttributeNode(att);
 }
 
+//DATA FOR SALARY REPORTS
+function setSalaryReport(el) {
+   var monthPicker = el.value;
+   //get employee, salary type, salary value
+   var salaryInfo = [];
+   var shopID = window.location.href.slice(-2);
+   var shopEmployee = [];
+   fetch("/getInfo/employee")
+      .then((res) => res.json())
+      .then((data) => {
+         for (var i = 0; i < data.length; i++) {
+            if (data[i].ShopID == shopID) {
+               shopEmployee.push(data[i]);
+            }
+         }
+         console.log(shopEmployee);
+         for (var i = 0; i < shopEmployee.length; i++) {
+            //salaryTypeValue
+            //1 Commission, 2 Monthy, 3 Hourly
+            //Employee, SalaryType, Salary, Amount
+            if (shopEmployee[i].salaryTypeID == 2) {
+               salaryInfo.push({
+                  employee:
+                     shopEmployee[i].firstName + " " + shopEmployee[i].lastName,
+                  salaryTypeID: shopEmployee[i].salaryTypeID,
+                  salaryTypeValue: shopEmployee[i].salaryTypeValue,
+                  amount: shopEmployee[i].salaryTypeValue,
+               });
+            } else if (shopEmployee[i].salaryTypeID == 3) {
+               //retrieve barber schedule
+               /* fetch("/getInfo/schedule")
+                  .then((res) => res.json())
+                  .then((data) => {
+                     console.log(data);
+                     for (var i = 0; i < data.length; i++) {
+                        if (shopEmployee[i].EmployeeID == data[i].EmployeeID) {
+                           //kukuhain ko yung hours per day
+
+                           //multiply sa salary value
+                           //i-accumulate sa amount
+                        }
+                     }
+                  }); */
+            }
+         }
+      });
+   //
+}
+
 //CHARTS FOR REPORTS
 function initializeChart(chart) {
    var xStart = moment().add(-7, "days");

@@ -271,6 +271,9 @@ router
    .get(async (req, res) => {
       var ownerID = req.params.ownerID;
       var shopID = req.params.shopID;
+      console.log(ownerID);
+      console.log(shopID);
+
       var account = "ownerAccount";
       var ownerName = await getOwnerName(ownerID);
       acu.startConnection();
@@ -288,7 +291,10 @@ router
          "appointcutdb.employeespecialization"
       );
       var rowsEmpSpecArray = rowsEmpSpec;
-      var id = rowsEmpSpec[0].EmployeeID;
+      if (rowsEmpSpec.length > 0) {
+         var id = rowsEmpSpec[0].EmployeeID;
+      }
+
       var counter = 0;
       for (var i = 0; i < rowsEmpSpec.length; i++) {
          //get initial EmpID, if EmpID changes, reset array
@@ -656,7 +662,7 @@ router.post("/view:ownerId/viewShop:shopId/addService", async (req, res) => {
    var shopServicesID = newService.insertId;
    var employeeList = await acu.getAllFromWhere(
       "tblemployee",
-      "shopID = " + req.params.shopId
+      "shopID = " + req.params.shopId + " AND EmployeeTypeID = 1"
    );
    //EmployeeID
    for (var i = 0; i < employeeList.length; i++) {
@@ -705,25 +711,30 @@ router.post(
    }
 );
 
-router.get("/view:ownerId/view:shopId/setInactiveServ:id", async (req, res) => {
-   var id = req.params.id;
-   acu.startConnection();
-   await acu.updateSet(
-      "tblshopservices",
-      "status = 0",
-      "shopServicesID = " + id
-   );
-   res.redirect(
-      "/ownerAccount/view" +
-         req.params.ownerId +
-         "/viewShop" +
-         req.params.shopId
-   );
-});
+router.get(
+   "/view:ownerId/viewShop:shopId/setInactiveServ:id",
+   async (req, res) => {
+      console.log(req.params.shopId);
+      var id = req.params.id;
+      acu.startConnection();
+      await acu.updateSet(
+         "tblshopservices",
+         "status = 0",
+         "shopServicesID = " + id
+      );
+      res.redirect(
+         "/ownerAccount/view" +
+            req.params.ownerId +
+            "/viewShop" +
+            req.params.shopId
+      );
+   }
+);
 
 router.get(
    "/view:ownerId/viewShop:shopId/setActiveServ:id",
    async (req, res) => {
+      console.log(req.params.shopId);
       var id = req.params.id;
       acu.startConnection();
       await acu.updateSet(

@@ -61,3 +61,36 @@
             </div>
         </div>
     </div>
+    <div>
+        <div class="min-vh-100 p-3">
+            <div class="row px-3">
+                <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="me-2 fw-800"><small>SALARY</small></span>
+                    </div>
+                    <div>
+                        <input type="month" id="monthPicker" onchange="setSalaryReport(this)">
+                    </div>
+                </div>
+                <div class="bg-gray p-4 pt-2 mb-3">
+                    <table class="table table-hover table-striped table-sm m-0">
+                        <thead>
+                            <tr>
+                                <th scope="col"> <small>EMPLOYEE</small></th>
+                                <th scope="col"> <small>SALARY TYPE</small></th>
+                                <th scope="col"> <small>SALARY VALUE</small></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="align-items-center">
+                                <td class="align-middle">{{this.TransactionID}}</td>
+                                <td class="align-middle">{{this.customerName}}</td>
+                                <td class="align-middle">{{this.WalkIn}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

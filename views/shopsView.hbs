@@ -900,7 +900,7 @@
                     <form action="/shops/view{{rows.ShopID}}/addService" method="POST">
                         <div class="col-auto my-1">
                             <select class="form-control form-control-sm mb-2 font-small rounded-0" name="category"
-                                onchange="changeServices(this,90)">
+                                onchange="addServices(this,90)">
                                 <option selected disabled hidden>Category</option>
                                 {{#each rowsServCategory}}
                                 <option value="{{this.CategoryID}}">{{this.Name}}</option>
@@ -1096,6 +1096,13 @@
             });
     }
 
+    function addServices(b, n) {
+        const chosenCategory = b.value;
+        var service = document.getElementById("service" + n);
+        updateAddServices(chosenCategory, service);
+    }
+
+
     //FOR APPOINTMENTS -- CATEGORY AND SERVICES
     function changeApptServices(b, n, id) {
         const chosenCategory = b.value;
@@ -1110,7 +1117,7 @@
             .then((res) => res.json())
             .then((data) => {
                 for (var i = 0; i < data.length; i++) {
-                    if (category == data[i].CategoryID && id == data[i].shopID) {
+                    if (category == data[i].CategoryID && id == data[i].shopID && data[i].Status == 1) {
                         services.push(data[i]);
                     }
                 }

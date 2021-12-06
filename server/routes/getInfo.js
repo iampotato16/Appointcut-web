@@ -56,4 +56,10 @@ router.route("/usersview").get(async (req, res) => {
    const rows = await acu.getAllFrom("appointcutdb.users");
    res.send(rows);
 });
+
+router.route("/employee").get(async (req, res) => {
+   acu.startConnection();
+   const rows = await acu.getAllFrom("tblemployee");
+   res.send(rows);
+});
 module.exports = router;

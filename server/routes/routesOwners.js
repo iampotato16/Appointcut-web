@@ -869,7 +869,7 @@ router.post("/view:ownerId/viewShop:shopId/addService", async (req, res) => {
    var shopServicesID = newService.insertId;
    var employeeList = await acu.getAllFromWhere(
       "tblemployee",
-      "shopID = " + req.params.shopId
+      "shopID = " + req.params.shopId + " AND EmployeeTypeID = 1"
    );
    //EmployeeID
    for (var i = 0; i < employeeList.length; i++) {
