@@ -29,7 +29,8 @@ router.route('/:id')
 .get(async (req, res) =>{
     const id = req.params.id
     const barber = await bf.getBarber(id)
-    res.json(barber)
+    if (barber == undefined){res.send({})}
+    else {res.json(barber)}
 })
 
 //path: /rest/barbers
@@ -84,6 +85,22 @@ router.route('/schedule/:barberId')
     sched = await bf.getBarberSched(barberId)
 
     res.json(sched)
+})
+
+//path /rest/barbers/wage/
+router.route('/wage/:token-:year-:month')
+.get(async(req, res) => {
+    const token = req.params.token
+    const auth = await tm.verifyToken(token)
+    console.log(JSON.stringify(auth))
+    if(auth.userType == UserFetch.UserAuthStatus.TOKEN){
+        res.sendStatus(401)
+        return
+    }
+    const salary = await bf.getWage(auth.userID, req.params.year, req.params.month)
+    console.log(`Salary = ${salary}`)
+    res.send(`${salary}`)
+
 })
 
 module.exports = router

@@ -26,9 +26,16 @@ class BarberFetch{
      * @param {Int} barberId 
      */
     async getBarber(barberId){
-        const query = `SELECT * FROM employee where EmployeeID = ${barberId} AND EmployeeType = "Barber"`
+        const query = `SELECT * FROM employee where EmployeeID = ${barberId} AND EmployeeType = "Barber" and Status = 1`
+        console.log(`SELECT * FROM employee where EmployeeID = ${barberId} AND EmployeeType = "Barber" and Status = 1`)
         var barber = await this.connection.query(query)
-        return barber[0].pop()
+        var fetched = barber[0].pop()
+        console.log(JSON.stringify(fetched))
+        if (fetched == null){
+            console.log("null on barfecth ")
+            return []
+        }
+        return [fetched]
     }
 
     /**
@@ -40,6 +47,7 @@ class BarberFetch{
         const select = `SELECT * FROM tblemployeespecialization` 
         const condition = `where shopServicesID = ${shopSpecializationId}`
         var shops = await this.connection.query(`${select} ${condition}`)
+        console.log(JSON.stringify(shops[0]))
         return shops[0]
     }
 
@@ -83,6 +91,81 @@ class BarberFetch{
 
         const schedule = await this.connection.query(`${select} ${where};`)
         return schedule[0]
+    }
+
+    async getWage(employeeId, year, month){
+        const employee = await this.connection.query(`select * from tblEmployee where EmployeeId = ${employeeId}`)
+        console.log(`Salary Type: ${JSON.stringify(employee[0][0])}`)
+
+        if(employee[0][0].salaryTypeID == 2){//monthly
+            console.log(`Salary Type: 2`)
+            return employee[0][0].salaryTypeValue
+        }else if (employee[0][0].salaryTypeID == 1){//commission
+            console.log(`Salary Type: 1`)
+            return await this.computeCommission(employee[0][0], year, month)
+        }else if(employee[0][0].salaryTypeID == 3){//Hourly
+            console.log(`Salary Type: 3`)
+            return await this.computeHourly(employee[0][0], year, month)
+        }
+    }
+
+    async computeCommission(employee, year, month){
+
+    }
+
+    async computeHourly(employee, year, month){
+        const sched = await this.getBarberSched(employee.EmployeeID)
+        const calendar = new Date(year, month)
+        var wage = 0
+        var multiplier = employee.salaryTypeValue
+
+        while(calendar.getMonth() == month){
+            var hours = 0
+            var currentSched
+            switch(calendar.getDay()){
+                case 0:
+                    currentSched = sched[6]
+                    break;
+                case 1:
+                    currentSched = sched[0]
+                    break;
+                case 2:
+                    currentSched = sched[1]
+                    break;
+                case 3:
+                    currentSched = sched[2]
+                    break;
+                case 4:
+                    currentSched = sched[3]
+                    break;
+                case 5:
+                    currentSched = sched[4]
+                    break;
+                case 6:
+                    currentSched = sched[5]
+                    break;
+            }
+            console.log(`TimeIn: ${currentSched.TimeIn}`)
+            console.log(`TimeOut: ${currentSched.TimeOut}`)
+            //if null, skip
+            if(currentSched.TimeIn == null){
+                calendar.setDate(calendar.getDate()+1)
+                continue
+            }
+
+            const hourOut = currentSched.TimeOut.split(":")[0]
+            const hourIn = currentSched.TimeIn.split(":")[0]
+            const minuteOut = currentSched.TimeOut.split(":")[1]
+            const minuteIn = currentSched.TimeIn.split(":")[1]
+
+            const hoursComputed = parseInt(hourOut) - parseInt(hourIn)
+            const minuteComputed = (60 - parseInt(minuteIn) + parseInt(minuteOut))/60
+            console.log(`Hours: ${hoursComputed}, Minutes: ${minuteComputed}`)
+            wage += (hoursComputed + minuteComputed) * multiplier
+            console.log(`Wage: ${wage}`)
+
+            calendar.setDate(calendar.getDate()+1)
+        }
     }
 }
 

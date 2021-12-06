@@ -45,7 +45,7 @@ class TokenManager{
     /**
      * Verifies the given token
      * @param {*} token Token to be verified
-     * @returns the entry in the database
+     * @returns the entry in the database from tblaccesstoken
      */
     async verifyToken(token){
         let user = await this.connection.query('SELECT * FROM tblaccesstoken WHERE token = ?', [token])

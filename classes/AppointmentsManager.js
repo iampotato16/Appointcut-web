@@ -84,6 +84,20 @@ class AppointmentManager{
         const conflicts = await this.connection.query(`${selectStatement} ${whereStatement};`)
         return conflicts[0].length
     }
+
+    /**
+     * Fetches from db the appointments of customer
+     * @param {int} customerId 
+     * @param {String} status status to be fetched
+     * @returns Entries in the database from appointment view
+     */
+    async getCustomerAppointments(customerId, status){
+        const select = "select * from appointment"
+        const where = `where CustomersID = ${customerId} and AppointmentStatus = "${status}"`
+        const list = await this.connection.query(`${select} ${where};`)
+
+        return list[0]
+    }
 }
 
 module.exports = AppointmentManager
