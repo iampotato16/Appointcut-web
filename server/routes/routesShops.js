@@ -791,14 +791,15 @@ router.post(
 //ADD APPOINTMENT
 router.post("/view:shopID/addAppointment", async (req, res) => {
    var { name, contact, category, service, employee, date, time } = req.body;
-
+   var shopID = req.params.shopID;
    //Para kumuha ng values sa loob ng shop services
    acu.startConnection();
    var ss = await acu.getOneFromWhere(
       "tblshopservices",
-      "servicesID = " + service + " AND shopID = " + req.params.shopID
+      "shopServicesID = " + service + " AND shopID = " + shopID
    );
-   var shopServiceID = ss.shopID;
+   console.log(ss);
+   var shopServiceID = ss.shopServicesID;
    var amountDue = ss.Price;
    var timeIn = time;
    var timeHolder = new Date("1970-01-01 " + timeIn);
@@ -812,7 +813,7 @@ router.post("/view:shopID/addAppointment", async (req, res) => {
       ":" +
       (Math.floor(timeHolder.getTime() / 1000) % 60);
 
-   var shopID = req.params.shopId;
+   var shopID = req.params.shopID;
    console.log(ss, shopServiceID, amountDue, timeIn, timeOut, shopID);
    await acu.insertInto(
       "tblappointment (Name, ShopID, EmployeeID, ShopServicesID, TimeIn, TimeOut, Date, AmountDue, AppStatusID, appointmentType )",

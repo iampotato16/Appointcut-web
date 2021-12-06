@@ -28,115 +28,169 @@ function setDaterange(daterange, num) {
 }
 
 //DATA FOR SALARY REPORTS
-function setSalaryReport(el) {
+async function setSalaryReport(el) {
    var monthPicker = el.value;
    var chosenMonth = new Date(monthPicker);
-   //get employee, salary type, salary value
 
    var shopID = window.location.href.slice(-2);
    var shopEmployee = [];
-   fetch("/getInfo/employee")
+   var salaryInfo = [];
+   await fetch("/getInfo/employee")
       .then((res) => res.json())
       .then((data) => {
-         var salaryInfo = [];
          for (var i = 0; i < data.length; i++) {
             if (data[i].ShopID == shopID) {
                shopEmployee.push(data[i]);
             }
          }
-         console.log(shopEmployee);
-         for (var i = 0; i < shopEmployee.length; i++) {
-            //salaryTypeValue
-            //1 Commission, 2 Monthy, 3 Hourly
-            //Employee, SalaryType, Salary, Amount
-            if (shopEmployee[i].salaryTypeID == 2) {
-               salaryInfo.push({
-                  employee:
-                     shopEmployee[i].firstName + " " + shopEmployee[i].lastName,
-                  salaryTypeID: shopEmployee[i].salaryTypeID,
-                  salaryTypeValue: shopEmployee[i].salaryTypeValue,
-                  amount: shopEmployee[i].salaryTypeValue,
-               });
-            } else if (shopEmployee[i].salaryTypeID == 1) {
-               var currentEmployee = shopEmployee[i];
-               console.log("HOURLY" + currentEmployee.firstName);
-               //retrieve barber schedule
-               var sched = [];
-               var calendar = new Date(monthPicker);
-               var wage = 0;
-               fetch("/getInfo/schedule")
-                  .then((res) => res.json())
-                  .then((data) => {
-                     for (var j = 0; j < data.length; j++) {
-                        if (data[j].EmployeeID == currentEmployee.EmployeeID) {
-                           sched.push(data[j]);
-                        }
-                     }
-                  })
-                  .then((data) => {
-                     var multiplier = currentEmployee.salaryTypeValue;
-                     while (calendar.getMonth() == chosenMonth.getMonth()) {
-                        var currentSched;
-                        switch (calendar.getDay()) {
-                           case 0:
-                              currentSched = sched[6];
-                              break;
-                           case 1:
-                              currentSched = sched[0];
-                              break;
-                           case 2:
-                              currentSched = sched[1];
-                              break;
-                           case 3:
-                              currentSched = sched[2];
-                              break;
-                           case 4:
-                              currentSched = sched[3];
-                              break;
-                           case 5:
-                              currentSched = sched[4];
-                              break;
-                           case 6:
-                              currentSched = sched[5];
-                              break;
-                        }
-                        console.log(currentSched);
-                        //if null, skip
-                        if (currentSched.TimeIn == null) {
-                           calendar.setDate(calendar.getDate() + 1);
-                           continue;
-                        }
-                        const hourOut = currentSched.TimeOut.split(":")[0];
-                        const hourIn = currentSched.TimeIn.split(":")[0];
-                        const minuteOut = currentSched.TimeOut.split(":")[1];
-                        const minuteIn = currentSched.TimeIn.split(":")[1];
-
-                        var hoursComputed =
-                           parseInt(hourOut) - parseInt(hourIn);
-                        const minuteComputed =
-                           (60 - parseInt(minuteIn) + parseInt(minuteOut)) / 60;
-                        wage += (hoursComputed + minuteComputed) * multiplier;
-                        calendar.setDate(calendar.getDate() + 1);
-                     }
-                     salaryInfo.push({
-                        employee:
-                           currentEmployee.firstName +
-                           " " +
-                           currentEmployee.lastName,
-                        salaryTypeID: currentEmployee.salaryTypeID,
-                        salaryTypeValue: currentEmployee.salaryTypeValue,
-                        amount: wage,
-                     });
-                  });
-            }
-            /* else {
-            aayusin pa values nung mga ==
-            } */
-         }
-         console.log(salaryInfo);
-         //set table here
       });
+   console.log(shopEmployee);
+   console.log(shopEmployee.length);
+   for (var i = 0; i < shopEmployee.length; i++) {
+      //salaryTypeValue
+      //1 Commission, 2 Monthy, 3 Hourly
+      //Employee, SalaryType, Salary, Amount
+      if (shopEmployee[i].salaryTypeID == 2) {
+         salaryInfo.push({
+            employee:
+               shopEmployee[i].firstName + " " + shopEmployee[i].lastName,
+            salaryTypeID: shopEmployee[i].salaryTypeID,
+            salaryTypeValue: shopEmployee[i].salaryTypeValue,
+            amount: shopEmployee[i].salaryTypeValue,
+         });
+      } else if (shopEmployee[i].salaryTypeID == 3) {
+         console.log("HOURLY" + shopEmployee[i].firstName);
+         //retrieve barber schedule
+         var sched = [];
+         var calendar = new Date(monthPicker);
+         var wage = 0;
+         await fetch("/getInfo/schedule")
+            .then((res) => res.json())
+            .then((data) => {
+               for (var j = 0; j < data.length; j++) {
+                  if (data[j].EmployeeID == shopEmployee[i].EmployeeID) {
+                     sched.push(data[j]);
+                  }
+               }
+            });
+         var multiplier = shopEmployee[i].salaryTypeValue;
+         while (calendar.getMonth() == chosenMonth.getMonth()) {
+            var currentSched;
+            switch (calendar.getDay()) {
+               case 0:
+                  currentSched = sched[6];
+                  break;
+               case 1:
+                  currentSched = sched[0];
+                  break;
+               case 2:
+                  currentSched = sched[1];
+                  break;
+               case 3:
+                  currentSched = sched[2];
+                  break;
+               case 4:
+                  currentSched = sched[3];
+                  break;
+               case 5:
+                  currentSched = sched[4];
+                  break;
+               case 6:
+                  currentSched = sched[5];
+                  break;
+            }
+            console.log(currentSched);
+            //if null, skip
+            if (currentSched.TimeIn == null) {
+               calendar.setDate(calendar.getDate() + 1);
+               continue;
+            }
+            const hourOut = currentSched.TimeOut.split(":")[0];
+            const hourIn = currentSched.TimeIn.split(":")[0];
+            const minuteOut = currentSched.TimeOut.split(":")[1];
+            const minuteIn = currentSched.TimeIn.split(":")[1];
+
+            var hoursComputed = parseInt(hourOut) - parseInt(hourIn);
+            const minuteComputed =
+               (60 - parseInt(minuteIn) + parseInt(minuteOut)) / 60;
+            wage += (hoursComputed + minuteComputed) * multiplier;
+            calendar.setDate(calendar.getDate() + 1);
+         }
+         salaryInfo.push({
+            employee:
+               shopEmployee[i].firstName + " " + shopEmployee[i].lastName,
+            salaryTypeID: shopEmployee[i].salaryTypeID,
+            salaryTypeValue: shopEmployee[i].salaryTypeValue,
+            amount: wage,
+         });
+         console.log(shopEmployee[i].firstName + "teeeeest");
+      } else {
+         console.log(shopEmployee[i].firstName);
+         //COMMISH
+         //shopEmployee[i]
+         //const sched = await this.getBarberSched(employee.EmployeeID);
+         var wage = 0.0;
+         var multiplier = shopEmployee[i].salaryTypeValue / 100;
+         var theYear = chosenMonth.getFullYear();
+         var theMonth = chosenMonth.getMonth() + 1;
+         console.log(theMonth, theYear);
+         var appointments = [];
+         await fetch("/getInfo/appointments")
+            .then((res) => res.json())
+            .then((data) => {
+               for (var j = 0; j < data.length; j++) {
+                  var date = new Date(data[i].Date);
+                  var year = date.getFullYear();
+                  var month = date.getMonth() + 1;
+                  if (
+                     year == theYear &&
+                     month == theMonth &&
+                     shopEmployee[i].EmployeeID == data[j].EmployeeID &&
+                     data[j].appStatusID == 2
+                  ) {
+                     console.log(shopEmployee[i].firstName);
+                     console.log("PUMASOK DITO");
+                     appointments.push(data[j]);
+                  }
+               }
+            });
+         for (var x = 0; x < appointments.length; x++) {
+            wage += appointments[x].amountDue * multiplier;
+         }
+
+         salaryInfo.push({
+            employee:
+               shopEmployee[i].firstName + " " + shopEmployee[i].lastName,
+            salaryTypeID: shopEmployee[i].salaryTypeID,
+            salaryTypeValue: shopEmployee[i].salaryTypeValue,
+            amount: wage,
+         });
+      }
+   }
+   console.log(salaryInfo);
+   //set table here
+
    //
+   var tableDataRow = "";
+   var tableData = document.getElementsByName("salaryData");
+   for (var i = 0; i < salaryInfo.length; i++) {
+      tableDataRow +=
+         '<tr class="align-items-center">' +
+         '<td class="align-middle">' +
+         salaryInfo[i].employee +
+         "</td>" +
+         '<td class="align-middle">' +
+         salaryInfo[i].salaryTypeID +
+         "</td>" +
+         '<td class="align-middle">' +
+         salaryInfo[i].salaryTypeValue +
+         "</td>" +
+         '<td class="align-middle">' +
+         +salaryInfo[i].amount +
+         "</td>" +
+         "</tr>";
+   }
+   tableData[0].innerHTML = tableDataRow;
 }
 
 //CHARTS FOR REPORTS

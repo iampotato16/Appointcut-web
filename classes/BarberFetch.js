@@ -95,7 +95,7 @@ class BarberFetch{
     }
 
     async getWage(employeeId, year, month){
-        const employee = await this.connection.query(`select * from tblEmployee where EmployeeId = ${employeeId}`)
+        const employee = await this.connection.query(`select * from tblemployee where EmployeeId = ${employeeId}`)
         console.log(`Salary Type: ${JSON.stringify(employee[0][0])}`)
         console.log(`Date ${year} - ${month}`)
 

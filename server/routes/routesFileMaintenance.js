@@ -15,7 +15,8 @@ let connection = mysql2.createPool({
 
 //SIMPLE TABLE FUNCTIONS
 async function addData(dataName, input, res) {
-   query("INSERT INTO tbl" + dataName + " SET name = ?", [input])
+   connection
+      .query("INSERT INTO tbl" + dataName + " SET name = ?", [input])
       .catch((err) => {
          console.log(err);
       })
