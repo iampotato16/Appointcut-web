@@ -129,6 +129,7 @@
                                             </div>
                                         </div>
                                         <div class="tab editEmp{{this.EmployeeID}}">
+                                            {{#if (isBarber this.EmployeeTypeID)}}
                                             <p class="text-center"><small>EMPLOYEE SCHEDULE</small></p>
                                             {{#each ../rowsEmpSchedule}}
                                             {{#if (withinShop this.EmployeeID ../this.EmployeeID)}}
@@ -145,21 +146,24 @@
                                                         <div class="col-6 d-flex align-items-center">
                                                             <input
                                                                 class="form-control form-control-sm mb-2 font-small rounded-0"
-                                                                name="timeIn" type="time" onchange="inputTime(this)"
-                                                                value="{{this.TimeIn}}" min="{{../this.TimeIn}}"
-                                                                max="{{../this.TimeOut}}">
+                                                                name="timeIn" type="time" {{!--
+                                                                onchange="inputTime(this)" --}} value="{{this.TimeIn}}"
+                                                                {{!-- min="{{../this.TimeIn}}" max="{{../this.TimeOut}}"
+                                                                --}}>
                                                         </div>
                                                         <div class="col-6 d-flex align-items-center">
                                                             <input
                                                                 class="form-control form-control-sm mb-2 font-small rounded-0"
-                                                                name="timeOut" type="time" onchange="inputTime(this)"
-                                                                value="{{this.TimeOut}}" min="{{../this.TimeIn}}"
-                                                                max="{{../this.TimeOut}}">
+                                                                name="timeOut" type="time" {{!--
+                                                                onchange="inputTime(this)" --}} value="{{this.TimeOut}}"
+                                                                {{!-- min="{{../this.TimeIn}}" max="{{../this.TimeOut}}"
+                                                                --}}>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             {{else}}
+                                            {{/if}}
                                             <div class="row m-auto" style="display: none">
                                                 <div class="col-4">
                                                     <input class="form-check-input" type="checkbox" name="{{this.Date}}"
@@ -374,9 +378,6 @@
         var timeInput = el.value;
         var timeIn = el.min;
         var timeOut = el.max;
-        if (timeInput == timeIn) {
-            alert("noraml")
-        }
         timeInput = timeInput + ':00'
         if (timeInput >= timeIn && timeInput <= timeOut) {
             el.style.backgroundColor = "white";

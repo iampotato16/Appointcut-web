@@ -229,6 +229,7 @@
                                                 {{/each}}
                                             </div>
                                             <div class="tab editEmp{{this.EmployeeID}}">
+                                                {{#if (isBarber this.EmployeeTypeID)}}
                                                 <p class="text-center"><small>EMPLOYEE SPECIALIZATION</small></p>
                                                 {{#each ../rowsEmpSpecArray}}
                                                 {{#if (withinShop this.EmployeeID ../this.EmployeeID)}}
@@ -243,6 +244,7 @@
                                                 </div>
                                                 {{/if}}
                                                 {{/each}}
+                                                {{/if}}
                                             </div>
 
                                             {{!-- BUTTONS --}}
