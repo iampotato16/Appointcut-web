@@ -13,7 +13,7 @@ class ShopFetch{
      * @returns all the active shops with all the columns from the database
      */
     async getShops(){
-        var shops = await this.connection.query('SELECT * FROM shop where Status = 1')
+        var shops = await this.connection.query('SELECT * FROM shop where Status = 1 and appStatus = 1')
         shops = shops[0]
         return shops
     }
@@ -24,7 +24,7 @@ class ShopFetch{
      * @returns a json array of the supported services of the shop
      */
     async getShopServices(id){
-        var shopServices = await this.connection.query(`SELECT * FROM shopservices where shopID = ${id}`)
+        var shopServices = await this.connection.query(`SELECT * FROM shopservices where shopID = ${id} and Status = 1`)
         return shopServices
     }
 }

@@ -87,4 +87,38 @@ router.route('/conflicts/:barberId-:year-:month-:date-:in-:out')
     res.send(`${conflicts}`)
 })
 
+//Path: /rest/appointments/customer/completed
+router.route('/customer/completed/:token')
+.get(async (req,res) => {
+    //verify the token
+    const tokenInfo = await tm.verifyToken(req.params.token)
+    //check if token is valid
+    if(tokenInfo.userType != UserFetch.UserAuthStatus.CUSTOMER){
+        res.sendStatus(401)
+        return
+    }
+
+    //get user appointments
+    const list = await apm.getCustomerAppointments(tokenInfo.userID, 'Completed')
+    //respond with appointments
+    res.json(list)
+})
+
+//Path: /rest/appointments/customer/approved
+router.route('/customer/approved/:token')
+.get(async (req,res) => {
+    //verify the token
+    const tokenInfo = await tm.verifyToken(req.params.token)
+    //check if token is valid
+    if(tokenInfo.userType != UserFetch.UserAuthStatus.CUSTOMER){
+        res.sendStatus(401)
+        return
+    }
+
+    //get user appointments
+    const list = await apm.getCustomerAppointments(tokenInfo.userID, 'Approved')
+    //respond with appointments
+    res.json(list)
+})
+
 module.exports = router
