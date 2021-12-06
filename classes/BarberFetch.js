@@ -75,8 +75,9 @@ class BarberFetch{
     async getBarberAppointmentView(barberName,day, month, year){
         const select = `select * from appointment`
         const where = `where DAY(Date) = ${day} and MONTH(Date) = ${month} and YEAR(Date) = ${year} and EmployeeName = ${barberName}`
+        const order = "ORDER BY TimeIn"
         console.log(`${select} ${where};`)
-        const appointments = await this.connection.query(`${select} ${where};`)
+        const appointments = await this.connection.query(`${select} ${where} ${order};`)
         
         return appointments
     }
