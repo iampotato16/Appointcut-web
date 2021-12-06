@@ -174,8 +174,10 @@ class BarberFetch{
             const minuteOut = currentSched.TimeOut.split(":")[1]
             const minuteIn = currentSched.TimeIn.split(":")[1]
 
-            const hoursComputed = parseInt(hourOut) - parseInt(hourIn)
+            var hoursComputed = parseInt(hourOut) - parseInt(hourIn)
             const minuteComputed = (60 - parseInt(minuteIn) + parseInt(minuteOut))/60
+            //correction for time in
+            if(parseInt(minuteIn) > 0){hoursComputed--}
             console.log(`Hours: ${hoursComputed}, Minutes: ${minuteComputed}`)
             wage += (hoursComputed + minuteComputed) * multiplier
             console.log(`Wage: ${wage}`)

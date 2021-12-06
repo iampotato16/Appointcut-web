@@ -97,7 +97,7 @@ router.route('/wage/:token-:year-:month')
         res.sendStatus(401)
         return
     }
-    const salary = await bf.getWage(111, req.params.year, 11)
+    const salary = await bf.getWage(113, req.params.year, 11)
     console.log(`Salary = ${salary}`)
     res.send(`${salary}`)
 
