@@ -924,6 +924,7 @@ router.post(
          "tblshopservices",
          "servicesID = " + service + " AND shopID = " + req.params.shopId
       );
+      console.log(ss);
       var shopServiceID = ss.shopID;
       var amountDue = ss.Price;
       var timeIn = time;
