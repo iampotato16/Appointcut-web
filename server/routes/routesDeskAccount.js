@@ -6,6 +6,7 @@ const router = express.Router();
 async function getShopName(shopID) {
    acu.startConnection();
    var rowsShop = await acu.getAllFromWhere("tblshop", "ShopID = " + shopID);
+
    return rowsShop[0].shopName;
 }
 
@@ -42,7 +43,6 @@ router.route("/:shopID/employees").get(async (req, res) => {
    var rowsEmpSpecArray = rowsEmpSpec;
    var id = rowsEmpSpec[0].EmployeeID;
    var counter = 0;
-
    for (var i = 0; i < rowsEmpSpec.length; i++) {
       //get initial EmpID, if EmpID changes, reset array
       if (rowsEmpSpec[i].EmployeeID == id) {
@@ -283,6 +283,8 @@ router.post("/:shopID/editEmployee:empID", async (req, res) => {
    for (var i = 0; i < rowsEmpSpec.length; i++) {
       eval("var service" + i + " = req.body.service" + i);
       eval("var serviceName" + i + " = req.body.serviceName" + i);
+      console.log(eval("service" + i));
+      console.log(eval("serviceName" + i));
    }
    //check if nacheckan ba yung checkbox
    for (var i = 0; i < rowsEmpSpec.length; i++) {
