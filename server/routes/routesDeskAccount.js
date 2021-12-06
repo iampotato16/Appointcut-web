@@ -276,7 +276,7 @@ router.post("/:shopID/editEmployee:empID", async (req, res) => {
    //EMPLOYEE SPECIALIZATION
    //hanapin lahat nung services
    const rowsEmpSpec = await acu.getAllFromWhere(
-      "appointcutdb.employeeSpecialization",
+      "appointcutdb.employeespecialization",
       "employeeID = " + req.params.empID
    );
    //variable creation
@@ -357,14 +357,14 @@ router.get("/:shopID/services", async (req, res) => {
 });
 
 router.post("/:shopID/addService", async (req, res) => {
-   var { service13, price, duration } = req.body;
+   var { service16, price, duration } = req.body;
    acu.startConnection();
    var newService = await acu.insertInto(
       "tblshopservices (shopID, servicesID, price, duration)",
       "(" +
          req.params.shopID +
          ", " +
-         service13 +
+         service16 +
          ", " +
          price +
          ", " +
@@ -388,7 +388,10 @@ router.post("/:shopID/addService", async (req, res) => {
 
 //owner => barbershop views => edit service
 router.post("/:shopID/editService:serviceID", async (req, res) => {
-   var { editService, editPrice, editDuration } = req.body;
+   var { editService, editServiceHolder, editPrice, editDuration } = req.body;
+   if (editService == undefined) {
+      editService = editServiceHolder;
+   }
    acu.startConnection();
    await acu.updateSet(
       "tblshopservices",
@@ -508,9 +511,9 @@ router.post("/:shopID/addAppointment", async (req, res) => {
    acu.startConnection();
    var ss = await acu.getOneFromWhere(
       "tblshopservices",
-      "servicesID = " + service + " AND shopID = " + req.params.shopID
+      "shopServicesID = " + service + " AND shopID = " + req.params.shopID
    );
-   var shopServiceID = ss.shopID;
+   var shopServiceID = ss.shopServicesID;
    var amountDue = ss.Price;
    var timeIn = time;
    var timeHolder = new Date("1970-01-01 " + timeIn);
@@ -627,7 +630,8 @@ router.post("/:shopID/completeAppt:id", async (req, res) => {
 
          await acu.insertInto(
             "tbltransactions (TransactionID, AppointmentID, ShopID, Amount, Date, Time)",
-            '( W"' +
+            '( "' +
+               "W" +
                appointment.AppointmentID +
                "-" +
                req.params.shopID +

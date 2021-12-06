@@ -225,7 +225,7 @@ router
          );
 
          await acu.insertInto(
-            "tblshopapplication (bir_img, bir_fileName, bp_img, bp_fileName, shopID, ownerID, appStatus)",
+            "tblshopapplication (bir_img, bir_fileName, bp_img, bp_fileName, shopID, ownerID)",
             '( "' +
                birPermit[0].path +
                '", "' +
@@ -238,7 +238,7 @@ router
                newShopID +
                '","' +
                newOwnerID +
-               '", 0)'
+               '")'
          );
       });
       res.redirect("/owners/view" + req.params.ownerId);
@@ -372,10 +372,12 @@ router
       var shopID = req.params.shopId;
       var account = "owners";
       acu.startConnection();
-      var ownerData = await acu.getAllFromWhere(
+      var ownerData = await acu.getOneFromWhere(
          "tblowner",
          "OwnerID =" + ownerID
       );
+      console.log(ownerData);
+
       var ownerName = ownerData.firstName + " " + ownerData.lastName;
       var rowShop = await acu.getAllFromWhere(
          "appointcutdb.shop",
