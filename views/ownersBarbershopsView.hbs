@@ -819,7 +819,7 @@
                     <form action="viewShop{{shopID}}/addService" method="POST">
                         <div class="col-auto my-1">
                             <select class="form-control form-control-sm mb-2 font-small rounded-0" name="category"
-                                onchange="changeServices(this,1)">
+                                onchange="addServices(this,1)">
                                 <option selected disabled hidden>Category</option>
                                 {{#each rowsServCategory}}
                                 <option value="{{this.CategoryID}}">{{this.Name}}</option>
@@ -972,6 +972,40 @@
             });
     }
 
+    function addServices(b, n) {
+        const chosenCategory = b.value;
+        var service = document.getElementById("service" + n);
+        updateAddServices(chosenCategory, service);
+    }
+
+    function updateAddServices(category, service) {
+        console.log(service);
+        var services = [];
+        fetch("/getInfo/services")
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].CategoryID == category) {
+                        services.push(data[i]);
+                    }
+                }
+            })
+            .then((data) => {
+                var serviceOptions =
+                    "<option hidden disabled selected>Service</option>";
+                for (var i = 0; i < services.length; i++) {
+                    serviceOptions +=
+                        "<option value=" +
+                        services[i].ServicesID +
+                        "> " +
+                        services[i].Name +
+                        " </option>";
+                }
+                service.innerHTML = serviceOptions;
+            });
+    }
+
     //FOR APPOINTMENTS -- CATEGORY AND SERVICES
     var apptService;
     function changeApptServices(b, n, id) {
@@ -986,8 +1020,9 @@
         fetch("/getInfo/shopservicesview")
             .then((res) => res.json())
             .then((data) => {
+                console.log(data)
                 for (var i = 0; i < data.length; i++) {
-                    if (category == data[i].CategoryID && id == data[i].shopID) {
+                    if (category == data[i].CategoryID && id == data[i].shopID && data[i].Status == 1) {
                         services.push(data[i]);
                     }
                 }
@@ -1014,6 +1049,7 @@
         fetch("/getInfo/employeeSpecialization")
             .then((res) => res.json())
             .then((data) => {
+                console.log(data)
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].ShopServicesID == el.value && data[i].Status == 1) {
                         ableEmployees.push(data[i]);
