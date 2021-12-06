@@ -97,6 +97,7 @@ class BarberFetch{
     async getWage(employeeId, year, month){
         const employee = await this.connection.query(`select * from tblEmployee where EmployeeId = ${employeeId}`)
         console.log(`Salary Type: ${JSON.stringify(employee[0][0])}`)
+        console.log(`Date ${year} - ${month}`)
 
         if(employee[0][0].salaryTypeID == 2){//monthly
             console.log(`Salary Type: 2`)
@@ -117,7 +118,8 @@ class BarberFetch{
         var multiplier = employee.salaryTypeValue/100
 
         const select = "select Amount from appointment"
-        const where = `where MONTH(Date) = ${month+1} and YEAR(Date) = ${year} and EmployeeID = ${employee.EmployeeID} and AppointmentStatus = "Completed"`
+        const where = `where MONTH(Date) = ${parseInt(month)+1} and YEAR(Date) = ${year} and EmployeeID = ${employee.EmployeeID} and AppointmentStatus = "Completed"`
+        console.log(`${select} ${where};`)
         const appointments = await this.connection.query(`${select} ${where};`)
         console.log(`amount ${JSON.stringify(appointments[0])}`)
 
