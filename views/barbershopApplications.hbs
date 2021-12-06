@@ -23,7 +23,6 @@
          </thead>
          <tbody>
             {{#each rowsShopApplication}}
-            {{#unless this.appStatus}}
             <tr class="align-items-center">
                <td class="align-middle">{{this.shopName}}</td>
                <td class="align-middle">{{this.address}}</td>
@@ -57,7 +56,6 @@
                   </div>
                </div>
             </tr>
-            {{/unless}}
             {{/each}}
          </tbody>
       </table>

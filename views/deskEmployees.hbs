@@ -92,7 +92,7 @@
                                                         name="contact" type="text" value="{{this.Contact}}"
                                                         style="width: 300px;">
                                                     <div>
-                                                        <input type="text" style="display: hidden;"
+                                                        <input type="text" style="display: none;"
                                                             name="employeeTypeHolder" value="{{this.EmployeeType}}">
                                                         <select
                                                             class="form-control form-control-sm mb-2 font-small rounded-0"
@@ -374,6 +374,10 @@
         var timeInput = el.value;
         var timeIn = el.min;
         var timeOut = el.max;
+        if (timeInput == timeIn) {
+            alert("noraml")
+        }
+        timeInput = timeInput + ':00'
         if (timeInput >= timeIn && timeInput <= timeOut) {
             el.style.backgroundColor = "white";
         } else {

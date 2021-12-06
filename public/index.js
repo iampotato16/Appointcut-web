@@ -30,13 +30,15 @@ function setDaterange(daterange, num) {
 //DATA FOR SALARY REPORTS
 function setSalaryReport(el) {
    var monthPicker = el.value;
+   var chosenMonth = new Date(monthPicker);
    //get employee, salary type, salary value
-   var salaryInfo = [];
+
    var shopID = window.location.href.slice(-2);
    var shopEmployee = [];
    fetch("/getInfo/employee")
       .then((res) => res.json())
       .then((data) => {
+         var salaryInfo = [];
          for (var i = 0; i < data.length; i++) {
             if (data[i].ShopID == shopID) {
                shopEmployee.push(data[i]);
@@ -55,23 +57,84 @@ function setSalaryReport(el) {
                   salaryTypeValue: shopEmployee[i].salaryTypeValue,
                   amount: shopEmployee[i].salaryTypeValue,
                });
-            } else if (shopEmployee[i].salaryTypeID == 3) {
+            } else if (shopEmployee[i].salaryTypeID == 1) {
+               var currentEmployee = shopEmployee[i];
+               console.log("HOURLY" + currentEmployee.firstName);
                //retrieve barber schedule
-               /* fetch("/getInfo/schedule")
+               var sched = [];
+               var calendar = new Date(monthPicker);
+               var wage = 0;
+               fetch("/getInfo/schedule")
                   .then((res) => res.json())
                   .then((data) => {
-                     console.log(data);
-                     for (var i = 0; i < data.length; i++) {
-                        if (shopEmployee[i].EmployeeID == data[i].EmployeeID) {
-                           //kukuhain ko yung hours per day
-
-                           //multiply sa salary value
-                           //i-accumulate sa amount
+                     for (var j = 0; j < data.length; j++) {
+                        if (data[j].EmployeeID == currentEmployee.EmployeeID) {
+                           sched.push(data[j]);
                         }
                      }
-                  }); */
+                  })
+                  .then((data) => {
+                     var multiplier = currentEmployee.salaryTypeValue;
+                     while (calendar.getMonth() == chosenMonth.getMonth()) {
+                        var currentSched;
+                        switch (calendar.getDay()) {
+                           case 0:
+                              currentSched = sched[6];
+                              break;
+                           case 1:
+                              currentSched = sched[0];
+                              break;
+                           case 2:
+                              currentSched = sched[1];
+                              break;
+                           case 3:
+                              currentSched = sched[2];
+                              break;
+                           case 4:
+                              currentSched = sched[3];
+                              break;
+                           case 5:
+                              currentSched = sched[4];
+                              break;
+                           case 6:
+                              currentSched = sched[5];
+                              break;
+                        }
+                        console.log(currentSched);
+                        //if null, skip
+                        if (currentSched.TimeIn == null) {
+                           calendar.setDate(calendar.getDate() + 1);
+                           continue;
+                        }
+                        const hourOut = currentSched.TimeOut.split(":")[0];
+                        const hourIn = currentSched.TimeIn.split(":")[0];
+                        const minuteOut = currentSched.TimeOut.split(":")[1];
+                        const minuteIn = currentSched.TimeIn.split(":")[1];
+
+                        var hoursComputed =
+                           parseInt(hourOut) - parseInt(hourIn);
+                        const minuteComputed =
+                           (60 - parseInt(minuteIn) + parseInt(minuteOut)) / 60;
+                        wage += (hoursComputed + minuteComputed) * multiplier;
+                        calendar.setDate(calendar.getDate() + 1);
+                     }
+                     salaryInfo.push({
+                        employee:
+                           currentEmployee.firstName +
+                           " " +
+                           currentEmployee.lastName,
+                        salaryTypeID: currentEmployee.salaryTypeID,
+                        salaryTypeValue: currentEmployee.salaryTypeValue,
+                        amount: wage,
+                     });
+                  });
             }
+            /* else {
+            aayusin pa values nung mga ==
+            } */
          }
+         console.log(salaryInfo);
+         //set table here
       });
    //
 }

@@ -225,7 +225,7 @@ router
          );
 
          await acu.insertInto(
-            "tblshopapplication (bir_img, bir_fileName, bp_img, bp_fileName, shopID, ownerID)",
+            "tblshopapplication (bir_img, bir_fileName, bp_img, bp_fileName, shopID, ownerID, appStatus)",
             '( "' +
                birPermit[0].path +
                '", "' +
@@ -238,7 +238,7 @@ router
                newShopID +
                '","' +
                newOwnerID +
-               '")'
+               '", 0)'
          );
       });
       res.redirect("/owners/view" + req.params.ownerId);
@@ -1007,4 +1007,9 @@ router.post(
       );
    }
 );
+
+//CANCEL BARBERSHOP APPLICATION
+router.route("/cancelApplication:id", (res, req) => {
+   res.send(req.params.id);
+});
 module.exports = router;

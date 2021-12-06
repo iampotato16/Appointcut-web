@@ -52,6 +52,11 @@
                     <a class="nav-link" href="#">{{ownerName}}</a>
                 </div>
             </div>
+            <li class="mb-1">
+                <button class="btn align-items-center" id="fm">
+                    <a class="btn-toggle-custom text-decoration-none" href="/" id="fm-link">Log Out</a>
+                </button>
+            </li>
         </div>
     </nav>
 
@@ -68,10 +73,7 @@
             el.style.display = "none";
         }
 
-
-        console.log('aaaa')
         var hidePage = document.querySelectorAll(".hidePage");
-        console.log(hidePage + 'aaaaa')
         for (var i = 0; i < hidePage.length; i++) {
             console.log(hidePage[i])
             hidePage[i].classList.add('p-4');
