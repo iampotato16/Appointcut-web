@@ -12,9 +12,14 @@ async function getShopName(shopID) {
 router.route("/:shopID").get(async (req, res) => {
    var shopID = req.params.shopID;
    var shopName = await getShopName(shopID);
+   const transactions = await acu.getAllFromWhere(
+      "appointcutdb.transactions",
+      "ShopID = " + shopID
+   );
    res.render("deskReports", {
       layout: "home-desk",
       title: shopName,
+      transactions,
       shopName,
       shopID,
    });
@@ -67,6 +72,7 @@ router.route("/:shopID/employees").get(async (req, res) => {
    );
    const rowsEmpType = await acu.getAllFrom("tblemployeetype");
    const rowsSalaryType = await acu.getAllFrom("tblsalarytype");
+
    res.render("deskEmployees", {
       layout: "home-desk",
       title: "Shop Name",
@@ -95,6 +101,7 @@ router.post("/:shopID/employees/addEmployee", async (req, res) => {
       salaryType,
       salaryValue,
    } = req.body;
+
    var newEmp = await acu.insertInto(
       "tblemployee (firstname, lastname, email, password, contact, employeeTypeID,  salaryTypeID, salaryTypeValue, status, balance, shopID)",
       '( "' +
@@ -152,35 +159,36 @@ router.post("/:shopID/employees/addEmployee", async (req, res) => {
          );
       }
    }
-
-   //EMPLOYEE SPECIALIZATION
-   //hanapin lahat nung services -- variable creation
-   const rowsServ = await acu.getAllFromWhere(
-      "appointcutdb.services",
-      "shopID = " + req.params.shopID
-   );
-   for (var i = 0; i < rowsServ.length; i++) {
-      eval("var serviceName" + i + " = req.body.serviceName" + i);
-      eval("var service" + i + " = req.body.service" + i);
-   }
-   //check if nacheckan ba yung checkbox
-   for (var i = 0; i < rowsServ.length; i++) {
-      var status = 1;
-      if (eval("service" + i) != undefined) {
-         status = 1;
-      } else {
-         status = 0;
-      }
-      await acu.insertInto(
-         "tblemployeespecialization (shopServicesID, employeeID, status)",
-         '( "' +
-            eval("serviceName" + i) +
-            '", "' +
-            newEmp.insertId +
-            '", "' +
-            status +
-            '")'
+   if (employeeType == 1) {
+      //EMPLOYEE SPECIALIZATION
+      //hanapin lahat nung services -- variable creation
+      const rowsServ = await acu.getAllFromWhere(
+         "appointcutdb.services",
+         "shopID = " + req.params.shopID
       );
+      for (var i = 0; i < rowsServ.length; i++) {
+         eval("var serviceName" + i + " = req.body.serviceName" + i);
+         eval("var service" + i + " = req.body.service" + i);
+      }
+      //check if nacheckan ba yung checkbox
+      for (var i = 0; i < rowsServ.length; i++) {
+         var status = 1;
+         if (eval("service" + i) != undefined) {
+            status = 1;
+         } else {
+            status = 0;
+         }
+         await acu.insertInto(
+            "tblemployeespecialization (shopServicesID, employeeID, status)",
+            '( "' +
+               eval("serviceName" + i) +
+               '", "' +
+               newEmp.insertId +
+               '", "' +
+               status +
+               '")'
+         );
+      }
    }
    res.redirect("/deskAccount/" + req.params.shopID + "/employees");
 });
@@ -194,9 +202,17 @@ router.post("/:shopID/editEmployee:empID", async (req, res) => {
       email,
       contact,
       employeeType,
+      employeeTypeHolder,
       salaryType,
+      salaryTypeHolder,
       salaryValue,
    } = req.body;
+   if (employeeType == undefined) {
+      employeeType = employeeTypeHolder;
+   }
+   if (salaryType == undefined) {
+      salaryType = salaryTypeHolder;
+   }
    await acu.updateSet(
       "tblemployee",
       'firstName = "' +
@@ -339,20 +355,32 @@ router.get("/:shopID/services", async (req, res) => {
 });
 
 router.post("/:shopID/addService", async (req, res) => {
-   var { service7, price, duration } = req.body;
+   var { service13, price, duration } = req.body;
    acu.startConnection();
-   await acu.insertInto(
+   var newService = await acu.insertInto(
       "tblshopservices (shopID, servicesID, price, duration)",
-      '( "' +
+      "(" +
          req.params.shopID +
-         '", "' +
-         service7 +
-         '", "' +
+         ", " +
+         service13 +
+         ", " +
          price +
-         '", "' +
+         ", " +
          duration +
-         '" )'
+         ")"
    );
+   var shopServicesID = newService.insertId;
+   var employeeList = await acu.getAllFromWhere(
+      "tblemployee",
+      "shopID = " + req.params.shopID
+   );
+   //EmployeeID
+   for (var i = 0; i < employeeList.length; i++) {
+      await acu.insertInto(
+         "tblemployeespecialization (shopServicesID, employeeID, Status)",
+         '( "' + shopServicesID + '", "' + employeeList[i].EmployeeID + '", 0 )'
+      );
+   }
    res.redirect("/deskAccount/" + req.params.shopID + "/services");
 });
 
@@ -597,10 +625,10 @@ router.post("/:shopID/completeAppt:id", async (req, res) => {
 
          await acu.insertInto(
             "tbltransactions (TransactionID, AppointmentID, ShopID, Amount, Date, Time)",
-            '( "' +
-               appointment.CustomerID +
+            '( W"' +
+               appointment.AppointmentID +
                "-" +
-               req.params.shopId +
+               req.params.shopID +
                "-" +
                appointmentDate +
                "-" +
@@ -608,7 +636,7 @@ router.post("/:shopID/completeAppt:id", async (req, res) => {
                '", "' +
                req.params.id +
                '", "' +
-               req.params.shopId +
+               req.params.shopID +
                '", "' +
                appointment.amountDue +
                '", "' +

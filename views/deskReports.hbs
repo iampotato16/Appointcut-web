@@ -1,6 +1,6 @@
 <div class="min-vh-100 p-3">
-    <div id="deskReports">
-        <div class="row px-3">
+    <div id="deskReports" class="row">
+        <div class="px-3">
             <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
                 <span class="me-2 fw-800"><small>CUSTOMER VOLUME REPORT</small></span>
                 <input type="text" id="daterangeCustomerVolume" class="font-small">
@@ -9,7 +9,7 @@
                 <canvas id="myChart" style="width:100%;"></canvas>
             </div>
         </div>
-        <div class="row px-3">
+        <div class="px-3">
             <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
                 <span class="me-2 fw-800"><small>SALES REPORT</small></span>
                 <input type="text" id="daterangeSales" class="font-small">
@@ -18,5 +18,46 @@
                 <canvas id="chartSales" style="width:100%;"></canvas>
             </div>
         </div>
+        <div>
+            <div class="min-vh-100 p-3" id="shopsViewPage">
+                <div class="row px-3">
+                    <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="me-2 fw-800"><small>TRANSACTIONS</small></span>
+                            <input id="daterangeEmployeeSalary" type="text" class="font-small">
+                        </div>
+                    </div>
+                    <div class="bg-gray p-4 pt-2 mb-3">
+                        <table class="table table-hover table-striped table-sm m-0">
+                            <thead>
+                                <tr>
+                                    <th scope="col"> <small>TRANSACTION ID</small></th>
+                                    <th scope="col"> <small>CUSTOMER NAME</small></th>
+                                    <th scope="col"> <small>DATE</small></th>
+                                    <th scope="col"> <small>TIME</small></th>
+                                    <th scope="col"> <small>AMOUNT</small></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each transactions}}
+                                {{#if this.TransactionID}}
+                                <tr class="align-items-center">
+                                    <td class="align-middle">{{this.TransactionID}}</td>
+                                    {{#if this.customerName}}
+                                    <td class="align-middle">{{this.customerName}}</td>
+                                    {{else}}
+                                    <td class="align-middle">{{this.WalkIn}}</td>
+                                    {{/if}}
+                                    <td class="align-middle dateDisplay">{{this.Date}}</td>
+                                    <td class="align-middle">{{this.Time}}</td>
+                                    <td class="align-middle">{{this.Amount}}</td>
+                                </tr>
+                                {{/if}}
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>

@@ -6,41 +6,72 @@
             <h1 class="h1 font-weight-bold header-letter-space">CREATE AN ACCOUNT</h1>
          </div>
          <div class="card-body" id="card-body-signup">
-            <form class="row center-div p-0" action="/signup" id="signup" method="POST">
+            <form class="row center-div p-0" action="/signup" id="signup" method="POST" enctype="multipart/form-data">
                <div class="col-sm-6">
                   <!-- nagdefine ng height para pumantay sila sa isat isa  -->
                   <div class="form-group">
-                     <div class="center-div mb-2">
-                        <div style="position: relative;">
-                           <div class="center-div" id="addImageDiv">
-                              <input class="font-small" type="file" id="birPermit" name="birPermit"
-                                 style="display: none;">
-                              <label for="birPermit" class="font-small mb-0" id="displayPic"> ADD IMAGE</label>
-                           </div>
-                           <div class="center-div" id="cameraDiv">
-                              <i class="bi bi-camera-fill"></i>
-                           </div>
+                     <div class="row center-div"><img src="images/logo.png" style="height: 180px; width: 200px;"></div>
+                     <span>OWNER INFORMATION</span>
+                     <div class="row no-gutters">
+                        <div class="col-lg-6" id="xxr1">
+                           <input type="text" class="form-control font-small mb-2 rounded-0" id="firstName"
+                              name="firstName" placeholder="First Name" required>
+                        </div>
+                        <div class="col-lg-6" id="xxl1">
+                           <input type="text" class="form-control font-small mb-2 rounded-0" id="lastName"
+                              name="lastName" placeholder="Last Name" required>
                         </div>
                      </div>
+                     <input type="email" class="form-control font-small mb-2 rounded-0" name="email" placeholder="Email"
+                        required>
+                     <input type="password" class="form-control font-small mb-2 rounded-0" name="password"
+                        placeholder="Password" required>
+                     <input type="text" class="form-control font-small mb-2 rounded-0" name="contact"
+                        placeholder="Contact Number" required>
+                  </div>
+               </div>
+               <div class="col-sm-6">
+                  <!-- nagdefine ng height para pumantay sila sa isat isa  -->
+                  <div class="form-group">
+                     SHOP INFORMATION
+                     <input type="text" class="form-control font-small mb-2 rounded-0" name="shopName"
+                        placeholder="Shop Name" required>
+                     <input type="email" class="form-control font-small mb-2 rounded-0" name="shopEmail"
+                        placeholder="Shop Email" required>
+                     <input type="text" class="form-control font-small mb-2 rounded-0" name="shopContact"
+                        placeholder="Shop Contact Number" required>
+                     <div class="row no-gutters">
+                        <div class="col-lg-6" id="xxr2">
+                           <select class="form-control font-small rounded-0" id="city" name="city"
+                              onchange="setBarangay(this)" required>
+                              {{#each rowCity}}
+                              <option value="{{this.CityID}}">{{this.Name}}</option>
+                              {{/each}}
+                           </select>
+                        </div>
+                        <div class="col-lg-6" id="xxl2">
+                           <select class="form-control font-small rounded-0" name="brgy" id="brgySignUp" required>
+                              <option selected disabled hidden>Barangay</option>
+                              {{#each rowBrgy}}
+                              <option value="{{this.BarangayID}}">{{this.Name}}</option>
+                              {{/each}}
+                           </select>
+                        </div>
+                     </div>
+                     <input type="text" class="form-control font-small mt-2 mb-2 rounded-0" name="street"
+                        placeholder="street" required>
                      <div class="mb-2">
                         <label for="birPermit" class="mb-0"><small>BIR PERMIT:</small></label>
                         <div class="attachment-border">
-                           <input class="font-small reg-file-btn container-fluid pl-0" type="file" id="birPermit"
-                              name="birPermit">
+                           <input class="font-small reg-file-btn container-fluid pl-0" type="file" name="birPermit"
+                              required>
                         </div>
                      </div>
                      <div class="mb-2">
                         <label for="busPermit" class="mb-0"><small>BUSINESS PERMIT:</small></label>
                         <div class="attachment-border">
-                           <input class="font-small reg-file-btn container-fluid pl-0" type="file" id="busPermit"
-                              name="busPermit">
-                        </div>
-                     </div>
-                     <div class="mb-2">
-                        <label for="govId" class="mb-0"><small>GOVERNMENT ID:</small></label>
-                        <div class="attachment-border">
-                           <input class="font-small reg-file-btn container-fluid pl-0" type="file" id="govId"
-                              name="govId">
+                           <input class="font-small reg-file-btn container-fluid pl-0" type="file" name="busPermit"
+                              required>
                         </div>
                      </div>
                   </div>
@@ -57,3 +88,41 @@
       </div>
    </div>
 </div>
+
+<script>
+   function setBarangay(el) {
+      var brgyDropDown = document.getElementById("brgySignUp");
+      var cityID = el.value;
+      var barangay = [];
+      fetch("/getInfo/barangay")
+         .then((res) => res.json())
+         .then((data) => {
+            for (var i = 0; i < data.length; i++) {
+               if (data[i].CityID == cityID) {
+                  barangay.push(data[i]);
+               }
+            }
+         })
+         .then((data) => {
+            var brgyOptions = "<option hidden disabled selected>Barangay</option>";
+            barangay.forEach((element) => {
+               brgyOptions +=
+                  "<option value=" +
+                  element.BarangayID +
+                  "> " +
+                  element.Name +
+                  " </option>";
+            });
+            brgyDropDown.innerHTML = brgyOptions;
+         });
+   }
+
+   /* function validateForm(){
+      var input = document.querySelectorAll('input[type=text]')
+      for(var i = 0; i < input.length; i++){
+         if(input[i].value == null){
+            input[i].classList.add('bg-warning')
+         }
+      }
+   } */
+</script>

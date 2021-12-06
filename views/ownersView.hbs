@@ -23,8 +23,7 @@
         <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
             <div>
                 <span class="me-2 fw-800"><small>BARBERSHOPS</small></span>
-                <button class="btn btn-sm btn-outline-light"
-                    onclick="toggleMultiDialog('addShopInfo', 'addShop', 'addShopInfoForm')">
+                <button class="btn btn-sm btn-outline-light" onclick="toggleMultiDialog('addShopInfo')">
                     <i class="bi bi-plus"></i></button>
             </div>
 
@@ -48,6 +47,7 @@
                 </thead>
                 <tbody>
                     {{#each rowsBS}}
+
                     <tr class="align-items-center">
                         <td class="align-middle">{{this.ShopName}}</td>
                         <td class="align-middle">{{this.Street}}, {{this.Barangay}}, {{this.City}}</td>
@@ -107,6 +107,8 @@
                                                         class="form-control form-control-sm mb-2 font-small rounded-0"
                                                         name="street" type="text" value="{{this.Street}}"
                                                         style="width: 300px;"> --}}
+                                                    <input type="text" style="display: none;" value="{{this.CityID}}"
+                                                        name="cityHolder">
                                                     <select
                                                         class="form-control form-control-sm mb-2 font-small rounded-0"
                                                         name="city" id="city" onchange="changeBrgy(this, 2)">
@@ -117,6 +119,8 @@
                                                         <option value="{{this.CityID}}">{{this.Name}}</option>
                                                         {{/each}}
                                                     </select>
+                                                    <input type="text" style="display: none;"
+                                                        value="{{this.BarangayID}}" name="barangayHolder">
                                                     <select
                                                         class="form-control form-control-sm mb-2 font-small rounded-0"
                                                         name="barangay" id="barangay2" style="width: 300px;">
@@ -208,7 +212,50 @@
             </table>
         </div>
     </div>
+
+    <div>
+        <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+            <div>
+                <span class="me-2 fw-800"><small>BARBERSHOP APPLICATIONS</small></span>
+            </div>
+            <form class="d-flex">
+                <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search" placeholder="Search"
+                    aria-label="Search">
+                <button class="btn btn-sm btn-outline-light me-2" type="submit"><small>SEARCH</small> </button>
+            </form>
+        </div>
+        <div class="bg-gray p-4 pt-2 mb-3">
+            <table class="table table-hover table-striped table-sm m-0">
+                <thead>
+                    <tr>
+                        <th scope="col"> <small>SHOP NAME</small></th>
+                        <th scope="col"> <small>ADDRESS</small></th>
+                        <th scope="col"> <small>EMAIL</small></th>
+                        <th scope="col"> <small>CONTACT</small></th>
+                        <th scope="col"> <small>APPLICATION STATUS</small></th>
+                        <th scope="col" class="justify-content-end" style="width: 40px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each rowsBSApplications}}
+                    {{#unless (isBarber this.appStatusID)}}
+                    <tr class="align-items-center">
+                        <td class="align-middle">{{this.ShopName}}</td>
+                        <td class="align-middle">{{this.Street}}, {{this.Barangay}}, {{this.City}}</td>
+                        <td class="align-middle">{{this.Email}}</td>
+                        <td class="align-middle">{{this.Contact}}</td>
+                        <td class="align-middle">{{this.appStatus}}</td>
+                        <td class="align-middle"><a type="button" class="btn btn-dark btn-sm"><i
+                                    class=" bi bi-x"></i></a></td>
+                    </tr>
+                    {{/unless}}
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
 
 
 {{!-- DIAGLOG BOXES --}}
@@ -254,103 +301,57 @@
 <div id="addShopInfo" class="dialog bg-yellow m-auto" style="display: none;">
     <div>
         <div class="card p-4 bg-black position-relative">
-            <button class="position-absolute btn btn-link p-0" style="right: 1.5rem; margin-top: -.5rem;"
-                onclick="toggleMultiDialog('addShopInfo','addShop','addShopInfoForm')"><i class="bi bi-x"></i></button>
+            {{!-- <button class="position-absolute btn btn-link p-0" style="right: 1.5rem; margin-top: -.5rem;"
+                onclick="toggleDialog('addShopInfo')"><i class="bi bi-x"></i></button> --}}
             <div class="text-center">
                 <h6 class="fw-800"> ADD BARBERSHOP </h6>
                 <hr>
             </div>
             <div class="center-div pt-2">
-                <form action="view{{ownerID}}" id="addShopInfoForm" method="POST">
-                    <div class="tab addShop">
+                <form action="view{{ownerID}}" id="addShopInfoForm" method="POST" enctype="multipart/form-data">
+                    {{!-- <div class="tab addShop"> --}}
                         <p class="text-center"><small>BARBERSHOP INFORMATION</small></p>
                         <input class="form-control form-control-sm mb-2 font-small rounded-0" name="shopName"
-                            type="text" placeholder="shopName" style="width: 300px;">
-                        <input class="form-control form-control-sm mb-2 font-small rounded-0" name="email" type="text"
-                            placeholder="email" style="width: 300px;">
-                        <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact" type="text"
-                            placeholder="contact" style="width: 300px;">
+                            type="text" placeholder="shopName" style="width: 300px;" required>
+                        <input class="form-control form-control-sm mb-2 font-small rounded-0" name="shopEmail"
+                            type="text" placeholder="email" style="width: 300px;" required>
+                        <input class="form-control form-control-sm mb-2 font-small rounded-0" name="shopContact"
+                            type="text" placeholder="contact" style="width: 300px;" required>
                         <select class="form-control form-control-sm mb-2 font-small rounded-0" name="city" id="city"
-                            onchange="changeBrgy(this, 1)">
+                            onchange="changeBrgy(this, 1)" style="width: 300px;" required>
                             <option selected disabled hidden>City</option>
                             {{#each rowsCity}}
                             <option value="{{this.CityID}}">{{this.Name}}</option>
                             {{/each}}
                         </select>
                         <select class="form-control form-control-sm mb-2 font-small rounded-0" name="barangay"
-                            id="barangay1">
+                            id="barangay1" style="width: 300px;" required>
                             <option selected disabled hidden>Barangay</option>
-                            {{!-- {{#each rowsBrgy}}
-                            <option value="{{this.BarangayID}}">{{this.Name}}</option>
-                            {{/each}} --}}
                         </select>
                         <input class="form-control form-control-sm mb-2 font-small rounded-0" name="street" type="text"
-                            placeholder="street" style="width: 300px;">
-                        <div class="mb-2">
+                            placeholder="street" style="width: 300px;" required>
+                        <div class="mb-2" style="width: 300px;">
                             <label for="birPermit" class="mb-0"><small>BIR PERMIT:</small></label>
                             <div class="attachment-border">
-                                <input class="font-small reg-file-btn container-fluid pl-0" type="file" id="birPermit"
-                                    name="birPermit">
+                                <input class="font-small reg-file-btn container-fluid pl-0" type="file" name="birPermit"
+                                    required>
                             </div>
                         </div>
-                        <div class="mb-2">
+                        <div class="mb-2" style="width: 300px;">
                             <label for="busPermit" class="mb-0"><small>BUSINESS PERMIT:</small></label>
                             <div class="attachment-border">
-                                <input class="font-small reg-file-btn container-fluid pl-0" type="file" id="busPermit"
-                                    name="busPermit">
+                                <input class="font-small reg-file-btn container-fluid pl-0" type="file" name="busPermit"
+                                    required>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab addShop">
-                        <p class="text-center"><small>BARBERSHOP SCHEDULE</small></p>
-                        {{#each days}}
-                        <div class="row d-flex align-items-center" style="width: 400px;">
-                            <div class="col-4">
-                                <input class="form-check-input" type="checkbox" name="{{this.name}}"
-                                    id="checkDays{{this.name}}" value="{{this.name}}">
-                                <label class="form-check-label" for="inlineCheckbox1">
-                                    <small>{{this.name}}</small></label>
-                            </div>
-                            <div class="col-8 justify-content-center">
-                                <div class="row">
-                                    <div class="col-6 d-flex align-items-center">
-                                        <input class="form-control form-control-sm mb-2 font-small rounded-0"
-                                            name="timeIn" id="timeIn{{this.name}}" type="time">
-                                    </div>
-                                    <div class="col-6 d-flex align-items-center">
-                                        <input class="form-control form-control-sm mb-2 font-small rounded-0"
-                                            name="timeOut" id="timeOut{{this.name}}" type="time">
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="center-div pt-2" style="width: 300px;">
+                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800" type="submit">
+                                <small>SAVE</small></button>
+                            <button class="btn btn-outline-warning col-6 rounded-0 fw-800" type="button"
+                                onclick="toggleDialog('addShopInfo')">
+                                <small>CANCEL</small></button>
                         </div>
-                        {{/each}}
-                    </div>
-                    {{!-- BUTTONS --}}
-                    <div style="display: block;">
-                        <div class="center-div p-2">
-                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800" style="width: 150px;"
-                                type="button" id="prevBtnaddShop"
-                                onclick="toggleMultiForm.nextPrev(-1)">Previous</button>
-                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800" style="width: 150px;"
-                                type="button" id="nextBtnaddShop" onclick="toggleMultiForm.nextPrev(1)">Next</button>
-                        </div>
-                    </div>
-
-
-                    {{!-- Circles which indicates the steps of the form: --}}
-                    <div class="text-center pt-4">
-                        <span class="step addShop"></span>
-                        <span class="step addShop"></span>
-                    </div>
                 </form>
-                {{!-- <div class="center-div pt-2" style="width: 300px;">
-                    <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
-                        onclick="document.getElementById('addShopInfoForm').submit()">
-                        <small>SAVE</small></button>
-                    <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
-                        onclick="toggleDialog('addShopInfo','ownersViewPage')"> <small>CANCEL</small></button>
-                </div> --}}
             </div>
         </div>
     </div>

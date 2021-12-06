@@ -1,6 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const expressHbs = require("express-handlebars");
+const multer = require("multer");
+const path = require("path");
 
 require("dotenv").config();
 
@@ -12,7 +14,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Static Files
-app.use(express.static("public"));
+app.use(express.static("./public"));
+app.use(express.static("./permits"));
 
 // Templating Engine
 app.engine("hbs", expressHbs({ extname: ".hbs" }));
@@ -81,7 +84,7 @@ const routesFileMaintenance = require("./server/routes/routesFileMaintenance");
 app.use("/fileMaintenance", routesFileMaintenance);
 
 //Barber Apps Maintenance
-const routesBarberApps = require("./server/routes/routesBarberApps");
+const routesBarberApps = require("./server/routes/routesBarbershopApplications");
 app.use("/barberApps", routesBarberApps);
 
 //GET INFO FOR FETCH
@@ -94,17 +97,17 @@ app.use("/getInfo", getInfo);
 const routesReg = require('./server/routes/Rest/routesRegister')
 app.use('/rest/register', routesReg)
 //Tokens
-const routesRestToken = require('./server/routes/Rest/routesToken')
-app.use('/rest/token', routesRestToken)
+const routesRestToken = require("./server/routes/Rest/routesToken");
+app.use("/rest/token", routesRestToken);
 //shops
-const routesRestShop = require('./server/routes/Rest/routesShop.js')
-app.use('/rest/shops', routesRestShop)
+const routesRestShop = require("./server/routes/Rest/routesShop.js");
+app.use("/rest/shops", routesRestShop);
 //barbers
-const routesRestBarbers = require('./server/routes/Rest/routesBarbers.js')
-app.use('/rest/barbers', routesRestBarbers)
+const routesRestBarbers = require("./server/routes/Rest/routesBarbers.js");
+app.use("/rest/barbers", routesRestBarbers);
 //appointments
-const routesAppointments = require('./server/routes/Rest/routesAppointments')
-app.use('/rest/appointments', routesAppointments)
+const routesAppointments = require("./server/routes/Rest/routesAppointments");
+app.use("/rest/appointments", routesAppointments);
 
 app.listen(port, () => {
    console.log("Gumagana sa ikatatlong libong daungan");

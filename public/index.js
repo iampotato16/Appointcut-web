@@ -1,9 +1,5 @@
-//const { min } = require("moment");
-//const e = require("express");
-
-highlight();
-
 window.onload = function () {
+   highlight();
    formatDate();
    initializeChart("customerVolume");
    setDaterange("daterangeCustomerVolume", -7);
@@ -75,7 +71,13 @@ function initializeChart(chart) {
                   ],
                },
                options: {
-                  legend: { display: false },
+                  legend: { display: true },
+                  plugins: {
+                     title: {
+                        display: true,
+                        text: "This is a title",
+                     },
+                  },
                },
             });
          });
@@ -543,16 +545,7 @@ function toggleDialog(dialog) {
 }
 // for date time
 var dt = new Date();
-document.getElementById("datetime").innerHTML =
-   ("0" + (dt.getMonth() + 1)).slice(-2) +
-   "/" +
-   ("0" + dt.getDate()).slice(-2) +
-   "/" +
-   dt.getFullYear() +
-   " " +
-   ("0" + dt.getHours() + 1).slice(-2) +
-   ":" +
-   ("0" + dt.getMinutes() + 1).slice(-2);
+document.getElementById("datetime").innerHTML = dt.toLocaleString();
 
 //HIGHLIGHT FILE MAINTENANCE IN SIDEBAR
 function highlight() {

@@ -64,8 +64,6 @@
       <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
          <div>
             <span class="me-2 fw-800"><small>APPOINTMENT HISTORY</small></span>
-            <button class="btn btn-sm btn-outline-light" onclick="toggleDialog('addAppointment')"><i
-                  class="bi bi-plus"></i></button>
          </div>
          <form class="d-flex">
             <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search" placeholder="Search"
@@ -158,10 +156,13 @@
                      <legend style="font-size: .9rem; background-color:none; float:none; width:fit-content;">
                         SHOP NAME:
                      </legend>
+
                      <select class="form-control form-control-sm mb-2 font-small rounded-0" name="shop" id="shop">
                         <option selected disabled hidden>Shop Name</option>
                         {{#each rowsShops}}
+                        {{#if (isBarber this.appStatus)}}
                         <option value="{{this.ShopID}}">{{this.shopName}}</option>
+                        {{/if}}
                         {{/each}}
                      </select>
                   </fieldset>
@@ -262,7 +263,7 @@
             console.log(data)
             for (var i = 0; i < data.length; i++) {
                console.log(data[i].ShopServicesID, el.value)
-               if (data[i].ShopServicesID == el.value) {
+               if (data[i].ShopServicesID == el.value && data[i].Status == 1) {
                   ableEmployees.push(data[i]);
                }
             }

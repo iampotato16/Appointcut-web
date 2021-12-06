@@ -89,7 +89,7 @@
                                     <div class="center-div pt-2">
                                         <div>
                                             <form action="/shops/view{{../rows.ShopID}}/editOwner{{this.OwnerID}}"
-                                                id="editOwnerInfoForm" method="POST">
+                                                id="editOwnerInfoForm{{this.OwnerID}}" method="POST">
                                                 <input class="form-control form-control-sm mb-2 font-small rounded-0"
                                                     name="firstName" type="text" value="{{this.FirstName}}"
                                                     name="firstName" style="width: 300px;">
@@ -97,7 +97,7 @@
                                                     name="lastName" type="text" value="{{this.LastName}}"
                                                     name="lastName" style="width: 300px;">
                                                 <input class="form-control form-control-sm mb-2 font-small rounded-0"
-                                                    name="email" type="text" value="{{this.Email}}" name="contact"
+                                                    name="email" type="text" value="{{this.Email}}" name="email"
                                                     style="width: 300px;">
                                                 <input class="form-control form-control-sm mb-2 font-small rounded-0"
                                                     name="contact" type="text" value="{{this.Contact}}" name="contact"
@@ -105,10 +105,10 @@
                                             </form>
                                             <div class="center-div pt-2" style="width: 300px;">
                                                 <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
-                                                    onclick="document.getElementById('editOwnerInfoForm').submit()">
+                                                    onclick="document.getElementById('editOwnerInfoForm{{this.OwnerID}}').submit()">
                                                     <small>SAVE</small></button>
                                                 <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
-                                                    onclick="toggleDialog('editOwnerInfo')">
+                                                    onclick="toggleDialog('editOwnerInfo{{this.OwnerID}}')">
                                                     <small>CANCEL</small></button>
                                             </div>
                                         </div>
@@ -214,6 +214,9 @@
                                                             name="contact" type="text" value="{{this.Contact}}"
                                                             style="width: 300px;">
                                                         <div>
+                                                            <input type="text" style="display: none;"
+                                                                value="{{this.EmployeeTypeID}}"
+                                                                name="employeeTypeHolder">
                                                             <select
                                                                 class="form-control form-control-sm mb-2 font-small rounded-0"
                                                                 name="employeeType" style="width: 300px;">
@@ -228,6 +231,8 @@
                                                             </select>
                                                         </div>
                                                         <div>
+                                                            <input type="text" style="display: none;"
+                                                                value="{{this.SalaryTypeID}}" name="salaryTypeHolder">
                                                             <select
                                                                 class="form-control form-control-sm mb-2 font-small rounded-0"
                                                                 name="salaryType" style="width: 300px;">
@@ -385,29 +390,27 @@
                     <tbody>
                         {{#each rowServ}}
                         <tr class="align-items-center">
-                            <td class="align-middle">{{this.ServiceName}}</td>
-                            <td class="align-middle">{{this.Category}}</td>
+                            <td class="align-middle">{{this.Service}}</td>
+                            <td class="align-middle">{{this.CategoryName}}</td>
                             <td class="align-middle">{{this.Duration}}</td>
                             <td class="align-middle">{{this.Price}}</td>
                             <td class="align-middle">
                                 {{#if this.Status}}
-                                <a href="/shops/view{{../rows.ShopID}}/setInactiveServ{{this.ServicesID}}"
+                                <a href="/shops/view{{../rows.ShopID}}/setInactiveServ{{this.ID}}"
                                     class="btn btn-sm btn-success" type="button"> ACTIVE</a>
                                 {{else}}
-                                <a href="/shops/view{{../rows.ShopID}}/setActiveServ{{this.ServicesID}}"
+                                <a href="/shops/view{{../rows.ShopID}}/setActiveServ{{this.ID}}"
                                     class="btn btn-sm btn-warning" type="button"> INACTIVE</a>
                                 {{/if}}
                             </td>
                             <td>
-                                <button class="btn btn-dark btn-sm"
-                                    onclick="toggleDialog('editServices{{this.ServicesID}}')"><i
+                                <button class="btn btn-dark btn-sm" onclick="toggleDialog('editServices{{this.ID}}')"><i
                                         class=" bi bi-pencil"></i></button>
                                 {{!-- <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button>
                                 --}}
                             </td>
                         </tr>
-                        <div id="editServices{{this.ServicesID}}" class="dialog bg-yellow m-auto"
-                            style="display: none;">
+                        <div id="editServices{{this.ID}}" class="dialog bg-yellow m-auto" style="display: none;">
                             <div>
                                 <div class="card p-4 bg-black">
                                     <div class="text-center">
@@ -416,24 +419,27 @@
                                     </div>
                                     <div class="center-div pt-2">
                                         <div>
-                                            <form action="/shops/view{{../rows.ShopID}}/editService{{this.ServicesID}}"
+                                            <form action="/shops/view{{../rows.ShopID}}/editService{{this.ID}}"
                                                 method="POST">
                                                 <div class="col-auto my-1">
+                                                    <input type="text" style="display: none;"
+                                                        value="{{this.CategoryID}}" name="editCategoryHolder">
                                                     <select
                                                         class="form-control form-control-sm mb-2 font-small rounded-0"
-                                                        name="editCategory"
-                                                        onchange="changeServices(this,{{this.ServicesID}})">
-                                                        <option selected disabled hidden>{{this.Category}}</option>
+                                                        name="editCategory" onchange="changeServices(this,{{this.ID}})">
+                                                        <option selected disabled hidden>{{this.CategoryName}}</option>
                                                         {{#each ../rowsServCategory}}
                                                         <option value="{{this.CategoryID}}">{{this.Name}}</option>
                                                         {{/each}}
 
                                                     </select>
+                                                    <input type="text" style="display: none;"
+                                                        value="{{this.ServicesID}}" name="editServiceHolder">
                                                     <select
                                                         class="form-control form-control-sm mb-2 font-small rounded-0"
-                                                        name="editService" id="service{{this.ServicesID}}">
+                                                        name="editService" id="service{{this.ID}}">
                                                         <option value="" disabled selected hidden>
-                                                            {{this.ServiceName}}
+                                                            {{this.Service}}
                                                         </option>
                                                     </select>
                                                 </div>
@@ -592,13 +598,15 @@
                             </td>
                             <td>
                                 <a type="button" class="btn btn-dark btn-sm"
-                                    onclick="toggleDialog('appointmentStatus')"><i class="bi bi-check"></i></a>
+                                    onclick="toggleDialog('appointmentStatus{{this.AppointmentID}}')"><i
+                                        class="bi bi-check"></i></a>
                                 <a type="button" class="btn btn-dark btn-sm"
                                     href="/shops/view{{../rows.ShopID}}/cancelAppt{{this.AppointmentID}}"><i
                                         class="bi bi-x"></i></a>
                             </td>
                         </tr>
-                        <div id="appointmentStatus" class="dialog bg-yellow m-auto" style="display: none;">
+                        <div id="appointmentStatus{{this.AppointmentID}}" class="dialog bg-yellow m-auto"
+                            style="display: none;">
                             <div>
                                 <div class="card p-4 bg-black">
                                     <div class="text-center">
@@ -611,14 +619,14 @@
                                             <div>
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio"
-                                                        name="appointmentStatus" value="0">
+                                                        name="appointmentStatus" value="2">
                                                     <label class="form-check-label" for="completed">
                                                         Completed
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio"
-                                                        name="appointmentStatus" value="2">
+                                                        name="appointmentStatus" value="0">
                                                     <label class="form-check-label" for="noShow">
                                                         No Show
                                                     </label>
@@ -628,7 +636,8 @@
                                                         type="submit">
                                                         <small>SAVE</small></button>
                                                     <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
-                                                        type="button" onclick="toggleDialog('appointmentStatus')">
+                                                        type="button"
+                                                        onclick="toggleDialog('appointmentStatus{{this.AppointmentID}}')">
                                                         <small>CANCEL</small></button>
                                                 </div>
                                         </form>
@@ -645,10 +654,6 @@
             <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
                 <div>
                     <span class="me-2 fw-800"><small>APPOINTMENT HISTORY</small></span>
-                    {{!-- removed kasi di naman makakapag add sa history --}}
-                    {{!-- <button class="btn btn-sm btn-outline-light"
-                        onclick="toggleDialog('addAppointment','ownerBarbershopViewPage')"><i class="bi bi-plus"></i>
-                        </buttons> --}}
                 </div>
                 <form class="d-flex">
                     <input class="form-control form-control-sm me-2 p-1 rounded-0" type="search" placeholder="Search"
@@ -675,7 +680,11 @@
                     <tbody>
                         {{#each rowsApptHistory}}
                         <tr class="align-items-center">
+                            {{#if this.AppointmentType}}
                             <td class="align-middle">{{this.CustomerName}}</td>
+                            {{else}}
+                            <td class="align-middle">{{this.WalkInName}}</td>
+                            {{/if}}
                             <td class="align-middle dateDisplay">{{this.Date}}</td>
                             <td class="align-middle">{{this.TimeIn}} - {{this.TimeOut}}</td>
                             <td class="align-middle">{{this.Service}}</td>
@@ -714,41 +723,41 @@
                 <canvas id="chartSales" style="width:100%;"></canvas>
             </div>
         </div>
+        <div class="bg-gray p-4 pt-2 mb-3">
+            <table class="table table-hover table-striped table-sm m-0">
+                <thead>
+                    <tr>
+                        <th scope="col"> <small>TRANSACTION ID</small></th>
+                        <th scope="col"> <small>CUSTOMER NAME</small></th>
+                        <th scope="col"> <small>DATE</small></th>
+                        <th scope="col"> <small>TIME</small></th>
+                        <th scope="col"> <small>AMOUNT</small></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each transactions}}
+                    {{#if this.TransactionID}}
+                    <tr class="align-items-center">
+                        <td class="align-middle">{{this.TransactionID}}</td>
+                        {{#if this.customerName}}
+                        <td class="align-middle">{{this.customerName}}</td>
+                        {{else}}
+                        <td class="align-middle">{{this.WalkIn}}</td>
+                        {{/if}}
+                        <td class="align-middle dateDisplay">{{this.Date}}</td>
+                        <td class="align-middle">{{this.Time}}</td>
+                        <td class="align-middle">{{this.Amount}}</td>
+                    </tr>
+                    {{/if}}
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
 
 {{!-- DIALOG BOXES --}}
-<div id="editOwnerInfo" class="dialog bg-yellow m-auto" style="display: none;">
-    <div>
-        <div class="card p-4 bg-black">
-            <div class="text-center">
-                <h6 class="fw-800"> EDIT OWNER INFORMATION </h6>
-                <hr>
-            </div>
-            <div class="center-div pt-2">
-                <div>
-                    <form action="/shops/view{{rows.OwnersID}}/editOwnerInfo" id="editOwnerInfoForm" method="POST">
-                        <input class="form-control form-control-sm mb-2 font-small rounded-0" name="firstName"
-                            type="text" value="{{rows.firstName}}" name="firstName" style="width: 300px;">
-                        <input class="form-control form-control-sm mb-2 font-small rounded-0" name="lastName"
-                            type="text" value="{{rows.lastName}}" name="lastName" style="width: 300px;">
-                        <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact" type="text"
-                            value="{{rows.contact}}" name="contact" style="width: 300px;">
-                        {{!-- hindi ko na ininclude email since its part of login credentials --}}
-                    </form>
-                    <div class="center-div pt-2" style="width: 300px;">
-                        <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
-                            onclick="document.getElementById('editOwnerInfoForm').submit()">
-                            <small>SAVE</small></button>
-                        <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
-                            onclick="toggleDialog('editOwnerInfo','shopsViewPage')"> <small>CANCEL</small></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div id="addEmployeeInfo" class="dialog bg-yellow m-auto" style="display: none;">
     <div>
@@ -891,14 +900,14 @@
                     <form action="/shops/view{{rows.ShopID}}/addService" method="POST">
                         <div class="col-auto my-1">
                             <select class="form-control form-control-sm mb-2 font-small rounded-0" name="category"
-                                onchange="changeServices(this,1)">
+                                onchange="changeServices(this,90)">
                                 <option selected disabled hidden>Category</option>
                                 {{#each rowsServCategory}}
                                 <option value="{{this.CategoryID}}">{{this.Name}}</option>
                                 {{/each}}
                             </select>
-                            <select class="form-control form-control-sm mb-2 font-small rounded-0" name="service1"
-                                id="service1">
+                            <select class="form-control form-control-sm mb-2 font-small rounded-0" name="service90"
+                                id="service90">
                                 <option value="" disabled selected hidden>Service</option>
                             </select>
                         </div>
@@ -939,7 +948,7 @@
                             style="width: 300px;" placeholder="Contact Number" />
                         <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" name="email"
                             style="width: 300px;" placeholder="Email" />
-                        <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text"
+                        <input class="form-control form-control-sm mb-2 font-small rounded-0" type="password"
                             name="password" style="width: 300px;" placeholder="Password" />
                         {{!-- <div class="center-div">
                             <div class="form-check form-check-inline">
@@ -989,14 +998,14 @@
                                 SERVICE DETAILS:
                             </legend>
                             <select class="form-control form-control-sm mb-2 font-small rounded-0" name="category"
-                                id="category" onchange="changeApptServices(this,4,'{{rows.ShopID}}')">
+                                id="category" onchange="changeApptServices(this,44,'{{rows.ShopID}}')">
                                 <option selected disabled hidden>Category</option>
                                 {{#each rowsServCategory}}
                                 <option value="{{this.CategoryID}}">{{this.Name}}</option>
                                 {{/each}}
                             </select>
                             <select class="form-control form-control-sm mb-2 font-small rounded-0" name="service"
-                                id="service4" onchange="changeEmployee(this)">
+                                id="service44" onchange="changeEmployee(this)">
                                 <option selected disabled hidden>Service</option>
                             </select>
                             {{!-- <input class="form-control form-control-sm mb-2 font-small rounded-0" name="price"
@@ -1131,7 +1140,7 @@
             .then((res) => res.json())
             .then((data) => {
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].ShopServicesID == el.value) {
+                    if (data[i].ShopServicesID == el.value && data[i].Status == 1) {
                         ableEmployees.push(data[i]);
                     }
                 }
@@ -1258,8 +1267,8 @@
                         //4. get chosen service and duration
                         var loc = window.location.href;
                         var shopId = loc.charAt(loc.length - 1);
-                        var serviceId = document.getElementById("service4").value;
-                        var duration = 0;
+                        var serviceId = document.getElementById("service44").value;
+                        var duration = 15;
                         console.log(shopservices);
                         for (var i = 0; i < shopservices.length; i++) {
                             console.log(shopId, shopservices[i].shopID, ' this is shop and service')

@@ -129,6 +129,9 @@
                                                             name="contact" type="text" value="{{this.Contact}}"
                                                             style="width: 300px;">
                                                         <div>
+                                                            <input type="text" style="display: none;"
+                                                                value="{{this.EmployeeTypeID}}"
+                                                                name="employeeTypeHolder">
                                                             <select
                                                                 class="form-control form-control-sm mb-2 font-small rounded-0"
                                                                 name="employeeType" style="width: 300px;">
@@ -143,6 +146,8 @@
                                                             </select>
                                                         </div>
                                                         <div>
+                                                            <input type="text" style="display: none;"
+                                                                value="{{this.SalaryTypeID}}" name="salaryTypeHolder">
                                                             <select
                                                                 class="form-control form-control-sm mb-2 font-small rounded-0"
                                                                 name="salaryType" style="width: 300px;">
@@ -333,6 +338,8 @@
                                         <div>
                                             <form action="viewShop{{../shopID}}/editService{{this.ID}}" method="POST">
                                                 <div class="col-auto my-1">
+                                                    <input type="text" style="display: none;"
+                                                        value="{{this.CategoryID}}" name="editCategoryHolder">
                                                     <select
                                                         class="form-control form-control-sm mb-2 font-small rounded-0"
                                                         name="editCategory" onchange="changeServices(this,{{this.ID}})">
@@ -345,6 +352,8 @@
                                                         {{/each}}
 
                                                     </select>
+                                                    <input type="text" style="display: none;"
+                                                        value="{{this.ServicesID}}" name="editServiceHolder">
                                                     <select
                                                         class="form-control form-control-sm mb-2 font-small rounded-0"
                                                         name="editService" id="service{{this.ID}}">
@@ -508,13 +517,14 @@
                             </td>
                             <td>
                                 <a type="button" class="btn btn-dark btn-sm"
-                                    onclick="toggleDialog('appointmentStatus')"><i class="bi bi-check"></i></a>
+                                    onclick="toggleDialog('appointmentStatus{{this.AppointmentID}}')"><i
+                                        class="bi bi-check"></i></a>
                                 <a type="button" class="btn btn-dark btn-sm"
                                     href="viewShop{{../shopID}}/cancelAppt{{this.AppointmentID}}"><i
                                         class="bi bi-x"></i></a>
                             </td>
                         </tr>
-                        <div id="appointmentStatus" class="dialog bg-yellow m-auto" style="display: none;">
+                        <div id="appointmentStatus{{this.AppointmentID}}" class="dialog" style="display: none;">
                             <div>
                                 <div class="card p-4 bg-black">
                                     <div class="text-center">
@@ -628,6 +638,40 @@
             <div>
                 <canvas id="chartSales" style="width:100%;"></canvas>
             </div>
+        </div>
+        <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+            <span class="me-2 fw-800"><small>TRANSACTIONS</small></span>
+            <input type="text" id="daterangeSales" class="font-small">
+        </div>
+        <div class="bg-gray p-4 pt-2 mb-3">
+            <table class="table table-hover table-striped table-sm m-0">
+                <thead>
+                    <tr>
+                        <th scope="col"> <small>TRANSACTION ID</small></th>
+                        <th scope="col"> <small>CUSTOMER NAME</small></th>
+                        <th scope="col"> <small>DATE</small></th>
+                        <th scope="col"> <small>TIME</small></th>
+                        <th scope="col"> <small>AMOUNT</small></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each transactions}}
+                    {{#if this.TransactionID}}
+                    <tr class="align-items-center">
+                        <td class="align-middle">{{this.TransactionID}}</td>
+                        {{#if this.customerName}}
+                        <td class="align-middle">{{this.customerName}}</td>
+                        {{else}}
+                        <td class="align-middle">{{this.WalkIn}}</td>
+                        {{/if}}
+                        <td class="align-middle dateDisplay">{{this.Date}}</td>
+                        <td class="align-middle">{{this.Time}}</td>
+                        <td class="align-middle">{{this.Amount}}</td>
+                    </tr>
+                    {{/if}}
+                    {{/each}}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -903,7 +947,7 @@
     function updateServices(category, service) {
         console.log(service);
         var services = [];
-        fetch("/getInfo/services")
+        fetch("/getInfo/shopservicesview")
             .then((res) => res.json())
             .then((data) => {
                 console.log(data);
@@ -919,9 +963,9 @@
                 for (var i = 0; i < services.length; i++) {
                     serviceOptions +=
                         "<option value=" +
-                        services[i].ServicesID +
+                        services[i].ID +
                         "> " +
-                        services[i].Name +
+                        services[i].Service +
                         " </option>";
                 }
                 service.innerHTML = serviceOptions;
@@ -971,7 +1015,7 @@
             .then((res) => res.json())
             .then((data) => {
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].ShopServicesID == el.value) {
+                    if (data[i].ShopServicesID == el.value && data[i].Status == 1) {
                         ableEmployees.push(data[i]);
                     }
                 }
@@ -1015,7 +1059,7 @@
         var nwdNumberForm = [];
         var scheduleData, appointments, shopservices;
 
-        fetch("/getInfo/shopservices")
+        fetch("/getInfo/shopservicesview")
             .then((res) => res.json())
             .then((data) => {
                 shopservices = data;
@@ -1062,15 +1106,20 @@
                         var occupiedTimeSlot = [];
                         for (var i = 0; i < appointments.length; i++) {
                             //check if the appt is of the chosen employee
+                            console.log(appointments[i].EmployeeID == employee)
                             if (appointments[i].EmployeeID == employee) {
                                 //check if the appt is of the same date
                                 var newDate = new Date(appointments[i].Date);
+                                var dateValue;
+                                if (newDate.getDate() < 10) {
+                                    dateValue = '0' + newDate.getDate();
+                                }
                                 var currentDate =
                                     newDate.getFullYear() +
                                     "-" +
                                     (newDate.getMonth() + 1) +
                                     "-" +
-                                    newDate.getDate();
+                                    dateValue;
                                 if (currentDate == dateStr) {
                                     occupiedTimeSlot.push([
                                         appointments[i].TimeIn,
@@ -1079,6 +1128,11 @@
                                 }
                             }
                         }
+                        /*var occupiedTimeSlotObj = [];
+                        for (var i = 0; i < occupiedTimeSlot.length; i++) {
+                            occupiedTimeSlotObj.push({ "start": occupiedTimeSlot[i][0], "end": occupiedTimeSlot[i][1] })
+                        }*/
+
                         //3. get schedule of chosen date
                         //---select timeIn and timeOut from tblsched where empId = employee
                         var daySchedTimeIn, daySchedTimeOut;
@@ -1102,22 +1156,60 @@
                         var duration = 15;
                         console.log(shopservices);
                         for (var i = 0; i < shopservices.length; i++) {
-                            console.log(shopId, shopservices[i].shopID, ' this is shop and service')
-                            console.log(serviceId, shopservices[i].ServicesID, ' this is shop and service')
+                            //console.log(shopId, shopservices[i].shopID, ' this is shop and service')
+                            //console.log(serviceId, shopservices[i].ID + "", ' this is shop and service')
                             if (
-                                shopservices[i].shopID == shopId &&
-                                shopservices[i].ServicesID == serviceId
-
+                                //shopservices[i].shopID == shopId &&
+                                shopservices[i].ID == serviceId
                             ) {
+                                console.log("MAY HIT")
+                                console.log(occupiedTimeSlot)
                                 duration = shopservices[i].Duration;
                             }
                         }
-                        //console.log("aaaaaa");
-                        //var pls = $("#appointmentTime")
-                        //console.log(daySchedTimeIn)
-                        //console.log(daySchedTimeOut)
-                        //console.log(occupiedTimeSlot)
-                        //console.log(duration)
+                        /*var availableSlots = [];
+                        var ti = new Date('1970-01-01 ' + daySchedTimeIn)
+                        var to = new Date('1970-01-01 ' + daySchedTimeOut)
+                
+                        while (ti.getTime() <= to.getTime(){
+                            for(var i = 0; occupiedTimeSlot.length; i++){
+                                var otsI = new Date('1970-01-01 ' + occupiedTimeSlot[i][0])
+                                var otsO = new Date('1970-01-01 ' + occupiedTimeSlot[i][1])
+                                if(ti.getTime() >= otsI.getTime() || ti.getTime() <= otsO.getTime()){
+                                    availableSlots.push({})
+                                }
+                            }
+                            ti = ti.getTime() + (15 * 60000)
+                            
+                        }*/
+                        /*var dateEvents = occupiedTimeSlotObj.map(function (event) {
+                            return {
+                                start: new Date('1970-01-01 ' + event.start),
+                                end: new Date('1970-01-01 ' + event.end)
+                            };
+                        });
+
+                        var requiredGap = duration * 60 * 1000;
+                        var prev = dateEvents[0];
+                        var firstGap = [];
+                        console.log(dateEvents.length)
+                        if (dateEvents.length != 0){
+                            for (var i = 1; i < dateEvents.length; i += 1) {
+                                var current = dateEvents[i];
+                                var diff = current.start - prev.end;
+                                console.log(duration)
+                                if (diff >= requiredGap) {
+                                    firstGap.push({ start: prev.end, end: current.start })
+                                    console.log({ start: prev.end, end: current.start }, 'available time')
+                                }
+                                else {
+                                    console.log({ start: prev.end, end: current.start }, 'occupied time / di pasok sa duration')
+                                }
+                                prev = current;
+                            }
+                        }
+
+                        console.log(firstGap + 'plspls')*/
                         $("#appointmentTime").timepicker({
                             minTime: daySchedTimeIn,
                             maxTime: daySchedTimeOut,

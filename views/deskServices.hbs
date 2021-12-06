@@ -60,6 +60,8 @@
                                     <div>
                                         <form action="editService{{this.ServicesID}}" method="POST">
                                             <div class="col-auto my-1">
+                                                <input type="text" style="display: none;" name="editCategoryHolder"
+                                                    value="{{this.CategoryID}}">
                                                 <select class="form-control form-control-sm mb-2 font-small rounded-0"
                                                     name="editCategory"
                                                     onchange="changeServices(this,{{this.ServicesID}})">
@@ -69,6 +71,8 @@
                                                     {{/each}}
 
                                                 </select>
+                                                <input type="text" style="display: none;" value="{{this.ServicesID}}"
+                                                    name="editServiceHolder">
                                                 <select class="form-control form-control-sm mb-2 font-small rounded-0"
                                                     name="editService" id="service{{this.ServicesID}}">
                                                     <option value="" disabled selected hidden>
@@ -116,14 +120,14 @@
                         <form action="addService" method="POST">
                             <div class="col-auto my-1">
                                 <select class="form-control form-control-sm mb-2 font-small rounded-0" name="category"
-                                    onchange="changeServices(this,7)">
+                                    onchange="changeServices(this,13)">
                                     <option selected disabled hidden>Category</option>
                                     {{#each rowsServCategory}}
                                     <option value="{{this.CategoryID}}">{{this.Name}}</option>
                                     {{/each}}
                                 </select>
-                                <select class="form-control form-control-sm mb-2 font-small rounded-0" name="service7"
-                                    id="service7">
+                                <select class="form-control form-control-sm mb-2 font-small rounded-0" name="service13"
+                                    id="service13">
                                     <option disabled selected hidden>Service</option>
                                 </select>
                             </div>
@@ -146,8 +150,6 @@
     </div>
 </div>>
 <script>
-    //I DUNNO PERO PARA TO SA DISPLAY NG SERVICE NAME
-    //FOR CATEGORY AND SERVICES -- for changing services based on the selected category
     function changeServices(b, n) {
         const chosenCategory = b.value;
         var service = document.getElementById("service" + n);
@@ -182,4 +184,6 @@
                 service.innerHTML = serviceOptions;
             });
     }
+
+
 </script>

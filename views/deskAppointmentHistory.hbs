@@ -30,7 +30,11 @@
                     <tbody>
                         {{#each rowsApptHistory}}
                         <tr class="align-items-center">
+                            {{#if this.AppointmentType}}
                             <td class="align-middle">{{this.CustomerName}}</td>
+                            {{else}}
+                            <td class="align-middle">{{this.WalkInName}}</td>
+                            {{/if}}
                             <td class="align-middle dateDisplay">{{this.Date}}</td>
                             <td class="align-middle">{{this.TimeIn}} - {{this.TimeOut}}</td>
                             <td class="align-middle">{{this.Service}}</td>

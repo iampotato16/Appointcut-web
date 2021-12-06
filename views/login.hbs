@@ -46,19 +46,25 @@
          fetch("/getInfo/usersview")
             .then((res) => res.json())
             .then((data) => {
+               var noAccount = 0;
                for (var i = 0; i < data.length; i++) {
                   if (data[i].Email == email.value) {
                      if (data[i].Password == password.value) {
+                        noAccount++;
                         var userID = data[i].id
                         loginForm.submit();
+                        return false;
                      }
                      else {
                         alertHolder.innerHTML = "Incorrect password"
                         return false;
                      }
+                     noAccount++;
                   }
                }
-               alertHolder.innerHTML = "No account found"
+               if (noAccount == 0) {
+                  alertHolder.innerHTML = "No account found"
+               }
             })
       }
       else {
