@@ -98,6 +98,12 @@ class AppointmentManager{
 
         return list[0]
     }
+
+    async cancelAppointment(customerId, appointmentId){
+        await this.connection.query(
+            `update tblappointment set appStatusID = 3 where CustomerID = ${customerId} and AppointmentID = ${appointmentId}`
+        )
+    }
 }
 
 module.exports = AppointmentManager
