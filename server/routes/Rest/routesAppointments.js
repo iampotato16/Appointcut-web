@@ -123,7 +123,7 @@ router.route('/customer/approved/:token')
 
 //Path: /rest/appointments/cancel
 router.route('/cancel/:token-:id')
-.get(async (req, rest) => {
+.get(async (req, res) => {
     const tokenInfo = await tm.verifyToken(req.params.token)
     //invalid token
     if(tokenInfo == UserFetch.UserAuthStatus.TOKEN){
@@ -133,8 +133,9 @@ router.route('/cancel/:token-:id')
     }
 
     const customerId = tokenInfo.userID
-    await apm.cancelAppointment(customerId, appointmentID)
-    res.sendstatus(200)
+    console.log(`cancelAppt(${customerId}, ${req.params.id})`)
+    const response = await apm.cancelAppointment(customerId, req.params.id)
+    res.json(response)
 })
 
 module.exports = router
