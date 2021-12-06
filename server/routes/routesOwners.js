@@ -376,7 +376,7 @@ router
          "tblowner",
          "OwnerID =" + ownerID
       );
-      var ownerName = ownerData[0].firstName + " " + ownerData[0].lastName;
+      var ownerName = ownerData.firstName + " " + ownerData.lastName;
       var rowShop = await acu.getAllFromWhere(
          "appointcutdb.shop",
          "ShopID = " + req.params.shopId
@@ -924,6 +924,7 @@ router.post(
          "tblshopservices",
          "servicesID = " + service + " AND shopID = " + req.params.shopId
       );
+      console.log(ss);
       var shopServiceID = ss.shopID;
       var amountDue = ss.Price;
       var timeIn = time;
