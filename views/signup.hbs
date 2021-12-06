@@ -10,7 +10,6 @@
                <div class="col-sm-6">
                   <!-- nagdefine ng height para pumantay sila sa isat isa  -->
                   <div class="form-group">
-                     <div class="row center-div"><img src="images/logo.png" style="height: 180px; width: 200px;"></div>
                      <span>OWNER INFORMATION</span>
                      <div class="row no-gutters">
                         <div class="col-lg-6" id="xxr1">
@@ -43,7 +42,8 @@
                      <div class="row no-gutters">
                         <div class="col-lg-6" id="xxr2">
                            <select class="form-control font-small rounded-0" id="city" name="city"
-                              onchange="setBarangay(this)" required>
+                              onchange="setBarangay(this)" placeholder="City" required>
+                              <option selected disabled hidden>City</option>
                               {{#each rowCity}}
                               <option value="{{this.CityID}}">{{this.Name}}</option>
                               {{/each}}
@@ -74,6 +74,13 @@
                               required>
                         </div>
                      </div>
+                     {{!-- <div class="mb-2">
+                        <label for="bsImage" class="mb-0"><small>BARBERSHOP IMAGE:</small></label>
+                        <div class="attachment-border">
+                           <input class="font-small reg-file-btn container-fluid pl-0" type="file" name="bsImage"
+                              required>
+                        </div>
+                     </div> --}}
                   </div>
                </div>
                <div class="text-center mt-2">

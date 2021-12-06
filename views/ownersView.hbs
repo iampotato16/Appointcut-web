@@ -245,8 +245,8 @@
                         <td class="align-middle">{{this.Email}}</td>
                         <td class="align-middle">{{this.Contact}}</td>
                         <td class="align-middle">{{this.appStatus}}</td>
-                        <td class="align-middle"><a type="button" class="btn btn-dark btn-sm"><i
-                                    class=" bi bi-x"></i></a></td>
+                        <td class="align-middle"><a href="cancelApplication{{this.shopID}}" type="button"
+                                class="btn btn-dark btn-sm"><i class=" bi bi-x"></i></a></td>
                     </tr>
                     {{/unless}}
                     {{/each}}
@@ -290,7 +290,7 @@
                             onclick="document.getElementById('editOwnerInfoForm').submit()">
                             <small>SAVE</small></button>
                         <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
-                            onclick="toggleDialog('editOwnerInfo','ownersViewPage')"> <small>CANCEL</small></button>
+                            onclick="toggleDialog('editOwnerInfo')"> <small>CANCEL</small></button>
                     </div>
                 </div>
             </div>
