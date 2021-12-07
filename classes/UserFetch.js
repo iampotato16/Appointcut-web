@@ -40,7 +40,7 @@ class UserFetch {
             barb = await this.connection.query('SELECT * FROM tblemployee WHERE Email = ?', [email])}
 
         if (cust[0].length > 0) {//customer
-            let pass = await this.connection.query(`SELECT * FROM tblcustomers WHERE PasswordHash = SHA2('${password}',256)`)
+            let pass = await this.connection.query(`SELECT * FROM tblcustomers WHERE Email = "${email}" and PasswordHash = SHA2('${password}',256)`)
             if (pass[0].length > 0) {//valid user
                 return UserAuthStatus.CUSTOMER
             }
@@ -48,7 +48,7 @@ class UserFetch {
                 return UserAuthStatus.PASSWORD
             }
         } else if (barb[0].length > 0) {//barber
-            let pass = await this.connection.query('SELECT * FROM tblemployee WHERE password = ?', [password])
+            let pass = await this.connection.query(`SELECT * FROM tblemployee WHERE Email = "${email}" and password = "${password}"`)
             if (pass[0].length > 0) {//valid user
                 if (pass[0].pop().employeeTypeID == 2)
                     return UserAuthStatus.DESK

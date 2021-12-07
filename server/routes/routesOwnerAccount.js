@@ -573,7 +573,7 @@ router.post("/view:ownerId/viewShop:shopId/editEmp:empId", async (req, res) => {
    //EMPLOYEE SPECIALIZATION
    //hanapin lahat nung services
    const rowsEmpSpec = await acu.getAllFromWhere(
-      "appointcutdb.employeeSpecialization",
+      "appointcutdb.employeespecialization",
       "employeeID = " + req.params.empId
    );
    //variable creation
