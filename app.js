@@ -55,6 +55,10 @@ app.use("/", routesLogin);
 const routesSignup = require("./server/routes/routesSignup");
 app.use("/signup", routesSignup);
 
+//Customer Online
+const routesCustomerOnline = require("./server/routes/routesCustomerOnline.js");
+app.use("/customerOnline", routesCustomerOnline);
+
 //Owner Account
 const routesOwnerAccount = require("./server/routes/routesOwnerAccount");
 app.use("/ownerAccount", routesOwnerAccount);
@@ -94,8 +98,8 @@ app.use("/getInfo", getInfo);
 
 //REST
 //Register
-const routesReg = require('./server/routes/Rest/routesRegister')
-app.use('/rest/register', routesReg)
+const routesReg = require("./server/routes/Rest/routesRegister");
+app.use("/rest/register", routesReg);
 //Tokens
 const routesRestToken = require("./server/routes/Rest/routesToken");
 app.use("/rest/token", routesRestToken);

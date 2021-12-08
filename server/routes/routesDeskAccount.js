@@ -613,7 +613,9 @@ router.post("/:shopID/completeAppt:id", async (req, res) => {
          );
 
          var dateHolder = appointment.Date;
-         var appointmentDate = dateHolder.toISOString().split("T")[0];
+         var appointmentDate = new Date(
+            dateHolder.getTime() - dateHolder.getTimezoneOffset() * 60000
+         );
 
          function addZero(i) {
             if (i < 10) {

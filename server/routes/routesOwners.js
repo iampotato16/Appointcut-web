@@ -820,7 +820,8 @@ router.post(
 
             await acu.insertInto(
                "tbltransactions (TransactionID, AppointmentID, ShopID, Amount, Date, Time)",
-               '("' + "W" +
+               '("' +
+                  "W" +
                   appointment.AppointmentID +
                   "-" +
                   req.params.shopId +
@@ -926,7 +927,7 @@ router.post(
          "tblshopservices",
          "shopServicesID = " + service + " AND shopID = " + req.params.shopId
       );
-	   console.log(`ss: ${JSON.stringify(ss)}`)
+      console.log(`ss: ${JSON.stringify(ss)}`);
       var shopServiceID = ss.shopServicesID;
       var amountDue = ss.Price;
       var timeIn = time;
@@ -1015,4 +1016,5 @@ router.post(
 router.route("/cancelApplication:id", (res, req) => {
    res.send(req.params.id);
 });
+
 module.exports = router;
