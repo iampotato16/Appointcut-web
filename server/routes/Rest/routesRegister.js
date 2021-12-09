@@ -11,6 +11,7 @@ let connection = mysql2.createPool({
 })
 const UserFetch = require("../../../classes/UserFetch")
 const uf = new UserFetch.UserFetch(connection)
+const nodemailer = require('nodemailer')
 
 
 //Path: /rest/register
@@ -28,6 +29,43 @@ router.route('/')
     }
 })
 
+//Path: /rest/register/mailtest
+router.route('/mailtest')
+.get(async (req,res) => {
+    const transporter = nodemailer.createTransport({
+        port: 25,
+        host: 'localhost',
+        tls: {
+            rejectUnauthorized: false
+        },
+    })
 
+    var message = {
+        from: 'Fietryel@appointcut.online',
+        to : 'enairu62@gmail.com',
+        subject: 'Test Email',
+        text: 'Please Believe me',
+        html: '<p>I cant\'s stop loving you</p>'
+    }
+
+    transporter.sendMail(message, (error, info) => {
+        if (error){
+            return console.log(`Mail errror: ${error}`)
+        }
+        console.log('Message sent: %s', info.messageId)
+    })
+
+
+})
+
+//Path: /rest/register/token/
+router.route('/token/:token')
+.get(async (req,res) => {
+    const response = await uf.verifyEmail(req.params.token)
+    if(response == 1){res.send(`Token not found`)}
+    else {
+        res.send(`Verified`)
+    }
+})
 
 module.exports = router
