@@ -4,7 +4,8 @@ const UserAuthStatus = {
     BARBER: 'BARBER',
     EMAIL: 'EMAIL',//invalid email
     PASSWORD: 'PASSWORD',//invalid password
-    TOKEN: 'TOKEN' //invalid token
+    TOKEN: 'TOKEN', //invalid token
+    VERIFY: 'VERIFY' //unverified user
 }
 const UIDGenerator = require('uid-generator')
 const uidgen = new UIDGenerator()
@@ -47,6 +48,9 @@ class UserFetch {
             let pass = await this.connection.query(`SELECT * FROM tblcustomers WHERE Email = "${email}" and PasswordHash = SHA2('${password}',256)`)
             if (pass[0].length > 0) {//valid user
                 return UserAuthStatus.CUSTOMER
+            }
+            else if(pass[0][0].IsVerified == 0){
+                return UserAuthStatus.VERIFY
             }
             else {//invalid password
                 return UserAuthStatus.PASSWORD
