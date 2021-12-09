@@ -175,7 +175,7 @@ class UserFetch {
     
         var message = {
             from: 'Registrations@appointcut.online',
-            to : 'enairu62@gmail.com',
+            to : `${email}`,
             subject: 'Email Verification',
             text: 'Please Believe me',
             html: `<p>`+
