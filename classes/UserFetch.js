@@ -6,6 +6,9 @@ const UserAuthStatus = {
     PASSWORD: 'PASSWORD',//invalid password
     TOKEN: 'TOKEN' //invalid token
 }
+const UIDGenerator = require('uid-generator')
+const uidgen = new UIDGenerator()
+
 /**
  * For fetching  user details from the database
  */
@@ -122,6 +125,46 @@ class UserFetch {
         const columns = "(firstName, lastName, Email, PasswordHash, Contact)"
         const values = `values ('${first}', '${last}', '${email}', SHA2('${pass}',256), '${cont}')`
         await this.connection.query(`${insert} ${columns} ${values};`)
+        this.requireVerification(email)
+    }
+
+    /**
+     * Sends a verification email to the user
+     * @param {*} email Email of user requiring verification
+     * @returns the status of the operation
+     * 0 = success
+     * 1 = user does not exits
+     * 2 = user is already verified
+     * 3 = unkown error
+     */
+    async requireVerification(email){
+        //check the existence of the user
+        //get the user from the database
+        const user = await this.connection.query(
+            `select CustomersID, IsVerified from tblcustomer where Email = ${email}`
+        )
+        //check if db returned anything
+        //if nothing returned, return 1
+        if(user[0].length == 0){
+            return 1
+        }
+
+        //check that the user is not yet verified
+        //if user is verified, return 2
+        if(user[0][0].IsVerified == 1){
+            return 2
+        }
+
+        //get a token
+        const token = await uidgen.generate()
+        //create entry into the verifications table
+        await this.connection.query(
+            `insert into tblverificationtoken`+
+            `(CustomerID, Token)`+
+            `values(${user.CustomersID}, "${token}")`
+        )
+        //send the email
+        //TODO: implement emailing
     }
 
 }
