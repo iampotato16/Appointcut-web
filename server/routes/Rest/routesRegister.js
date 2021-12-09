@@ -61,7 +61,11 @@ router.route('/mailtest')
 //Path: /rest/register/token/
 router.route('/token/:token')
 .get(async (req,res) => {
-    res.send(`Token: ${req.params.token}`)
+    const response = await uf.verifyEmail(req.params.token)
+    if(response == 1){res.send(`Token not found`)}
+    else {
+        res.send(`Verified`).sendStatus(200)
+    }
 })
 
 module.exports = router
