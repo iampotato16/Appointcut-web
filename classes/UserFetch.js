@@ -47,10 +47,10 @@ class UserFetch {
         if (cust[0].length > 0) {//customer
             let pass = await this.connection.query(`SELECT * FROM tblcustomers WHERE Email = "${email}" and PasswordHash = SHA2('${password}',256)`)
             if (pass[0].length > 0) {//valid user
-                return UserAuthStatus.CUSTOMER
-            }
-            else if(pass[0][0].IsVerified == 0){
-                return UserAuthStatus.VERIFY
+                if(pass[0][0].IsVerified == 0){//unverified
+                    return UserAuthStatus.VERIFY
+                }
+                return UserAuthStatus.CUSTOMER//verified
             }
             else {//invalid password
                 return UserAuthStatus.PASSWORD
