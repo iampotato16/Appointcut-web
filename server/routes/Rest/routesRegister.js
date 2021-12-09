@@ -58,5 +58,10 @@ router.route('/mailtest')
 
 })
 
+//Path: /rest/register/token/
+router.route('/token/:token')
+.get(async (req,res) => {
+    res.send(`Token: ${req.params.token}`)
+})
 
 module.exports = router
