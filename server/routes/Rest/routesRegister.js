@@ -64,7 +64,7 @@ router.route('/token/:token')
     const response = await uf.verifyEmail(req.params.token)
     if(response == 1){res.send(`Token not found`)}
     else {
-        res.send(`Verified`).sendStatus(200)
+        res.send(`Verified`)
     }
 })
 

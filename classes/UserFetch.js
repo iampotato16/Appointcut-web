@@ -203,13 +203,13 @@ class UserFetch {
     async verifyEmail(token){
         //get the user with the token
         const id = await this.connection.query(
-            `select CustomerID from tblverification where Token = "${token}"`
+            `select CustomerID from tblverificationtoken where Token = "${token}"`
         )
         //token not found
         if (id[0].length == 0){return 1}
         //delete the entry
         await this.connection.query(
-            `delete from tblverification where Token = "${token}"`
+            `delete from tblverificationtoken where Token = "${token}"`
         )
         //set verification status of user to verified
         await this.connection.query(
