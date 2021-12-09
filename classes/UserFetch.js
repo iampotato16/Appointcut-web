@@ -8,6 +8,7 @@ const UserAuthStatus = {
 }
 const UIDGenerator = require('uid-generator')
 const uidgen = new UIDGenerator()
+const nodemailer = require('nodemailer')
 
 /**
  * For fetching  user details from the database
@@ -141,7 +142,7 @@ class UserFetch {
         //check the existence of the user
         //get the user from the database
         const user = await this.connection.query(
-            `select CustomersID, IsVerified from tblcustomer where Email = ${email}`
+            `select CustomersID, IsVerified from tblcustomers where Email = "${email}"`
         )
         //check if db returned anything
         //if nothing returned, return 1
@@ -161,10 +162,33 @@ class UserFetch {
         await this.connection.query(
             `insert into tblverificationtoken`+
             `(CustomerID, Token)`+
-            `values(${user.CustomersID}, "${token}")`
+            `values(${user[0][0].CustomersID}, "${token}")`
         )
         //send the email
-        //TODO: implement emailing
+        const transporter = nodemailer.createTransport({
+            port: 25,
+            host: 'localhost',
+            tls: {
+                rejectUnauthorized: false
+            },
+        })
+    
+        var message = {
+            from: 'Registrations@appointcut.online',
+            to : 'enairu62@gmail.com',
+            subject: 'Email Verification',
+            text: 'Please Believe me',
+            html: `<p>`+
+            `Click <a href="http://www.appointcut.online/rest/register/token/${token}">HERE</a> to verify your email`+
+            `</p>`
+        }
+    
+        transporter.sendMail(message, (error, info) => {
+            if (error){
+                return console.log(`Mail errror: ${error}`)
+            }
+            console.log('Message sent: %s', info.messageId)
+        })
     }
 
 }
