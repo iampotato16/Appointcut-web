@@ -179,7 +179,7 @@ class UserFetch {
             subject: 'Email Verification',
             text: 'Please Believe me',
             html: `<p>`+
-            `Click <a href="http://www.appointcut.online/rest/register/token/${token}">HERE</a> to verify your email`+
+            `Click <a href="appointcut.online/rest/register/token/${token}">HERE</a> to verify your email`+
             `</p>`
         }
     
