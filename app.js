@@ -108,6 +108,9 @@ app.use("/rest/barbers", routesRestBarbers);
 //appointments
 const routesAppointments = require("./server/routes/Rest/routesAppointments");
 app.use("/rest/appointments", routesAppointments);
+//hairstyles
+const routesHairstyles = require('./server/routes/Rest/routesHairstyles')
+app.use('/rest/hairstyles', routesHairstyles)
 
 app.listen(port, () => {
    console.log("Gumagana sa ikatatlong libong daungan");
