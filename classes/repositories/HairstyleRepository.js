@@ -32,6 +32,18 @@ class HairstyleRepository{
         }
         return list
     }
+
+    /**
+     * Gets a specifc entry
+     * @param {number} id ID of entry to be retrieved
+     * @returns {Hairstyle} Entry with the specified ID
+     */
+    async get(id){
+        const row = await connection.query(
+            `select * from hairstyle where id = ${id}`
+        )
+        return row[0][0]
+    }
 }
 
 module.exports = HairstyleRepository

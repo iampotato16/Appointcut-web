@@ -1,8 +1,8 @@
 class Hairstyle{
     id
     name
-    imageLink
-    textLink
+    image_link
+    text_link
 
     /**
      * Initializes with all the properties
@@ -14,8 +14,8 @@ class Hairstyle{
     constructor(id, name, imageLink, textLink){
         this.id = id
         this.name = name
-        this.imageLink = imageLink
-        this.textLink = textLink
+        this.image_link = imageLink
+        this.text_link = textLink
     }
 }
 
