@@ -28,18 +28,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{#each rowsApptApproved}}
+                        {{#each unfinishedAppts}}
                         <tr class="align-items-center">
-                            {{#if this.AppointmentType}}
-                            <td class="align-middle">{{this.CustomerName}}</td>
+                            {{#if this.CustomerName}}
+                            <td class="align-middle" name="appt_Name">{{this.CustomerName}}</td>
                             {{else}}
-                            <td class="align-middle">{{this.WalkInName}}</td>
+                            <td class="align-middle" name="appt_Name">{{this.WalkInName}}</td>
                             {{/if}}
-                            <td class="align-middle dateDisplay">{{this.Date}}</td>
-                            <td class="align-middle">{{this.TimeIn}} - {{this.TimeOut}}</td>
-                            <td class="align-middle">{{this.Service}}</td>
-                            <td class="align-middle">{{this.Amount}}</td>
-                            <td class="align-middle">{{this.EmployeeName}}</td>
+                            <td class="align-middle dateDisplay" name="appt_Date">{{this.Date}}</td>
+                            <td class="align-middle" name="appt_Time">{{this.TimeIn}} - {{this.TimeOut}}</td>
+                            <td class="align-middle" name="appt_Service">{{this.Service}}</td>
+                            <td class="align-middle" name="appt_Amount">{{this.Amount}}</td>
+                            <td class="align-middle" name="appt_EmployeeName">{{this.EmployeeName}}</td>
                             </td>
                             <td>
                                 <a type="button" class="btn btn-dark btn-sm"
@@ -49,44 +49,100 @@
                                         class="bi bi-x"></i></a>
                             </td>
                         </tr>
-                        <div id="appointmentStatus{{this.AppointmentID}}" class="dialog bg-yellow m-auto"
-                            style="display: none;">
-                            <div>
-                                <div class="card p-4 bg-black">
-                                    <div class="text-center">
-                                        <h6 class="fw-800"> APPOINTMENT STATUS </h6>
-                                        <hr>
-                                    </div>
-                                    <div class="center-div pt-2">
-                                        <form method="POST" action="completeAppt{{this.AppointmentID}}">
-                                            <div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio"
-                                                        name="appointmentStatus" value="2">
-                                                    <label class="form-check-label" for="completed">
-                                                        Completed
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio"
-                                                        name="appointmentStatus" value="0">
-                                                    <label class="form-check-label" for="noShow">
-                                                        No Show
-                                                    </label>
-                                                </div>
-                                                <div class="center-div pt-2" style="width: 300px;">
-                                                    <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
-                                                        type="submit">
-                                                        <small>SAVE</small></button>
-                                                    <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
-                                                        type="button" onclick="toggleDialog('appointmentStatus')">
-                                                        <small>CANCEL</small></button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
+                        {{!-- THIS IS TOAST --}}
+                        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+                            <input type="text" name="appt_ID" value="{{this.AppointmentID}}" style="display: none;">
+                            <div id="liveToast{{this.AppointmentID}}" class="toast" role="alert" aria-live="assertive"
+                                aria-atomic="true">
+                                <div class="toast-header">
+                                    <strong class="me-auto">APPOINTMENT ONGOING</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="toast-body">
+                                    Appointment {{this.AppointmentID}} Ongoing</br>
+                                    Customer Name: {{this.CustomerName}}</br>
+                                    Barber: {{this.EmployeeName}}</br>
+                                    Service: {{this.Service}}</br>
+                                    Amount: {{this.Amount}}</br>
                                 </div>
                             </div>
+                        </div>
+
+                        {{!-- CHECKS IF APPOINTMENT IS STILL ONGOING --}}
+                        <div id="ongoingAppointment{{this.AppointmentID}}" class="dialog bg-black m-auto"
+                            style="display: none;">
+                            <div class="p-4">
+                                <div class="text-center">
+                                    <h6 class="fw-800"> IS THIS APPOINTMENT STILL ON GOING? </h6>
+                                    <hr>
+                                </div>
+                                <div class="center-div pt-2">
+                                    Customer Name: {{this.CustomerName}}</br>
+                                    Barber: {{this.EmployeeName}}</br>
+                                    Service: {{this.Service}}</br>
+                                    Amount: {{this.Amount}}</br>
+                                    Schedule: {{this.TimeIn}} - {{this.TimeOut}}</br>
+                                </div>
+                            </div>
+                            <form method="POST" action="completeAppt{{this.AppointmentID}}">
+                                <div class="center-div pt-2">
+                                    <button class="btn btn-warning col-6 rounded-0 fw-800" type="button"
+                                        onclick="toggleDialog('ongoingAppointment{{this.AppointmentID}}')">
+                                        <small>Yes, Appointment is ongoing</small></button>
+                                    <button class="btn btn-outline-warning col-6 rounded-0 fw-800" type="submit"
+                                        name="appointmentStatus" value="0">
+                                        <small>No, customer is No Show</small></button>
+                                </div>
+                            </form>
+                        </div>
+
+                        {{!-- POPS UP WHEN SCHEDULE IS UP --}}
+                        <div id="appointmentStatus{{this.AppointmentID}}" class="dialog bg-black m-auto"
+                            style="display: none;">
+                            <div class="p-4">
+                                <div class="text-center">
+                                    <h6 class="fw-800"> FINISH APPOINTMENT </h6>
+                                    <hr>
+                                </div>
+                                <div class="center-div pt-2">
+                                    <p>
+                                        <span class="fw-bold"> Appointment Details</span><br>
+                                        Customer Name: {{this.CustomerName}}</br>
+                                        Barber: {{this.EmployeeName}}</br>
+                                        Service: {{this.Service}}</br>
+                                        Amount: {{this.Amount}}</br>
+                                        Schedule: {{this.TimeIn}} - {{this.TimeOut}}</br>
+                                    </p>
+                                </div>
+                                <div class="center-div pt-2">
+                                    {{#if this.TransactionID}}
+                                    <p>
+                                        <span class="fw-bold"> Payment Details</span><br>
+                                        Payment Mode: Online Payment
+                                        Amount Paid: {{this.Amount}}
+                                        Transaction Number: {{this.TransactionID}}
+                                    </p>
+                                    {{else}}
+                                    <p class="m-0">
+                                        <span class="fw-bold"> Payment Details</span><br>
+                                        Payment Mode: Personal Payment<br>
+                                        Amount: {{this.Amount}}<br>
+                                    </p>
+                                    {{/if}}
+                                </div>
+                            </div>
+
+                            <form method="POST" action="completeAppt{{this.AppointmentID}}">
+                                <div class="center-div">
+                                    <button class="btn btn-outline-warning col-6 rounded-0 fw-800" type="submit"
+                                        name="appointmentStatus" value="2">
+                                        <small>Save</small></button>
+                                    <button class="btn btn-warning col-6 rounded-0 fw-800" type="button"
+                                        onclick="toggleDialog('appointmentStatus{{this.AppointmentID}}')">
+                                        <small>Cancel</small></button>
+                                </div>
+                            </form>
                         </div>
                         {{/each}}
                     </tbody>
@@ -155,16 +211,15 @@
                                 id="apptDate" type="date" placeholder="Date" style="width: 300px;">
                             <input name="time" id="appointmentTime" style="width: 300px;">
                         </fieldset>
-
+                        <div class="m-auto center-div pt-2" style="width: 300px;">
+                            <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                onclick="document.getElementById('addAppointmentForm').submit()" id="btnSave">
+                                <small>SAVE</small></button>
+                            <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                onclick="toggleDialog('addAppointment')" type="button" id="btnCancel">
+                                <small>CANCEL</small></button>
+                        </div>
                     </form>
-                    <div class="m-auto center-div pt-2" style="width: 300px;">
-                        <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
-                            onclick="document.getElementById('addAppointmentForm').submit()">
-                            <small>SAVE</small></button>
-                        <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
-                            onclick="toggleDialog('addAppointment')">
-                            <small>CANCEL</small></button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -308,15 +363,20 @@
                         var occupiedTimeSlot = [];
                         for (var i = 0; i < appointments.length; i++) {
                             //check if the appt is of the chosen employee
-                            if (appointments[i].EmployeeID == employee) {
+                            if (appointments[i].EmployeeID == employee && appointments[i].AppointmentStatus == 'Approved') {
+                                console.log(appointments[i])
                                 //check if the appt is of the same date
                                 var newDate = new Date(appointments[i].Date);
+                                var date = newDate.getDate();
+                                if (date < 10) {
+                                    date = '0' + newDate.getDate()
+                                }
                                 var currentDate =
                                     newDate.getFullYear() +
                                     "-" +
                                     (newDate.getMonth() + 1) +
                                     "-" +
-                                    newDate.getDate();
+                                    date
                                 if (currentDate == dateStr) {
                                     occupiedTimeSlot.push([
                                         appointments[i].TimeIn,
@@ -325,6 +385,7 @@
                                 }
                             }
                         }
+
                         //3. get schedule of chosen date
                         //---select timeIn and timeOut from tblsched where empId = employee
                         var daySchedTimeIn, daySchedTimeOut;
@@ -341,29 +402,24 @@
                                 }
                             }
                         }
+
                         //4. get chosen service and duration
                         var loc = window.location.href;
-                        var shopId = loc.charAt(loc.length - 14);
+                        // regex to get shopID from url 
+                        var r = /\d+/g;
+                        // regex returns array of found integers, it returns '3000' and shopiD
+                        var shopId = (loc.match(r))[1];
                         var serviceId = document.getElementById("service4").value;
                         var duration = 15;
-                        console.log(shopservices);
                         for (var i = 0; i < shopservices.length; i++) {
-                            console.log(shopId, shopservices[i].shopID, ' this is shop')
-                            console.log(serviceId, shopservices[i].ServicesID, ' this is service')
                             if (
                                 shopservices[i].shopID == shopId &&
-                                shopservices[i].ServicesID == serviceId
-
+                                shopservices[i].shopServicesID == serviceId
                             ) {
                                 duration = shopservices[i].Duration;
                             }
                         }
-                        console.log("aaaaaa");
                         var pls = $("#appointmentTime")
-                        console.log(daySchedTimeIn)
-                        console.log(daySchedTimeOut)
-                        console.log(occupiedTimeSlot)
-                        console.log(duration)
                         pls.timepicker({
                             minTime: daySchedTimeIn,
                             maxTime: daySchedTimeOut,
@@ -376,4 +432,24 @@
                 });
             });
     }
+</script>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io();
+    var loc = window.location.href;
+    var x = /\d+/g;
+    var pageShopID = loc.match(x)[1]
+    var form = document.getElementById('addAppointmentForm');
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        socket.emit('message', 'i emit this pls')
+    });
+
+    socket.on('message', function (msg, shopID) {
+        console.log(pageShopID, shopID)
+        if (pageShopID == shopID) {
+            alert(msg);
+        }
+    });
 </script>

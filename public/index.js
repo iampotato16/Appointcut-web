@@ -721,9 +721,143 @@ function toggleDialog(dialog) {
       document.getElementById(dialog).style.display = "none";
    }
 }
-// for date time
-var dt = new Date();
-document.getElementById("datetime").innerHTML = dt.toLocaleString();
+
+var myVar = setInterval(myTimer, 1000);
+
+function myTimer() {
+   var d = new Date();
+   document.getElementById("datetime").innerHTML = d.toLocaleString();
+   checkStartAppointments(d);
+   checkEndAppointments(d);
+}
+
+var time = document.getElementsByName("appt_Time");
+var date = document.getElementsByName("appt_Date");
+var name = document.getElementsByName("appt_Name");
+var appointmentID = document.getElementsByName("appt_ID");
+
+function checkStartAppointments(serverDate) {
+   for (var i = 0; i < time.length; i++) {
+      //search for appointments in time
+      var timeIn = time[i].innerHTML.substring(0, 9);
+      //var timeOut = time[i].innerHTML.substring(11, 20);
+      var appointmentDate = new Date(
+         transformDate(date[i].innerHTML) + " " + timeIn
+      );
+      if (
+         appointmentDate.getHours() == serverDate.getHours() &&
+         appointmentDate.getMinutes() == serverDate.getMinutes() &&
+         appointmentDate.getSeconds() == serverDate.getSeconds()
+      ) {
+         //show toast na the appointment is starting
+         var toastLiveExample = document.getElementById(
+            "liveToast" + appointmentID[i].value
+         );
+         var toast = new bootstrap.Toast(toastLiveExample);
+         toast.show();
+
+         //call setTimout that would ask kung tuloy pa ba yung appointment
+         setTimeout(
+            showToastAfterFiveMinutes,
+            5 * 60 * 1000,
+            appointmentID[i].value
+         );
+      }
+   }
+}
+
+function checkEndAppointments(serverDate) {
+   for (var i = 0; i < time.length; i++) {
+      //search for appointments in time
+      //var timeOut = time[i].innerHTML.substring(0, 9);
+      var timeOut = time[i].innerHTML.substring(11, 20);
+      var appointmentDate = new Date(
+         transformDate(date[i].innerHTML) + " " + timeOut
+      );
+      if (
+         appointmentDate.getHours() == serverDate.getHours() &&
+         appointmentDate.getMinutes() == serverDate.getMinutes() &&
+         appointmentDate.getSeconds() == serverDate.getSeconds()
+      ) {
+         //show toast na the appointment is starting
+         var el = document.getElementById(
+            "appointmentStatus" + appointmentID[i].value
+         );
+         el.style.display = "block";
+      }
+   }
+}
+
+function showToastAfterFiveMinutes(apptID) {
+   var el = document.getElementById("ongoingAppointment" + apptID);
+   console.log(el);
+   el.style.display = "block";
+}
+
+function transformDate(date) {
+   //Dec 06 2015
+   var shortMonth = date.substring(0, 3);
+   var restOfTheDate = date.substring(4, 11);
+   var longMonth = "";
+   switch (shortMonth) {
+      case "Jan":
+         longMonth = "January";
+         break;
+
+      case "Feb":
+         longMonth = "February";
+         break;
+
+      case "Mar":
+         longMonth = "March";
+         break;
+
+      case "Apr":
+         longMonth = "April";
+         break;
+
+      case "Jun":
+         longMonth = "June";
+         break;
+
+      case "Jul":
+         longMonth = "July";
+         break;
+
+      case "Aug":
+         longMonth = "August";
+         break;
+
+      case "Sep":
+         longMonth = "September";
+         break;
+
+      case "Oct":
+         longMonth = "October";
+         break;
+
+      case "Nov":
+         longMonth = "November";
+         break;
+
+      case "Dec":
+         longMonth = "December";
+         break;
+
+      case "Jan":
+         longMonth = "January";
+         break;
+
+      case "Jan":
+         longMonth = "January";
+         break;
+
+      default:
+         break;
+   }
+   console.log(longMonth + " " + restOfTheDate);
+   return longMonth + " " + restOfTheDate;
+}
 
 //HIGHLIGHT FILE MAINTENANCE IN SIDEBAR
 function highlight() {

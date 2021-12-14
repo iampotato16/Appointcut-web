@@ -354,7 +354,7 @@
                   var occupiedTimeSlot = [];
                   for (var i = 0; i < appointments.length; i++) {
                      //check if the appt is of the chosen employee
-                     if (appointments[i].EmployeeID == employee) {
+                     if (appointments[i].EmployeeID == employee && appointments[i].AppointmentStatus == 'Approved') {
                         //check if the appt is of the same date
                         var newDate = new Date(appointments[i].Date);
                         var currentDate =
@@ -377,6 +377,7 @@
                   for (var i = 0; i < scheduleData.length; i++) {
                      //check that the schedule to be returned is of the chosen employee
                      if (scheduleData[i].EmployeeID == employee) {
+                        console.log(scheduleData)
                         //chech if the returned sched must be the same as the day
                         var a = scheduleData[i].Date;
                         var dayIndex = days.indexOf(a);

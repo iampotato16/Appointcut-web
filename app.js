@@ -1,16 +1,25 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+const app = express();
+const http = require("http");
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
 const expressHbs = require("express-handlebars");
-const multer = require("multer");
-const path = require("path");
 
 require("dotenv").config();
 
-const app = express();
-const port = process.env.PORT || 3000;
+/* io.on("connection", (socket) => {
+   console.log("a user connected");
+}); */
+
+io.on("connection", (socket) => {
+   socket.on("message", (msg, shopID) => {
+      console.log(msg);
+      io.emit("message", "An appointment has been made!", shopID);
+   });
+});
 
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.json());
 
 // Static Files
@@ -113,6 +122,7 @@ app.use("/rest/barbers", routesRestBarbers);
 const routesAppointments = require("./server/routes/Rest/routesAppointments");
 app.use("/rest/appointments", routesAppointments);
 
-app.listen(port, () => {
+const port = process.env.PORT || 3000;
+server.listen(port, () => {
    console.log("Gumagana sa ikatatlong libong daungan");
 });

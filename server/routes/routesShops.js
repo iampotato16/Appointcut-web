@@ -253,10 +253,52 @@ router.get("/setActiveShop:shopID", async (req, res) => {
 //views
 router.get("/view:id", async (req, res) => {
    acu.startConnection();
+   //FOR THE APPROVED APPOINTMENTS
+   //PARA ANG IPAKITA LANG AY LAHAT NG UNFINISHED APPTS
+   //UNFINISHED APPTS AY YUNG MGA APPTS FOR THE DAY AND FORWARD LANG. DI KASAMA YUNG MGA APPTS BEFORE THE CURRENT DAY
+   var shopID = req.params.id;
    const rowsApptApproved = await acu.getAllFromWhere(
       "appointcutdb.appointment",
-      "shopID = " + req.params.id + ' AND appointmentstatus = "Approved"'
+      "shopID = " + shopID + ' AND appointmentstatus = "Approved"'
    );
+
+   var date = new Date();
+   var unfinishedAppts = [];
+   var finishedAppts = [];
+   for (var i = 0; i < rowsApptApproved.length; i++) {
+      //date from rowsApptApproved
+      var x = rowsApptApproved[i].Date;
+      var apptApprovedDate;
+      var m = x.getMonth() + 1;
+      var d = x.getDate();
+      var y = x.getFullYear();
+      apptApprovedDate = m + " " + d + " " + y;
+
+      //time from rowsApptApprved
+      var apptApprovedTime = rowsApptApproved[i].TimeOut;
+      var apptApprovedDateTime = new Date(
+         apptApprovedDate + " " + apptApprovedTime
+      );
+      console.log("CURRENT DATE: " + date);
+      console.log("APPROVED DATE: " + apptApprovedDateTime);
+      //console.log(date, apptApprovedDateTime);
+      if (date > apptApprovedDateTime) {
+         finishedAppts.push(rowsApptApproved[i]);
+         //change appointment status to 0
+      } else {
+         unfinishedAppts.push(rowsApptApproved[i]);
+      }
+   }
+   // pag isipian kung yung finished appts ba ay ilalagay ko pa sa notif
+   //change status of all unfinished appts to NO SHOW
+   for (var i = 0; i < finishedAppts.length; i++) {
+      await acu.updateSet(
+         "tblappointment",
+         "appStatusID = 0",
+         "AppointmentID = " + finishedAppts[i].AppointmentID
+      );
+   }
+
    const rowsApptHistory = await acu.getAllFromWhere(
       "appointcutdb.appointment",
       "shopID = " + req.params.id + ' AND appointmentstatus != "Approved"'
@@ -356,6 +398,7 @@ router.get("/view:id", async (req, res) => {
       rowsServArray,
       rowsEmpSchedule,
       rowsApptApproved,
+      unfinishedAppts,
       rowsApptHistory,
       rowsEmpType,
       rowsSalaryType,

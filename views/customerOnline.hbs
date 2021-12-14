@@ -16,11 +16,11 @@
                     </div>
                     <div class="d-grid ">
                         <button type="button" class="btn btn-sm btn-warning btn-block fw-bold p-2"
-                            onclick="toggleDialog('addAppointment')"> SET APPOINTMENT </button>
+                            onclick="toggleDialog('addAppointment{{this.ShopID}}')"> SET APPOINTMENT </button>
                     </div>
                 </div>
             </div>
-            <div id="addAppointment" class="dialog bg-yellow m-auto" style="display: none;">
+            <div id="addAppointment{{this.ShopID}}" class="dialog bg-yellow m-auto" style="display: none;">
                 <div>
                     <div class="card p-4 bg-black">
                         <div class="text-center">
@@ -29,7 +29,8 @@
                         </div>
                         <div class="center-div pt-2">
                             <div>
-                                <form action="/customerOnline" id="addCustomerAppointmentForm" method="POST">
+                                <form action="/customerOnline" id="addCustomerAppointmentForm{{this.ShopID}}"
+                                    method="POST">
                                     {{!-- SHOP DETAILS --}}
                                     <fieldset style="border: 1px solid white; padding: 0 1rem .5rem 1rem" class="mb-2">
                                         <legend
@@ -44,7 +45,7 @@
                                             value="{{this.ShopName}}">
                                         <input type="text"
                                             class="form-control form-control-sm mb-2 font-small rounded-0" name="name"
-                                            id="name">
+                                            id="name" placeholder="Name">
                                     </fieldset>
 
                                     {{!-- SERVICE DETAILS --}}
@@ -89,16 +90,17 @@
                                             style="width: 300px;">
                                         <input name="time" id="customerAppointmentTime" style="width: 300px;">
                                     </fieldset>
-
+                                    <div class="m-auto center-div pt-2" style="width: 300px;">
+                                        <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                            onclick="document.getElementById('addCustomerAppointmentForm{{this.ShopID}}').submit()">
+                                            <small>SAVE</small></button>
+                                        <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                            onclick="toggleDialog('addAppointment{{this.ShopID}}')" type="button"
+                                            id="btnCancel">
+                                            <small>CANCEL</small></button>
+                                    </div>
                                 </form>
-                                <div class="m-auto center-div pt-2" style="width: 300px;">
-                                    <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
-                                        onclick="document.getElementById('addCustomerAppointmentForm').submit()">
-                                        <small>SAVE</small></button>
-                                    <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
-                                        onclick="toggleDialog('addAppointment')">
-                                        <small>CANCEL</small></button>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -241,15 +243,19 @@
                         var occupiedTimeSlot = [];
                         for (var i = 0; i < appointments.length; i++) {
                             //check if the appt is of the chosen employee
-                            if (appointments[i].EmployeeID == employee) {
+                            if (appointments[i].EmployeeID == employee && appointments[i].AppointmentStatus == 'Approved') {
                                 //check if the appt is of the same date
                                 var newDate = new Date(appointments[i].Date);
+                                var date = newDate.getDate();
+                                if (date < 10) {
+                                    date = '0' + date;
+                                }
                                 var currentDate =
                                     newDate.getFullYear() +
                                     "-" +
                                     (newDate.getMonth() + 1) +
                                     "-" +
-                                    newDate.getDate();
+                                    date;
                                 if (currentDate == dateStr) {
                                     occupiedTimeSlot.push([
                                         appointments[i].TimeIn,
@@ -297,4 +303,17 @@
                 });
             });
     }
+</script>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io();
+    //var btnCancel = document.getElementById('btnCancel')
+    var shopID = document.getElementById('shop').value;
+    console.log(shopID)
+    var form = document.getElementById('addCustomerAppointmentForm' + shopID);
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        socket.emit('message', 'An appointment has been added!', shopID)
+    });
 </script>

@@ -42,7 +42,7 @@ router.route("/acceptApplication:shopID").get(async (req, res) => {
             req.params.shopID +
             '", "' +
             dayName[i] +
-            '", null , null , 0 )'
+            '", "08:00:00" , "17:00:00" , 1 )'
       );
    }
    res.redirect("/barberApps");

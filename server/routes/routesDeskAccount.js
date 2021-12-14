@@ -561,7 +561,43 @@ router.get("/:shopID/appointments", async (req, res) => {
       "appointcutdb.appointment",
       "shopID = " + shopID + ' AND appointmentstatus = "Approved"'
    );
-   console.log(rowsApptApproved);
+
+   var date = new Date();
+   var unfinishedAppts = [];
+   var finishedAppts = [];
+   for (var i = 0; i < rowsApptApproved.length; i++) {
+      //date from rowsApptApproved
+      var x = rowsApptApproved[i].Date;
+      var apptApprovedDate;
+      var m = x.getMonth() + 1;
+      var d = x.getDate();
+      var y = x.getFullYear();
+      apptApprovedDate = m + " " + d + " " + y;
+
+      //time from rowsApptApprved
+      var apptApprovedTime = rowsApptApproved[i].TimeOut;
+      var apptApprovedDateTime = new Date(
+         apptApprovedDate + " " + apptApprovedTime
+      );
+      console.log("CURRENT DATE: " + date);
+      console.log("APPROVED DATE: " + apptApprovedDateTime);
+      //console.log(date, apptApprovedDateTime);
+      if (date > apptApprovedDateTime) {
+         finishedAppts.push(rowsApptApproved[i]);
+         //change appointment status to 0
+      } else {
+         unfinishedAppts.push(rowsApptApproved[i]);
+      }
+   }
+   // pag isipian kung yung finished appts ba ay ilalagay ko pa sa notif
+   //change status of all unfinished appts to NO SHOW
+   for (var i = 0; i < finishedAppts.length; i++) {
+      await acu.updateSet(
+         "tblappointment",
+         "appStatusID = 0",
+         "AppointmentID = " + finishedAppts[i].AppointmentID
+      );
+   }
    const rowsEmp = await acu.getAllFromWhere(
       "appointcutdb.employee",
       "ShopID = " + shopID
@@ -572,6 +608,7 @@ router.get("/:shopID/appointments", async (req, res) => {
       title: "Shop Name",
       shopID,
       rowsApptApproved,
+      unfinishedAppts,
       rowsEmp,
       rowsServCategory,
       shopName,
@@ -613,9 +650,13 @@ router.post("/:shopID/completeAppt:id", async (req, res) => {
          );
 
          var dateHolder = appointment.Date;
-         var appointmentDate = new Date(
-            dateHolder.getTime() - dateHolder.getTimezoneOffset() * 60000
-         );
+         var newDate = new Date(dateHolder);
+
+         //var newDate = new Date(x.setDate(x.getDate() + 1));
+         var mm = newDate.getMonth() + 1;
+         var dd = newDate.getDate();
+         var yy = newDate.getFullYear();
+         var appointmentDate = yy + "-" + mm + "-" + dd;
 
          function addZero(i) {
             if (i < 10) {
@@ -627,8 +668,7 @@ router.post("/:shopID/completeAppt:id", async (req, res) => {
          const d = new Date();
          let h = addZero(d.getHours());
          let m = addZero(d.getMinutes());
-         let s = addZero(d.getSeconds());
-         let time = h + ":" + m + ":" + s;
+         let time = h + ":" + m;
 
          await acu.insertInto(
             "tbltransactions (TransactionID, AppointmentID, ShopID, Amount, Date, Time)",

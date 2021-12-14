@@ -14,7 +14,6 @@ router
       );
 
       var rowsCategory = await acu.getAllFrom("tblcategory");
-      console.log(rowsCategory);
 
       res.render("customerOnline", {
          layout: "customerOnline",
