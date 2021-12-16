@@ -40,6 +40,18 @@ router.route('/:email-:pw-:userType')
         case UserFetch.UserAuthStatus.DESK:
             user = await uf.getEmployeeDetails(`${userEmail}`)
         break;
+        case UserFetch.UserAuthStatus.VERIFY:
+            res.json(//give status and token
+                {//status with null token
+                    "authStatus": userAuthenticity,
+                    "token":null,
+                    "firstName": null,
+                    "lastName": null,
+                    "type": null
+                }
+            )
+            return
+        break;
     }
 
     //user had invalid credentials

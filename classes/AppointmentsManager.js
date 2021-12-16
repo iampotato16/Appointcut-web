@@ -54,7 +54,7 @@ class AppointmentManager{
     async payAppointment(/**@type {Payment}*/payment){
         const date = `${payment.date.getFullYear()}-${payment.date.getMonth()+1}-${payment.date.getDate()}`
         const time = `${payment.date.getHours()}:${payment.date.getMinutes()}`
-        const transId = `${payment.customerId}-${payment.shopId}-${date}-${time}`
+        const transId = `M${payment.customerId}-${payment.shopId}-${date}-${time}`
 
         const insert = `insert into tbltransactions`
         const columns = "(TransactionID, AppointmentID, shopID, Amount, Date, Time)"

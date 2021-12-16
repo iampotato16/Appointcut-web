@@ -1,7 +1,7 @@
 //token gen
 const UIDGenerator = require('uid-generator')
-const UserFetch = require('./UserFetch')
 const uidgen = new UIDGenerator()
+const UserFetch = require('./UserFetch')
 
 /** 
  * Manager for token operations
