@@ -923,12 +923,6 @@ router.post("/view:shopID/completeAppt:id", async (req, res) => {
          var dateHolder = appointment.Date;
          var newDate = new Date(dateHolder);
 
-         //var newDate = new Date(x.setDate(x.getDate() + 1));
-         var mm = newDate.getMonth() + 1;
-         var dd = newDate.getDate();
-         var yy = newDate.getFullYear();
-         var appointmentDate = yy + "-" + mm + "-" + dd;
-
          function addZero(i) {
             if (i < 10) {
                i = "0" + i;
@@ -936,11 +930,15 @@ router.post("/view:shopID/completeAppt:id", async (req, res) => {
             return i;
          }
 
+         var mm = addZero(newDate.getMonth() + 1);
+         var dd = addZero(newDate.getDate());
+         var yy = newDate.getFullYear();
+         var appointmentDate = yy + "-" + mm + "-" + dd;
+
          const d = new Date();
          let h = addZero(d.getHours());
          let m = addZero(d.getMinutes());
-         let s = addZero(d.getSeconds());
-         let time = h + ":" + m + ":" + s;
+         let time = h + ":" + m;
 
          await acu.insertInto(
             "tbltransactions (TransactionID, AppointmentID, ShopID, Amount, Date, Time)",
@@ -969,4 +967,77 @@ router.post("/view:shopID/completeAppt:id", async (req, res) => {
    }
    res.redirect("/shops/view" + req.params.shopID);
 });
+
+router
+   .route("/view:shopID/generateCustomerVolumeReport")
+   .post(async (req, res) => {
+      const { daterangeCustomerVolume } = req.body;
+      var shopID = req.params.shopID;
+      //FOR PDF GENERATION
+      const stream = res.writeHead(200, {
+         "Content-Type": "application/pdf",
+         "Content-Disposition": "attatchment;filename=reports.pdf",
+      });
+      acu.generateCustomerVolumePDF(
+         shopID,
+         daterangeCustomerVolume,
+         (chunk) => stream.write(chunk),
+         () => stream.end()
+      );
+   });
+
+router.route("/view:shopID/generateSalesReport").post(async (req, res) => {
+   const { daterangeSales } = req.body;
+   var shopID = req.params.shopID;
+   //FOR PDF GENERATION
+   const stream = res.writeHead(200, {
+      "Content-Type": "application/pdf",
+      "Content-Disposition": "attatchment;filename=reports.pdf",
+   });
+   acu.generateSalesReportPDF(
+      shopID,
+      daterangeSales,
+      (chunk) => stream.write(chunk),
+      () => stream.end()
+   );
+});
+
+router.route("/view:shopID/generateSalaryReport").post((req, res) => {
+   var { employee, salaryType, salaryTypeValue, amount, monthPicker } =
+      req.body;
+   var shopID = req.params.shopID;
+   //FOR PDF GENERATION
+   const stream = res.writeHead(200, {
+      "Content-Type": "application/pdf",
+      "Content-Disposition": "attatchment;filename=reports.pdf",
+   });
+   acu.generateSalaryReportPDF(
+      shopID,
+      monthPicker,
+      employee,
+      salaryType,
+      salaryTypeValue,
+      amount,
+      (chunk) => stream.write(chunk),
+      () => stream.end()
+   );
+});
+
+router
+   .route("/view:shopID/generateTransaction:transactionID")
+   .get((req, res) => {
+      shopID = req.params.shopID;
+      transID = req.params.transactionID;
+      //FOR PDF GENERATION
+      const stream = res.writeHead(200, {
+         "Content-Type": "application/pdf",
+         "Content-Disposition": "attatchment;filename=reports.pdf",
+      });
+      acu.generateTransactionPDF(
+         shopID,
+         transID,
+         (chunk) => stream.write(chunk),
+         () => stream.end()
+      );
+   });
 module.exports = router;

@@ -53,8 +53,6 @@ async function setSalaryReport(el) {
             }
          }
       });
-   console.log(shopEmployee);
-   console.log(shopEmployee.length);
    for (var i = 0; i < shopEmployee.length; i++) {
       //salaryTypeValue
       //1 Commission, 2 Monthy, 3 Hourly
@@ -196,17 +194,28 @@ async function setSalaryReport(el) {
          '<td class="align-middle">' +
          salaryInfo[i].employee +
          "</td>" +
+         "<input style='display: none' type='text' name='employee' value =" +
+         salaryInfo[i].employee +
+         ">" +
          '<td class="align-middle">' +
-         //salaryInfo[i].salaryTypeID +
          salaryType +
          "</td>" +
+         "<input style='display: none' type='text' name='salaryType' value =" +
+         salaryType +
+         ">" +
          '<td class="align-middle">' +
          salaryInfo[i].salaryTypeValue +
          "</td>" +
+         "<input style='display: none' type='text' name='salaryTypeValue' value =" +
+         salaryInfo[i].salaryTypeValue +
+         ">" +
          '<td class="align-middle">' +
          +salaryInfo[i].amount +
          "</td>" +
-         "</tr>";
+         "<input style='display: none' type='text' name='amount' value =" +
+         salaryInfo[i].amount +
+         ">";
+      ("</tr>");
    }
    tableData[0].innerHTML = tableDataRow;
 }

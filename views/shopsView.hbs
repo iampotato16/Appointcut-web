@@ -773,50 +773,62 @@
         <div class="row px-3">
             <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
                 <span class="me-2 fw-800"><small>CUSTOMER VOLUME REPORT</small></span>
-                <input type="text" id="daterangeCustomerVolume" class="font-small">
+                <form action="/shops/view{{rows.ShopID}}/generateCustomerVolumeReport" method="POST">
+                    <input type="text" id="daterangeCustomerVolume" name="daterangeCustomerVolume" class="font-small">
+                    <button class="btn btn-sm btn-light" type="submit"><i class="bi bi-file-earmark-text"></i></button>
+                </form>
             </div>
             <div>
                 <canvas id="myChart" style="width:100%;"></canvas>
             </div>
         </div>
+
         <div class="row px-3">
             <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
                 <span class="me-2 fw-800"><small>SALES REPORT</small></span>
-                <input type="text" id="daterangeSales" class="font-small">
+                <form action="/shops/view{{rows.ShopID}}/generateSalesReport" method="POST">
+                    <input type="text" id="daterangeSales" name="daterangeSales" class="font-small">
+                    <button class="btn btn-sm btn-light" type="submit"><i class="bi bi-file-earmark-text"></i></button>
+                </form>
             </div>
             <div>
                 <canvas id="chartSales" style="width:100%;"></canvas>
             </div>
         </div>
+
         <div class="row px-3">
-            <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
-                <div>
-                    <span class="me-2 fw-800"><small>SALARY</small></span>
+            <form action="/shops/view{{rows.ShopID}}/generateSalaryReport" method="POST">
+                <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="me-2 fw-800"><small>SALARY</small></span>
+                    </div>
+                    <div>
+                        <input type="month" id="monthPicker" name="monthPicker" onchange="setSalaryReport(this)">
+                        <button class="btn btn-sm btn-light" type="submit"><i
+                                class="bi bi-file-earmark-text"></i></button>
+                    </div>
                 </div>
-                <div>
-                    <input type="month" id="monthPicker" onchange="setSalaryReport(this)">
+                <div class="bg-gray p-4 pt-2 mb-3">
+                    <table class="table table-hover table-striped table-sm m-0">
+                        <thead>
+                            <tr>
+                                <th scope="col"> <small>EMPLOYEE</small></th>
+                                <th scope="col"> <small>SALARY TYPE</small></th>
+                                <th scope="col"> <small>SALARY VALUE</small></th>
+                                <th scope="col"> <small>AMOUNT</small></th>
+                            </tr>
+                        </thead>
+                        <tbody name="salaryData">
+                            <tr class="align-items-center">
+                                <td class="align-middle">EMPLOYEE</td>
+                                <td class="align-middle">SALARY TYPE</td>
+                                <td class="align-middle">SALARY VALUE</td>
+                                <td class="align-middle">AMOUNT</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <div class="bg-gray p-4 pt-2 mb-3">
-                <table class="table table-hover table-striped table-sm m-0">
-                    <thead>
-                        <tr>
-                            <th scope="col"> <small>EMPLOYEE</small></th>
-                            <th scope="col"> <small>SALARY TYPE</small></th>
-                            <th scope="col"> <small>SALARY VALUE</small></th>
-                            <th scope="col"> <small>AMOUNT</small></th>
-                        </tr>
-                    </thead>
-                    <tbody name="salaryData">
-                        <tr class="align-items-center">
-                            <td class="align-middle">EMPLOYEE</td>
-                            <td class="align-middle">SALARY TYPE</td>
-                            <td class="align-middle">SALARY VALUE</td>
-                            <td class="align-middle">AMOUNT</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            </form>
         </div>
 
         <div class="row px-3">
@@ -834,6 +846,7 @@
                             <th scope="col"> <small>DATE</small></th>
                             <th scope="col"> <small>TIME</small></th>
                             <th scope="col"> <small>AMOUNT</small></th>
+                            <th scope="col" style="width: 40px;"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -849,6 +862,11 @@
                             <td class="align-middle dateDisplay">{{this.Date}}</td>
                             <td class="align-middle">{{this.Time}}</td>
                             <td class="align-middle">{{this.Amount}}</td>
+                            <td>
+                                <a href="/shops/view{{../rows.ShopID}}/generateTransaction{{this.TransactionID}}"
+                                    type="button" class="btn btn-sm btn-dark"><i
+                                        class="bi bi-file-earmark-text"></i></a>
+                            </td>
                         </tr>
                         {{/if}}
                         {{/each}}
