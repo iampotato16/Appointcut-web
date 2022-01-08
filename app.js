@@ -124,6 +124,9 @@ app.use("/rest/appointments", routesAppointments);
 //hairstyles
 const routesHairstyles = require('./server/routes/Rest/routesHairstyles')
 app.use('/rest/hairstyles', routesHairstyles)
+//Services
+const routesShopServices = require('./server/routes/Rest/routesShopServices')
+app.use('/rest/shopservices', routesShopServices)
 
 const port = process.env.PORT || 3000;
 server.listen(port, () => {

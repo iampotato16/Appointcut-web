@@ -87,8 +87,8 @@ router.route('/conflicts/:barberId-:year-:month-:date-:in-:out')
     res.send(`${conflicts}`)
 })
 
-//Path: /rest/appointments/customer/completed
-router.route('/customer/completed/:token')
+//Path: /rest/appointments/customer/
+router.route('/customer/:token-:type')
 .get(async (req,res) => {
     //verify the token
     const tokenInfo = await tm.verifyToken(req.params.token)
@@ -98,25 +98,27 @@ router.route('/customer/completed/:token')
         return
     }
 
-    //get user appointments
-    const list = await apm.getCustomerAppointments(tokenInfo.userID, 'Completed')
-    //respond with appointments
-    res.json(list)
-})
-
-//Path: /rest/appointments/customer/approved
-router.route('/customer/approved/:token')
-.get(async (req,res) => {
-    //verify the token
-    const tokenInfo = await tm.verifyToken(req.params.token)
-    //check if token is valid
-    if(tokenInfo.userType != UserFetch.UserAuthStatus.CUSTOMER){
-        res.sendStatus(401)
-        return
+    console.log(`routesAppointments: Request: ${req.params.type}`)
+    var typeName
+    switch (req.params.type) {
+        case "0":
+            typeName = "No Show"
+            break;
+        case "1":
+            typeName = "Approved"
+            break;
+        case "2":
+            typeName = "Completed"
+            break;
+        case "3":
+            typeName = "Cancelled"
+            break;
     }
 
+    console.log(`routesAppointments: Type: ${typeName}`)
     //get user appointments
-    const list = await apm.getCustomerAppointments(tokenInfo.userID, 'Approved')
+    const list = await apm.getCustomerAppointments(tokenInfo.userID, typeName)
+    console.log(`routesAppointments: Response: ${JSON.stringify(list)}`)
     //respond with appointments
     res.json(list)
 })
