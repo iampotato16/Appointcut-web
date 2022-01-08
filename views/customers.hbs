@@ -27,6 +27,7 @@
                   <th scope="col"> <small>NAME</small></th>
                   <th scope="col"> <small>EMAIL</small></th>
                   <th scope="col"> <small>CONTACT</small></th>
+                  <th scope="col"> <small>VIOLATION</small></th>
                   <th scope="col"> <small>STATUS</small></th>
                   <th scope="col" class="justify-content-end" style="width: 76px;"></th>
                </tr>
@@ -37,6 +38,7 @@
                   <td class="align-middle">{{this.FullName}}</td>
                   <td class="align-middle">{{this.Email}}</td>
                   <td class="align-middle">{{this.Contact}}</td>
+                  <td class="align-middle">{{this.RedTag}}</td>
                   <td class="align-middle">
                      {{#if this.Status}}
                      <a href="customers/setInactive{{this.CustomersID}}" class="btn btn-sm btn-success rounded"
@@ -47,11 +49,8 @@
                         type="button"> INACTIVE </a>
                      {{/if}}
                   <td>
-                     <button class="btn btn-dark btn-sm" {{!-- NAKALAGAY TO AS PARAMETER SA TOGGLEDIALOG, BAKA KASI MAY
-                        MASIRA DAHIL TINANGGAL KO ,'customersPage', {{this.CustomersID}} --}}
-                        onclick="toggleDialog('editCustomerInfo{{this.CustomersID}}')">
+                     <button class="btn btn-dark btn-sm" onclick="toggleDialog('editCustomerInfo{{this.CustomersID}}')">
                         <i class=" bi bi-pencil"></i></button>
-                     {{!-- <button class="btn btn-dark btn-sm" id=""><i class="bi bi-trash"></i></button> --}}
                      <a href="/customers/view{{this.CustomersID}}" type="button" class="btn btn-dark btn-sm"><i
                            class=" bi bi-eye"></i></a>
                   </td>
@@ -106,26 +105,14 @@
             <div>
                <form action="/customers" id="addCustomerForm" method="POST">
                   <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" name="firstName"
-                     placeholder="First Name" />
+                     placeholder="First Name" required>
                   <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" name="lastName"
-                     placeholder="Last Name" />
+                     placeholder="Last Name" required>
                   <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" name="email"
-                     style="width: 300px;" placeholder="Email" />
+                     style="width: 300px;" placeholder="Email" required>
                   <input class="form-control form-control-sm mb-2 font-small rounded-0" type="text" name="contact"
-                     style="width: 300px;" placeholder="Contact Number" />
+                     style="width: 300px;" placeholder="Contact Number" required>
                   <div class="center-div">
-                     {{!-- <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="1" id="guest" name="guest">
-                        <label class="form-check-label" for="guest">
-                           Guest
-                        </label>
-                     </div>
-                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="1" id="status" name="status">
-                        <label class="form-check-label" for="status">
-                           Active
-                        </label>
-                     </div> --}}
                   </div>
                </form>
                <div class="center-div pt-2" style="width: 300px;">

@@ -19,6 +19,12 @@ io.on("connection", (socket) => {
    });
 });
 
+/* io.on("connection", (socket) => {
+   socket.on("cancel appointment", (msg, shopID) => {
+      io.emit("cancel appointment", msg, shopID);
+   });
+}); */
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -75,10 +81,6 @@ app.use("/ownerAccount", routesOwnerAccount);
 //Desk Account
 const routesDeskAccount = require("./server/routes/routesDeskAccount");
 app.use("/deskAccount", routesDeskAccount);
-
-//Employee Maintenance
-const routesEmployees = require("./server/routes/routesEmployees");
-app.use("/employees", routesEmployees);
 
 //Owners Maintenance
 const routesOwners = require("./server/routes/routesOwners");

@@ -369,6 +369,11 @@ router
       // pag isipian kung yung finished appts ba ay ilalagay ko pa sa notif
       //change status of all unfinished appts to NO SHOW
       for (var i = 0; i < finishedAppts.length; i++) {
+         customerID = finishedAppts[i].CustomersID;
+         //get redtag number
+         if (customerID != null) {
+            await acu.redTag(customerID);
+         }
          await acu.updateSet(
             "tblappointment",
             "appStatusID = 0",
@@ -920,6 +925,14 @@ router.post(
       var id = req.params.id;
       var appointmentStatus = req.body.appointmentStatus;
       acu.startConnection();
+      var customer = await acu.getOneFromWhere(
+         "tblappointment",
+         "AppointmentID = " + req.params.id
+      );
+      var customerID = customer.CustomerID;
+      if (appointmentStatus == 0) {
+         await acu.redTag(customerID);
+      }
       //update appointment first
       await acu.updateSet(
          "tblappointment",

@@ -45,7 +45,7 @@
                                             value="{{this.ShopName}}">
                                         <input type="text"
                                             class="form-control form-control-sm mb-2 font-small rounded-0" name="name"
-                                            id="name" placeholder="Name">
+                                            id="name" placeholder="Name" required>
                                     </fieldset>
 
                                     {{!-- SERVICE DETAILS --}}
@@ -310,7 +310,6 @@
     var socket = io();
     //var btnCancel = document.getElementById('btnCancel')
     var shopID = document.getElementById('shop').value;
-    console.log(shopID)
     var form = document.getElementById('addCustomerAppointmentForm' + shopID);
     form.addEventListener('submit', function (e) {
         e.preventDefault();

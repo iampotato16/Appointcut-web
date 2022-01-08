@@ -359,6 +359,29 @@ async function generateTransactionPDF(
    doc.end();
 }
 
+async function redTag(customerID) {
+   startConnection();
+   var temp = await getOneFromWhere(
+      "tblcustomers",
+      "CustomersID = " + customerID
+   );
+   var redtag = temp.RedTag;
+   redtag++;
+   //if 3 na, mag status = 0 sya
+   if (redtag == 3) {
+      await updateSet(
+         "tblcustomers",
+         "status = 0",
+         "CustomersID = " + customerID
+      );
+   }
+   await updateSet(
+      "tblcustomers",
+      "redTag = " + redtag,
+      "CustomersID = " + customerID
+   );
+}
+
 module.exports = {
    getAllFrom,
    getAllFromWhere,
@@ -372,4 +395,5 @@ module.exports = {
    generateSalesReportPDF,
    generateSalaryReportPDF,
    generateTransactionPDF,
+   redTag,
 };

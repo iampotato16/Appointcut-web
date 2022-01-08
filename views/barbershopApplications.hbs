@@ -1,6 +1,12 @@
 <div class="mt-4 p-3 text-decoration-none">
    <div class="d-flex justify-content-between">
-      <span class="fs-5 fw-semibold">{{title}}</span>
+      <span class="fs-5 fw-semibold">
+         <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+               <li class="breadcrumb-item active" aria-current="page">Barbershop Applications</li>
+            </ol>
+         </nav>
+      </span>
       <div class="d-flex float-right" style="height: 2rem">
          <form class="d-flex">
             <input class="form-control form-control-sm me-1 p-1 rounded-0" type="search" placeholder="Search"
@@ -9,7 +15,7 @@
          </form>
       </div>
    </div>
-   <hr>
+   <hr class="mt-0">
    <div class="bg-gray p-4 mb-3">
       <table class="table table-hover table-striped table-sm m-0">
          <thead>

@@ -45,10 +45,133 @@
                                 <a type="button" class="btn btn-dark btn-sm"
                                     onclick="toggleDialog('appointmentStatus{{this.AppointmentID}}')"><i
                                         class="bi bi-check"></i></a>
-                                <a type="button" class="btn btn-dark btn-sm" href="cancelAppt{{this.AppointmentID}}"><i
+                                <a type="button" class="btn btn-dark btn-sm"
+                                    onclick="toggleDialog('cancelAppointmentDialog{{this.AppointmentID}}')"><i
                                         class="bi bi-x"></i></a>
                             </td>
                         </tr>
+
+                        {{!--THIS IS FOR CANCEL APPTS--}}
+                        <div id="cancelAppointmentDialog{{this.AppointmentID}}" class="dialog bg-black m-auto"
+                            style="display: none;">
+                            <div class="p-4">
+                                <div class="text-center">
+                                    <button class="position-absolute btn btn-link p-0"
+                                        style="right: 1.5rem; margin-top: -.5rem;"
+                                        onclick="toggleDialog('cancelAppointmentDialog{{this.AppointmentID}}')">
+                                        <i class="bi bi-x"></i></button>
+                                    <h6 class="fw-800"> CANCEL APPOINTMENT? </h6>
+                                    <hr>
+                                </div>
+                                <div class="center-div pt-2">
+                                    {{#if this.CustomerName}}
+                                    Customer Name: {{this.CustomerName}}</br>
+                                    {{else}}
+                                    Customer Name: {{this.WalkInName}}</br>
+                                    {{/if}}
+                                    Barber: {{this.EmployeeName}}</br>
+                                    Service: {{this.Service}}</br>
+                                    Amount: {{this.Amount}}</br>
+                                    Schedule: {{this.TimeIn}} - {{this.TimeOut}}</br>
+                                </div>
+                            </div>
+
+                            <div class="center-div pt-2">
+                                <a href="cancelAppt{{this.AppointmentID}}" type="button"
+                                    class="btn btn-warning col-6 rounded-0 fw-800">Cancel</a>
+                                <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                    onclick="toggleDialog('rescheduleAppointment{{this.AppointmentID}}'), toggleDialog('cancelAppointmentDialog{{this.AppointmentID}}'), updateEmployeeResched('{{this.ShopServicesID}}', 'attendingEmpResched')">
+                                    <small>Cancel and Reschdule</small></button>
+                            </div>
+                        </div>
+
+                        {{!--RESCHEDULE--}}
+                        <div id="rescheduleAppointment{{this.AppointmentID}}" class="dialog bg-yellow m-auto"
+                            style="display: none;">
+                            <div>
+                                <div class="card p-4 bg-black">
+                                    <div class="text-center">
+                                        <h6 class="fw-800"> RESCHEDULE APPOINTMENT </h6>
+                                        <hr>
+                                    </div>
+                                    <div class="center-div pt-2">
+                                        <div>
+                                            <form action="rescheduleAppointment{{this.AppointmentID}}"
+                                                id="rescheduleAppointmentForm{{this.AppointmentID}}" method="POST">
+                                                {{!-- CUSTOMER DETAILS --}}
+                                                <fieldset style="border: 1px solid white; padding: 0 1rem .5rem 1rem"
+                                                    class="mb-2">
+                                                    <legend
+                                                        style="font-size: .9rem; background-color:none; float:none; width:fit-content;">
+                                                        CUSTOMER INFORMATION:
+                                                    </legend>
+                                                    <input
+                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                        name="name" type="text" style="width: 300px;" {{#if
+                                                        this.CustomerName}} value="{{this.CustomerName}}" {{else}}
+                                                        value="{{this.WalkInName}}" {{/if}}>
+                                                    {{!-- <input
+                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                        name="contact" type="text" placeholder="Contact"
+                                                        style="width: 300px;" required> --}}
+                                                </fieldset>
+
+                                                {{!-- SERVICE DETAILS --}}
+                                                <fieldset style="border: 1px solid white; padding: 0 1rem .5rem 1rem"
+                                                    class="mb-2">
+                                                    <legend
+                                                        style="font-size: .9rem; background-color:none; float:none; width:fit-content;">
+                                                        SERVICE DETAILS:
+                                                    </legend>
+                                                    <input style="display: none;" value="{{this.ShopServicesID}}"
+                                                        id="service4Resched" name="service">
+                                                    <input
+                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                        name="service" type="text" style="width: 300px;"
+                                                        value="{{this.Service}}">
+                                                </fieldset>
+
+                                                {{!-- WHO AND WHEN --}}
+                                                <fieldset style="border: 1px solid white; padding: 0 1rem .5rem 1rem"
+                                                    class="mb-2">
+                                                    <legend
+                                                        style="font-size: .9rem; background-color:none; float:none; width:fit-content;">
+                                                        APPOINTMENT DETAILS:
+                                                    </legend>
+                                                    <select
+                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                        id="attendingEmpResched" name="employee"
+                                                        onchange="updateDatePickerResched(this, 'service4Resched')">
+                                                        <option selected disabled hidden>Attending Employee</option>
+                                                        {{#each ../rowsEmp}}
+                                                        {{#if (isBarber EmployeeTypeID)}}
+                                                        <option value="{{this.EmployeeID}}">{{this.FullName}}</option>
+                                                        {{/if}}
+                                                        {{/each}}
+                                                    </select>
+                                                    <input
+                                                        class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                        name="date" id="apptDateResched" type="date" placeholder="Date"
+                                                        style="width: 300px;">
+                                                    <input name="time" id="apptTimeResched" style="width: 300px;">
+                                                </fieldset>
+                                                <div class="m-auto center-div pt-2" style="width: 300px;">
+                                                    <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
+                                                        onclick="document.getElementById('rescheduleAppointmentForm{{this.AppointmentID}}').submit()"
+                                                        id="btnSave">
+                                                        <small>SAVE</small></button>
+                                                    <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
+                                                        onclick="toggleDialog('rescheduleAppointment{{this.AppointmentID}}')"
+                                                        type="button" id="btnCancel">
+                                                        <small>CANCEL</small></button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         {{!-- THIS IS TOAST --}}
                         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
                             <input type="text" name="appt_ID" value="{{this.AppointmentID}}" style="display: none;">
@@ -61,7 +184,11 @@
                                 </div>
                                 <div class="toast-body">
                                     Appointment {{this.AppointmentID}} Ongoing</br>
+                                    {{#if this.CustomerName}}
                                     Customer Name: {{this.CustomerName}}</br>
+                                    {{else}}
+                                    Customer Name: {{this.WalkInName}}</br>
+                                    {{/if}}
                                     Barber: {{this.EmployeeName}}</br>
                                     Service: {{this.Service}}</br>
                                     Amount: {{this.Amount}}</br>
@@ -78,7 +205,11 @@
                                     <hr>
                                 </div>
                                 <div class="center-div pt-2">
+                                    {{#if this.CustomerName}}
                                     Customer Name: {{this.CustomerName}}</br>
+                                    {{else}}
+                                    Customer Name: {{this.WalkInName}}</br>
+                                    {{/if}}
                                     Barber: {{this.EmployeeName}}</br>
                                     Service: {{this.Service}}</br>
                                     Amount: {{this.Amount}}</br>
@@ -168,9 +299,9 @@
                                 CUSTOMER INFORMATION:
                             </legend>
                             <input class="form-control form-control-sm mb-2 font-small rounded-0" name="name"
-                                type="text" placeholder="Name" style="width: 300px;">
+                                type="text" placeholder="Name" style="width: 300px;" required>
                             <input class="form-control form-control-sm mb-2 font-small rounded-0" name="contact"
-                                type="text" placeholder="Contact" style="width: 300px;">
+                                type="text" placeholder="Contact" style="width: 300px;" required>
                         </fieldset>
 
                         {{!-- SERVICE DETAILS --}}

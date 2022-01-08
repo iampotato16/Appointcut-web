@@ -605,10 +605,11 @@
                             <td class="align-middle" name="appt_EmployeeName">{{this.EmployeeName}}</td>
                             </td>
                             <td>
+                                <input type="text" name="shopID" value="{{../rows.ShopID}}" style="display: none;">
                                 <a type="button" class="btn btn-dark btn-sm"
                                     onclick="toggleDialog('appointmentStatus{{this.AppointmentID}}')"><i
                                         class="bi bi-check"></i></a>
-                                <a type="button" class="btn btn-dark btn-sm"
+                                <a type="button" class="btn btn-dark btn-sm" name="cancelAppt"
                                     href="/shops/view{{../rows.ShopID}}/cancelAppt{{this.AppointmentID}}"><i
                                         class="bi bi-x"></i></a>
                             </td>
@@ -1467,6 +1468,22 @@
         e.preventDefault();
         socket.emit('message', 'i emit this pls')
     });
+
+    /*var cancelAppt = document.getElementsByName("cancelAppt");
+    var shopID = document.getElementsByName('shopID')[0].value
+    alert(shopID)
+    for (var i = 0; i < cancelAppt.length; i++) {
+        cancelAppt[i].addEventListener('click', function (e) {
+            e.preventDefault();
+            socket.emit('cancel appointment', 'An appointment was cancelled', shopID)
+        })
+    }
+
+    socket.on('cancel appointment', function (msg, shopId) {
+        if (pageShopID == shopID) {
+            alert(msg);
+        }
+    }) */
 
     socket.on('message', function (msg, shopID) {
         console.log(pageShopID, shopID)

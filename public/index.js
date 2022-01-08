@@ -8,6 +8,169 @@ window.onload = function () {
    setMonthPicker();
 };
 
+function updateEmployeeResched(shopServicesID, attendingEmpResched) {
+   var employee = document.getElementById(attendingEmpResched);
+   var ableEmployees = [];
+   fetch("/getInfo/employeeSpecialization")
+      .then((res) => res.json())
+      .then((data) => {
+         for (var i = 0; i < data.length; i++) {
+            if (data[i].ShopServicesID == shopServicesID) {
+               ableEmployees.push(data[i]);
+            }
+         }
+         console.log(ableEmployees);
+      })
+      .then((data) => {
+         var empOptions = "<option hidden disabled selected>Employee</option>";
+         ableEmployees.forEach((element) => {
+            empOptions +=
+               "<option value=" +
+               element.EmployeeID +
+               "> " +
+               element.Name +
+               " </option>";
+         });
+         employee.innerHTML = empOptions;
+      });
+}
+
+function updateDatePickerResched(el, service) {
+   var employee = el.value;
+   /* const b = document.querySelector("#apptDateResched");
+   const bb = flatpickr(b, {});
+    */ var days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+   ];
+   var nonWorkingDays = [];
+   var nwdNumberForm = [];
+   var scheduleData, appointments, shopservices;
+
+   fetch("/getInfo/shopservices")
+      .then((res) => res.json())
+      .then((data) => {
+         shopservices = data;
+      });
+
+   fetch("/getInfo/appointmentviews")
+      .then((res) => res.json())
+      .then((data) => {
+         appointments = data;
+      });
+
+   //get nonworking days
+   fetch("/getInfo/schedule")
+      .then((res) => res.json())
+      .then((data) => {
+         scheduleData = data;
+         for (var i = 0; i < data.length; i++) {
+            if (data[i].EmployeeID == employee && data[i].TimeIn == null) {
+               nonWorkingDays.push(data[i].Date);
+            }
+         }
+      })
+      //get non working days index for flatpicker
+      .then((data) => {
+         for (var i = 0; i < nonWorkingDays.length; i++) {
+            if (days.includes(nonWorkingDays[i])) {
+               nwdNumberForm.push(days.indexOf(nonWorkingDays[i]));
+            }
+         }
+      })
+      //initializes datepicker with dynamic disabled days
+      .then((data) => {
+         const myInput = document.querySelector("#apptDateResched");
+         const fp = flatpickr(myInput, {
+            disable: [
+               function (date) {
+                  return nwdNumberForm.includes(date.getDay());
+               },
+            ],
+            onChange: function (selectedDates, dateStr, instance) {
+               //1. get date
+               var day = selectedDates[0].getDay();
+               //2. get occupied time of chosen date
+               var occupiedTimeSlot = [];
+               for (var i = 0; i < appointments.length; i++) {
+                  //check if the appt is of the chosen employee
+                  if (
+                     appointments[i].EmployeeID == employee &&
+                     appointments[i].AppointmentStatus == "Approved"
+                  ) {
+                     console.log(appointments[i]);
+                     //check if the appt is of the same date
+                     var newDate = new Date(appointments[i].Date);
+                     var date = newDate.getDate();
+                     if (date < 10) {
+                        date = "0" + newDate.getDate();
+                     }
+                     var currentDate =
+                        newDate.getFullYear() +
+                        "-" +
+                        (newDate.getMonth() + 1) +
+                        "-" +
+                        date;
+                     if (currentDate == dateStr) {
+                        occupiedTimeSlot.push([
+                           appointments[i].TimeIn,
+                           appointments[i].TimeOut,
+                        ]);
+                     }
+                  }
+               }
+
+               //3. get schedule of chosen date
+               //---select timeIn and timeOut from tblsched where empId = employee
+               var daySchedTimeIn, daySchedTimeOut;
+               for (var i = 0; i < scheduleData.length; i++) {
+                  //check that the schedule to be returned is of the chosen employee
+                  if (scheduleData[i].EmployeeID == employee) {
+                     //chech if the returned sched must be the same as the day
+                     var a = scheduleData[i].Date;
+                     var dayIndex = days.indexOf(a);
+                     if (dayIndex == day) {
+                        daySchedTimeIn = scheduleData[i].TimeIn;
+                        daySchedTimeOut = scheduleData[i].TimeOut;
+                        console.log(daySchedTimeOut + " " + daySchedTimeIn);
+                     }
+                  }
+               }
+
+               //4. get chosen service and duration
+               var loc = window.location.href;
+               // regex to get shopID from url
+               var r = /\d+/g;
+               // regex returns array of found integers, it returns '3000' and shopiD
+               var shopId = loc.match(r)[1];
+               var serviceId = document.getElementById(service).value;
+               var duration = 15;
+               for (var i = 0; i < shopservices.length; i++) {
+                  if (
+                     shopservices[i].shopID == shopId &&
+                     shopservices[i].shopServicesID == serviceId
+                  ) {
+                     duration = shopservices[i].Duration;
+                  }
+               }
+               var pls = $("#apptTimeResched");
+               pls.timepicker({
+                  minTime: daySchedTimeIn,
+                  maxTime: daySchedTimeOut,
+                  disableTimeRanges: occupiedTimeSlot,
+                  step: duration,
+                  disableTextInput: true,
+                  timeFormat: "H:i:s",
+               });
+            },
+         });
+      });
+}
 //SET DATE RANGE
 function setDaterange(daterange, num) {
    var currentDate = moment();
@@ -799,7 +962,6 @@ function checkEndAppointments(serverDate) {
 
 function showToastAfterFiveMinutes(apptID) {
    var el = document.getElementById("ongoingAppointment" + apptID);
-   console.log(el);
    el.style.display = "block";
 }
 
@@ -864,7 +1026,6 @@ function transformDate(date) {
       default:
          break;
    }
-   console.log(longMonth + " " + restOfTheDate);
    return longMonth + " " + restOfTheDate;
 }
 

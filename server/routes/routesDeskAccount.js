@@ -562,7 +562,6 @@ router.get("/:shopID/appointments", async (req, res) => {
       "appointcutdb.appointment",
       "shopID = " + shopID + ' AND appointmentstatus = "Approved"'
    );
-
    var date = new Date();
    var unfinishedAppts = [];
    var finishedAppts = [];
@@ -593,6 +592,11 @@ router.get("/:shopID/appointments", async (req, res) => {
    // pag isipian kung yung finished appts ba ay ilalagay ko pa sa notif
    //change status of all unfinished appts to NO SHOW
    for (var i = 0; i < finishedAppts.length; i++) {
+      customerID = finishedAppts[i].CustomersID;
+      //get redtag number
+      if (customerID != null) {
+         await acu.redTag(customerID);
+      }
       await acu.updateSet(
          "tblappointment",
          "appStatusID = 0",
@@ -616,6 +620,61 @@ router.get("/:shopID/appointments", async (req, res) => {
    });
 });
 
+//RESCHEDULE APPOINTMENTS
+router.get("/:shopID/rescheduleAppointment:id", async (req, res) => {
+   var id = req.params.id;
+   acu.startConnection();
+   await acu.updateSet(
+      "tblappointment",
+      "appStatusID = 3",
+      "AppointmentID = " + id
+   );
+
+   var { name, service, employee, date, time } = req.body;
+   //Para kumuha ng values sa loob ng shop services
+   var ss = await acu.getOneFromWhere(
+      "tblshopservices",
+      "shopServicesID = " + service + " AND shopID = " + req.params.shopID
+   );
+   var shopServiceID = ss.shopServicesID;
+   var amountDue = ss.Price;
+   var timeIn = time;
+   var timeHolder = new Date("1970-01-01 " + timeIn);
+   //FOR TIMEOUT
+   timeHolder.setTime(timeHolder.getTime() + 8 * 60 * 60 * 1000);
+   timeHolder.setTime(timeHolder.getTime() + ss.Duration * 60000);
+   var timeOut =
+      Math.floor(timeHolder.getTime() / (1000 * 60 * 60)) +
+      ":" +
+      (Math.floor(timeHolder.getTime() / (1000 * 60)) % 60) +
+      ":" +
+      (Math.floor(timeHolder.getTime() / 1000) % 60);
+
+   var shopID = req.params.shopID;
+   console.log(ss, shopServiceID, amountDue, timeIn, timeOut, shopID);
+   await acu.insertInto(
+      "tblappointment (Name, ShopID, EmployeeID, ShopServicesID, TimeIn, TimeOut, Date, AmountDue, AppStatusID, appointmentType )",
+      '( "' +
+         name +
+         '", "' +
+         req.params.shopID +
+         '", "' +
+         employee +
+         '", "' +
+         shopServiceID +
+         '", "' +
+         timeIn +
+         '", "' +
+         timeOut +
+         '", "' +
+         date +
+         '", "' +
+         amountDue +
+         '", 1, 0)'
+   );
+   res.redirect("/deskAccount/" + req.params.shopID + "/appointments");
+});
+
 //CANCEL APPOINTMENTS
 router.get("/:shopID/cancelAppt:id", async (req, res) => {
    var id = req.params.id;
@@ -633,6 +692,15 @@ router.post("/:shopID/completeAppt:id", async (req, res) => {
    var id = req.params.id;
    var appointmentStatus = req.body.appointmentStatus;
    acu.startConnection();
+   var customer = await acu.getOneFromWhere(
+      "tblappointment",
+      "AppointmentID = " + req.params.id
+   );
+   var customerID = customer.CustomerID;
+   if (appointmentStatus == 0) {
+      await acu.redTag(customerID);
+   }
+
    //update appointment first
    await acu.updateSet(
       "tblappointment",
