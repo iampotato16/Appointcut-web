@@ -124,6 +124,12 @@ app.use("/rest/barbers", routesRestBarbers);
 //appointments
 const routesAppointments = require("./server/routes/Rest/routesAppointments");
 app.use("/rest/appointments", routesAppointments);
+//hairstyles
+const routesHairstyles = require('./server/routes/Rest/routesHairstyles')
+app.use('/rest/hairstyles', routesHairstyles)
+//Services
+const routesShopServices = require('./server/routes/Rest/routesShopServices')
+app.use('/rest/shopservices', routesShopServices)
 
 app.get("/tc", function (req, res) {
    res.sendFile(path.join(__dirname, "/tc.html"));

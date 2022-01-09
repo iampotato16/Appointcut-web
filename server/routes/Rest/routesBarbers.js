@@ -75,6 +75,7 @@ router.route('/appointmentsview/:token-:day-:month-:year')
 
     const barberName = await uf.getEmployeeDetailsFromId(auth.userID)
     const appointments = await bf.getBarberAppointmentView(`"${barberName.firstName} ${barberName.lastName}"`, day, month, year)
+    console.log("routesBarbers: " + JSON.stringify(appointments[0]))
     res.json(appointments[0])
 })
 

@@ -28,7 +28,7 @@ class TokenManager{
         //date + 1 week
         let week = new Date()
         week.setDate(week.getDate() + 7)
-        let formattedWeek = `${week.getFullYear()}-${week.getMonth()}-${week.getDate()}`
+        let formattedWeek = `${week.getFullYear()}-${week.getMonth()+1}-${week.getDate()}`
 
         //token gen
         let token = await uidgen.generate()

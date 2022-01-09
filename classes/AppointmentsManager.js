@@ -24,7 +24,7 @@ class AppointmentManager{
         const amountDue = appointment.amountDue
         const appStatusId = appointment.appStatusID
 
-        if(haircutId == 0){
+        if(haircutId == undefined){
             haircutId = null
         }
 
