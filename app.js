@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
@@ -123,6 +124,10 @@ app.use("/rest/barbers", routesRestBarbers);
 //appointments
 const routesAppointments = require("./server/routes/Rest/routesAppointments");
 app.use("/rest/appointments", routesAppointments);
+
+app.get("/tc", function (req, res) {
+   res.sendFile(path.join(__dirname, "/tc.html"));
+});
 
 const port = process.env.PORT || 3000;
 server.listen(port, () => {

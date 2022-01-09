@@ -543,13 +543,10 @@ $(function () {
                      ],
                   },
                   options: {
-                     legend: { display: false },
                      scales: {
                         yAxes: [
                            {
-                              display: true,
                               ticks: {
-                                 //beginAtZero: true, // minimum value will be 0.
                                  min: 0,
                                  stepSize: 1, // 1 - 2 - 3 ...
                               },
@@ -621,7 +618,6 @@ $(function () {
                      ],
                   },
                   options: {
-                     legend: { display: false },
                      scales: {
                         yAxes: [
                            {

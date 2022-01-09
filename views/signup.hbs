@@ -88,7 +88,7 @@
                      class="btn btn-lg btn-primary btn-custom-reg-log font-weight-bold font-small rounded-0 pl-5 pr-5"
                      type="submit">SIGN UP</button>
                   <p class="font-smaller m-0 mt-2">By signing up you agree to the</p>
-                  <a href="" class="font-smaller">Terms & Conditions</a>
+                  <a class="font-smaller" onclick="showTC()">Terms & Conditions</a>
                </div>
             </form>
          </div>
@@ -97,6 +97,20 @@
 </div>
 
 <script>
+   var newWindow;
+   var w,
+      h = 0;
+   var width = window.innerWidth;
+   var height = window.innerHeight;
+
+   function showTC() {
+      newWindow = open("tc", "tc", "width = 640, height = 480");
+      w = width / 2;
+      h = height / 2;
+      newWindow.moveBy(w - 300, h - 200);
+      newWindow.focus();
+   }
+
    function setBarangay(el) {
       var brgyDropDown = document.getElementById("brgySignUp");
       var cityID = el.value;
