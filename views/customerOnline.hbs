@@ -248,14 +248,18 @@
                                 var newDate = new Date(appointments[i].Date);
                                 var date = newDate.getDate();
                                 if (date < 10) {
-                                    date = '0' + date;
+                                    date = '0' + newDate.getDate()
+                                }
+                                var m = newDate.getMonth() + 1;
+                                if (m < 10) {
+                                    m = '' + newDate.getMonth() + 1;
                                 }
                                 var currentDate =
                                     newDate.getFullYear() +
                                     "-" +
-                                    (newDate.getMonth() + 1) +
+                                    m +
                                     "-" +
-                                    date;
+                                    date
                                 if (currentDate == dateStr) {
                                     occupiedTimeSlot.push([
                                         appointments[i].TimeIn,
