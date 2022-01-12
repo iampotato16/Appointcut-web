@@ -7,7 +7,7 @@ const path = require("path");
 
 // Set The Storage Engine
 const storage = multer.diskStorage({
-   destination: "./permits/",
+   destination: "./public/permits/",
    filename: function (req, file, cb) {
       cb(
          null,
@@ -30,6 +30,10 @@ const upload = multer({
    },
    {
       name: "busPermit",
+      maxCount: 1,
+   },
+   {
+      name: "busImage",
       maxCount: 1,
    },
 ]);
@@ -70,7 +74,7 @@ router
          var { shopName, shopEmail, shopContact, brgy, city, street } =
             req.body;
          //SHOP APPLICATION
-         var { birPermit, busPermit } = req.files;
+         var { birPermit, busPermit, busImage } = req.files;
          console.log(birPermit[0].path, busPermit[0].path);
          acu.startConnection();
          //Insert owner details into owner
@@ -90,7 +94,7 @@ router
          );
          //Insert shop details into shop table
          var newShop = await acu.insertInto(
-            "tblshop (shopName, email, shopContact, cityID, barangayID, street, appStatus)",
+            "tblshop (shopName, email, shopContact, cityID, barangayID, street, imgpath, imgfilename, appStatus)",
             '( "' +
                shopName +
                '", "' +
@@ -103,6 +107,10 @@ router
                brgy +
                '","' +
                street +
+               '","' +
+               busImage[0].path +
+               '","' +
+               busImage[0].filename +
                '", 0)'
          );
          //Insert into shop application

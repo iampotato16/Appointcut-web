@@ -45,7 +45,12 @@ router
       const rowsDesk = await acu.getAllFrom("appointcutdb.employee");
       for (var i = 0; i < rowsDesk.length; i++) {
          if (rowsDesk[i].Email == email && rowsDesk[i].Password == password) {
-            res.redirect("/deskAccount/" + rowsDesk[i].ShopID);
+            res.redirect(
+               "/deskAccount/" +
+                  rowsDesk[i].EmployeeID +
+                  "/" +
+                  rowsDesk[i].ShopID
+            );
          }
       }
    });

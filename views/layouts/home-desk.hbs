@@ -58,12 +58,12 @@
                </button>
                <div class="collapse" id="shops-collapse">
                   <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                     <li><a href="/deskAccount/{{shopID}}/employees" class="link-light rounded"
+                     <li><a href="/deskAccount/{{employeeID}}/{{shopID}}/employees" class="link-light rounded"
                            id="deskEmployees">Employees</a></li>
-                     <li><a href="/deskAccount/{{shopID}}/services" class="link-light rounded"
+                     <li><a href="/deskAccount/{{employeeID}}/{{shopID}}/services" class="link-light rounded"
                            id="deskServices">Services</a>
                      </li>
-                     <li><a href="/deskAccount/{{shopID}}/schedule" class="link-light rounded"
+                     <li><a href="/deskAccount/{{employeeID}}/{{shopID}}/schedule" class="link-light rounded"
                            id="deskSchedule">Barbershop
                            Schedule</a></li>
                   </ul>
@@ -76,10 +76,10 @@
                </button>
                <div class="collapse" id="appointments-collapse">
                   <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                     <li><a href="/deskAccount/{{shopID}}/appointments" class="link-light rounded"
+                     <li><a href="/deskAccount/{{employeeID}}/{{shopID}}/appointments" class="link-light rounded"
                            id="deskAppointments">Appointments</a>
                      </li>
-                     <li><a href="/deskAccount/{{shopID}}/appointmentHistory" class="link-light rounded"
+                     <li><a href="/deskAccount/{{employeeID}}/{{shopID}}/appointmentHistory" class="link-light rounded"
                            id="deskAppointmentHistory">Appointment
                            History</a></li>
                   </ul>
@@ -87,7 +87,7 @@
             </li>
             <li class="mb-1">
                <button class="btn align-items-center" id="fm">
-                  <a class="btn-toggle-custom text-decoration-none" href="/deskAccount/{{shopID}}"
+                  <a class="btn-toggle-custom text-decoration-none" href="/deskAccount/{{employeeID}}/{{shopID}}"
                      id="deskReports">Reports</a>
                </button>
             </li>

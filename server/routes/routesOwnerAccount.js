@@ -7,7 +7,7 @@ const path = require("path");
 
 // Set The Storage Engine
 const storage = multer.diskStorage({
-   destination: "./permits/",
+   destination: "./public/permits/",
    filename: function (req, file, cb) {
       cb(
          null,
@@ -1010,12 +1010,21 @@ router
    .post(async (req, res) => {
       const { daterangeCustomerVolume } = req.body;
       var shopID = req.params.shopID;
+      var ownerID = req.params.ownerId;
+
+      //get owner name
+      acu.startConnection();
+      var a = await acu.getOneFromWhere("tblowner", "OwnerID = " + ownerID);
+
+      var authorName = a.firstName + " " + a.lastName;
+
       //FOR PDF GENERATION
       const stream = res.writeHead(200, {
          "Content-Type": "application/pdf",
          "Content-Disposition": "attatchment;filename=reports.pdf",
       });
       acu.generateCustomerVolumePDF(
+         authorName,
          shopID,
          daterangeCustomerVolume,
          (chunk) => stream.write(chunk),
@@ -1028,12 +1037,21 @@ router
    .post(async (req, res) => {
       const { daterangeSales } = req.body;
       var shopID = req.params.shopID;
+      var ownerID = req.params.ownerId;
+
+      //get owner name
+      acu.startConnection();
+      var a = await acu.getOneFromWhere("tblowner", "OwnerID = " + ownerID);
+
+      var authorName = a.firstName + " " + a.lastName;
+
       //FOR PDF GENERATION
       const stream = res.writeHead(200, {
          "Content-Type": "application/pdf",
          "Content-Disposition": "attatchment;filename=reports.pdf",
       });
       acu.generateSalesReportPDF(
+         authorName,
          shopID,
          daterangeSales,
          (chunk) => stream.write(chunk),
@@ -1043,16 +1061,25 @@ router
 
 router
    .route("/view:ownerId/viewShop:shopID/generateSalaryReport")
-   .post((req, res) => {
+   .post(async (req, res) => {
       var { employee, salaryType, salaryTypeValue, amount, monthPicker } =
          req.body;
       var shopID = req.params.shopID;
+      var ownerID = req.params.ownerId;
+
+      //get owner name
+      acu.startConnection();
+      var a = await acu.getOneFromWhere("tblowner", "OwnerID = " + ownerID);
+
+      var authorName = a.firstName + " " + a.lastName;
+
       //FOR PDF GENERATION
       const stream = res.writeHead(200, {
          "Content-Type": "application/pdf",
          "Content-Disposition": "attatchment;filename=reports.pdf",
       });
       acu.generateSalaryReportPDF(
+         authorName,
          shopID,
          monthPicker,
          employee,
@@ -1066,15 +1093,24 @@ router
 
 router
    .route("/view:ownerId/viewShop:shopID/generateTransaction:transactionID")
-   .get((req, res) => {
+   .get(async (req, res) => {
       shopID = req.params.shopID;
       transID = req.params.transactionID;
+      ownerID = req.params.ownerId;
+
+      //get owner name
+      acu.startConnection();
+      var a = await acu.getOneFromWhere("tblowner", "OwnerID = " + ownerID);
+
+      var authorName = a.firstName + " " + a.lastName;
+
       //FOR PDF GENERATION
       const stream = res.writeHead(200, {
          "Content-Type": "application/pdf",
          "Content-Disposition": "attatchment;filename=reports.pdf",
       });
       acu.generateTransactionPDF(
+         authorName,
          shopID,
          transID,
          (chunk) => stream.write(chunk),

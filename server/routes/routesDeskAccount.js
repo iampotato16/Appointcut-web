@@ -11,8 +11,9 @@ async function getShopName(shopID) {
 }
 
 //REPORTS
-router.route("/:shopID").get(async (req, res) => {
+router.route("/:employeeID/:shopID").get(async (req, res) => {
    var shopID = req.params.shopID;
+   var employeeID = req.params.employeeID;
    var shopName = await getShopName(shopID);
    const transactions = await acu.getAllFromWhere(
       "appointcutdb.transactions",
@@ -24,12 +25,14 @@ router.route("/:shopID").get(async (req, res) => {
       transactions,
       shopName,
       shopID,
+      employeeID,
    });
 });
 
 //EMPLOYEES
-router.route("/:shopID/employees").get(async (req, res) => {
+router.route("/:employeeID/:shopID/employees").get(async (req, res) => {
    var shopID = req.params.shopID;
+   var employeeID = req.params.employeeID;
    var shopName = await getShopName(shopID);
    acu.startConnection();
    const rowEmp = await acu.getAllFromWhere(
@@ -78,6 +81,7 @@ router.route("/:shopID/employees").get(async (req, res) => {
       layout: "home-desk",
       title: "Shop Name",
       shopID,
+      employeeID,
       rowEmp,
       rowsEmpType,
       rowsSalaryType,
@@ -90,7 +94,7 @@ router.route("/:shopID/employees").get(async (req, res) => {
 });
 
 //OWNER BARBERSHOP VIEWS => ADD EMPLOYEE
-router.post("/:shopID/employees/addEmployee", async (req, res) => {
+router.post("/:employeeID/:shopID/employees/addEmployee", async (req, res) => {
    acu.startConnection();
    var {
       lastName,
@@ -191,11 +195,17 @@ router.post("/:shopID/employees/addEmployee", async (req, res) => {
          );
       }
    }
-   res.redirect("/deskAccount/" + req.params.shopID + "/employees");
+   res.redirect(
+      "/deskAccount/" +
+         req.params.employeeID +
+         "/" +
+         req.params.shopID +
+         "/employees"
+   );
 });
 
 //EDIT EMPOLYEE INFORMATION
-router.post("/:shopID/editEmployee:empID", async (req, res) => {
+router.post("/:employeeID/:shopID/editEmployee:empID", async (req, res) => {
    acu.startConnection();
    var {
       lastName,
@@ -311,34 +321,53 @@ router.post("/:shopID/editEmployee:empID", async (req, res) => {
          );
       }
    }
-   res.redirect("/deskAccount/" + req.params.shopID + "/employees");
+   res.redirect(
+      "/deskAccount/" +
+         req.params.employeeID +
+         "/" +
+         req.params.shopID +
+         "/employees"
+   );
 });
 
 //SET ACTIVE
-router.get("/:shopID/setActiveEmp:empID", async (req, res) => {
+router.get("/:employeeID/:shopID/setActiveEmp:empID", async (req, res) => {
    acu.startConnection();
    await acu.updateSet(
       "tblemployee",
       "Status = 1",
       "EmployeeID = " + req.params.empID
    );
-   res.redirect("/deskAccount/" + req.params.shopID + "/employees");
+   res.redirect(
+      "/deskAccount/" +
+         req.params.employeeID +
+         "/" +
+         req.params.shopID +
+         "/employees"
+   );
 });
 
-router.get("/:shopID/setInactiveEmp:empID", async (req, res) => {
+router.get("/:employeeID/:shopID/setInactiveEmp:empID", async (req, res) => {
    acu.startConnection();
    await acu.updateSet(
       "tblemployee",
       "Status = 0",
       "EmployeeID = " + req.params.empID
    );
-   res.redirect("/deskAccount/" + req.params.shopID + "/employees");
+   res.redirect(
+      "/deskAccount/" +
+         req.params.employeeID +
+         "/" +
+         req.params.shopID +
+         "/employees"
+   );
 });
 
 //SERVICES
-router.get("/:shopID/services", async (req, res) => {
+router.get("/:employeeID/:shopID/services", async (req, res) => {
    //// all the stuff needed for services
    var shopID = req.params.shopID;
+   var employeeID = req.params.employeeID;
    var shopName = await getShopName(shopID);
    acu.startConnection();
    const rowServ = await acu.getAllFromWhere(
@@ -351,13 +380,14 @@ router.get("/:shopID/services", async (req, res) => {
       layout: "home-desk",
       title: "Shop Name",
       shopID,
+      employeeID,
       rowServ,
       rowsServCategory,
       shopName,
    });
 });
 
-router.post("/:shopID/addService", async (req, res) => {
+router.post("/:employeeID/:shopID/addService", async (req, res) => {
    var { service16, price, duration } = req.body;
    acu.startConnection();
    var newService = await acu.insertInto(
@@ -384,11 +414,17 @@ router.post("/:shopID/addService", async (req, res) => {
          '( "' + shopServicesID + '", "' + employeeList[i].EmployeeID + '", 0 )'
       );
    }
-   res.redirect("/deskAccount/" + req.params.shopID + "/services");
+   res.redirect(
+      "/deskAccount/" +
+         req.params.employeeID +
+         "/" +
+         req.params.shopID +
+         "/services"
+   );
 });
 
 //owner => barbershop views => edit service
-router.post("/:shopID/editService:serviceID", async (req, res) => {
+router.post("/:employeeID/:shopID/editService:serviceID", async (req, res) => {
    var { editService, editServiceHolder, editPrice, editDuration } = req.body;
    if (editService == undefined) {
       editService = editServiceHolder;
@@ -407,10 +443,16 @@ router.post("/:shopID/editService:serviceID", async (req, res) => {
          '"',
       " ShopServicesID = " + req.params.serviceID
    );
-   res.redirect("/deskAccount/" + req.params.shopID + "/services");
+   res.redirect(
+      "/deskAccount/" +
+         req.params.employeeID +
+         "/" +
+         req.params.shopID +
+         "/services"
+   );
 });
 
-router.get("/:shopID/setInactiveServ:id", async (req, res) => {
+router.get("/:employeeID/:shopID/setInactiveServ:id", async (req, res) => {
    var id = req.params.id;
    acu.startConnection();
    await acu.updateSet(
@@ -418,10 +460,16 @@ router.get("/:shopID/setInactiveServ:id", async (req, res) => {
       "status = 0",
       "shopServicesID = " + id
    );
-   res.redirect("/deskAccount/" + req.params.shopID + "/services");
+   res.redirect(
+      "/deskAccount/" +
+         req.params.employeeID +
+         "/" +
+         req.params.shopID +
+         "/services"
+   );
 });
 
-router.get("/:shopID/setActiveServ:id", async (req, res) => {
+router.get("/:employeeID/:shopID/setActiveServ:id", async (req, res) => {
    var id = req.params.id;
    acu.startConnection();
    await acu.updateSet(
@@ -429,12 +477,19 @@ router.get("/:shopID/setActiveServ:id", async (req, res) => {
       "status = 1",
       "shopServicesID = " + id
    );
-   res.redirect("/deskAccount/" + req.params.shopID + "/services");
+   res.redirect(
+      "/deskAccount/" +
+         req.params.employeeID +
+         "/" +
+         req.params.shopID +
+         +"/services"
+   );
 });
 
 //SCHEDULE
-router.get("/:shopID/schedule", async (req, res) => {
+router.get("/:employeeID/:shopID/schedule", async (req, res) => {
    var shopID = req.params.shopID;
+   var employeeID = req.params.employeeID;
    var shopName = await getShopName(shopID);
    acu.startConnection();
    const rowsDays = await acu.getAllFromWhere(
@@ -445,50 +500,61 @@ router.get("/:shopID/schedule", async (req, res) => {
       layout: "home-desk",
       title: "Shop Name",
       shopID,
+      employeeID,
       rowsDays,
       shopName,
    });
 });
 
-router.post("/:shopID/editShopSchedule:schedID", async (req, res) => {
-   var { timeIn, timeOut, status } = req.body;
-   acu.startConnection();
-   if (status == undefined) {
-      status = 0;
-      timeIn = null;
-      timeOut = null;
-      await acu.updateSet(
-         "tblshopschedules",
-         "shopID = '" +
+router.post(
+   "/:employeeID/:shopID/editShopSchedule:schedID",
+   async (req, res) => {
+      var { timeIn, timeOut, status } = req.body;
+      acu.startConnection();
+      if (status == undefined) {
+         status = 0;
+         timeIn = null;
+         timeOut = null;
+         await acu.updateSet(
+            "tblshopschedules",
+            "shopID = '" +
+               req.params.shopID +
+               "', TimeIn = " +
+               timeIn +
+               ", TimeOut = " +
+               timeOut +
+               ", Status = " +
+               status,
+            "shopSchedulesID = '" + req.params.schedID + "'"
+         );
+      } else {
+         await acu.updateSet(
+            "tblshopschedules",
+            "shopID = '" +
+               req.params.shopID +
+               "', TimeIn = '" +
+               timeIn +
+               "', TimeOut = '" +
+               timeOut +
+               "', Status = " +
+               status,
+            "shopSchedulesID = '" + req.params.schedID + "'"
+         );
+      }
+      res.redirect(
+         "/deskAccount/" +
+            req.params.employeeID +
+            "/" +
             req.params.shopID +
-            "', TimeIn = " +
-            timeIn +
-            ", TimeOut = " +
-            timeOut +
-            ", Status = " +
-            status,
-         "shopSchedulesID = '" + req.params.schedID + "'"
-      );
-   } else {
-      await acu.updateSet(
-         "tblshopschedules",
-         "shopID = '" +
-            req.params.shopID +
-            "', TimeIn = '" +
-            timeIn +
-            "', TimeOut = '" +
-            timeOut +
-            "', Status = " +
-            status,
-         "shopSchedulesID = '" + req.params.schedID + "'"
+            "/schedule"
       );
    }
-   res.redirect("/deskAccount/" + req.params.shopID + "/schedule");
-});
+);
 
 //APPOINTMENT HISTORY
-router.get("/:shopID/appointmentHistory", async (req, res) => {
+router.get("/:employeeID/:shopID/appointmentHistory", async (req, res) => {
    var shopID = req.params.shopID;
+   var employeeID = req.params.employeeID;
    var shopName = await getShopName(shopID);
    acu.startConnection();
    const rowsApptHistory = await acu.getAllFromWhere(
@@ -498,6 +564,7 @@ router.get("/:shopID/appointmentHistory", async (req, res) => {
    res.render("deskAppointmentHistory", {
       layout: "home-desk",
       title: "Shop Name",
+      employeeID,
       shopID,
       rowsApptHistory,
       shopName,
@@ -505,7 +572,7 @@ router.get("/:shopID/appointmentHistory", async (req, res) => {
 });
 
 //OWNER BARBERSHOP VIEWS => ADD APOINTMENT
-router.post("/:shopID/addAppointment", async (req, res) => {
+router.post("/:employeeID/:shopID/addAppointment", async (req, res) => {
    var { name, contact, category, service, employee, date, time } = req.body;
 
    //Para kumuha ng values sa loob ng shop services
@@ -550,12 +617,19 @@ router.post("/:shopID/addAppointment", async (req, res) => {
          amountDue +
          '", 1, 0)'
    );
-   res.redirect("/deskAccount/" + req.params.shopID + "/appointments");
+   res.redirect(
+      "/deskAccount/" +
+         req.params.employeeID +
+         "/" +
+         req.params.shopID +
+         "/appointments"
+   );
 });
 
 //APPOINTMENTS
-router.get("/:shopID/appointments", async (req, res) => {
+router.get("/:employeeID/:shopID/appointments", async (req, res) => {
    var shopID = req.params.shopID;
+   var employeeID = req.params.employeeID;
    var shopName = await getShopName(shopID);
    acu.startConnection();
    const rowsApptApproved = await acu.getAllFromWhere(
@@ -612,6 +686,7 @@ router.get("/:shopID/appointments", async (req, res) => {
       layout: "home-desk",
       title: "Shop Name",
       shopID,
+      employeeID,
       rowsApptApproved,
       unfinishedAppts,
       rowsEmp,
@@ -621,62 +696,71 @@ router.get("/:shopID/appointments", async (req, res) => {
 });
 
 //RESCHEDULE APPOINTMENTS
-router.get("/:shopID/rescheduleAppointment:id", async (req, res) => {
-   var id = req.params.id;
-   acu.startConnection();
-   await acu.updateSet(
-      "tblappointment",
-      "appStatusID = 3",
-      "AppointmentID = " + id
-   );
+router.get(
+   "/:employeeID/:shopID/rescheduleAppointment:id",
+   async (req, res) => {
+      var id = req.params.id;
+      acu.startConnection();
+      await acu.updateSet(
+         "tblappointment",
+         "appStatusID = 3",
+         "AppointmentID = " + id
+      );
 
-   var { name, service, employee, date, time } = req.body;
-   //Para kumuha ng values sa loob ng shop services
-   var ss = await acu.getOneFromWhere(
-      "tblshopservices",
-      "shopServicesID = " + service + " AND shopID = " + req.params.shopID
-   );
-   var shopServiceID = ss.shopServicesID;
-   var amountDue = ss.Price;
-   var timeIn = time;
-   var timeHolder = new Date("1970-01-01 " + timeIn);
-   //FOR TIMEOUT
-   timeHolder.setTime(timeHolder.getTime() + 8 * 60 * 60 * 1000);
-   timeHolder.setTime(timeHolder.getTime() + ss.Duration * 60000);
-   var timeOut =
-      Math.floor(timeHolder.getTime() / (1000 * 60 * 60)) +
-      ":" +
-      (Math.floor(timeHolder.getTime() / (1000 * 60)) % 60) +
-      ":" +
-      (Math.floor(timeHolder.getTime() / 1000) % 60);
+      var { name, service, employee, date, time } = req.body;
+      //Para kumuha ng values sa loob ng shop services
+      var ss = await acu.getOneFromWhere(
+         "tblshopservices",
+         "shopServicesID = " + service + " AND shopID = " + req.params.shopID
+      );
+      var shopServiceID = ss.shopServicesID;
+      var amountDue = ss.Price;
+      var timeIn = time;
+      var timeHolder = new Date("1970-01-01 " + timeIn);
+      //FOR TIMEOUT
+      timeHolder.setTime(timeHolder.getTime() + 8 * 60 * 60 * 1000);
+      timeHolder.setTime(timeHolder.getTime() + ss.Duration * 60000);
+      var timeOut =
+         Math.floor(timeHolder.getTime() / (1000 * 60 * 60)) +
+         ":" +
+         (Math.floor(timeHolder.getTime() / (1000 * 60)) % 60) +
+         ":" +
+         (Math.floor(timeHolder.getTime() / 1000) % 60);
 
-   var shopID = req.params.shopID;
-   console.log(ss, shopServiceID, amountDue, timeIn, timeOut, shopID);
-   await acu.insertInto(
-      "tblappointment (Name, ShopID, EmployeeID, ShopServicesID, TimeIn, TimeOut, Date, AmountDue, AppStatusID, appointmentType )",
-      '( "' +
-         name +
-         '", "' +
-         req.params.shopID +
-         '", "' +
-         employee +
-         '", "' +
-         shopServiceID +
-         '", "' +
-         timeIn +
-         '", "' +
-         timeOut +
-         '", "' +
-         date +
-         '", "' +
-         amountDue +
-         '", 1, 0)'
-   );
-   res.redirect("/deskAccount/" + req.params.shopID + "/appointments");
-});
+      var shopID = req.params.shopID;
+      console.log(ss, shopServiceID, amountDue, timeIn, timeOut, shopID);
+      await acu.insertInto(
+         "tblappointment (Name, ShopID, EmployeeID, ShopServicesID, TimeIn, TimeOut, Date, AmountDue, AppStatusID, appointmentType )",
+         '( "' +
+            name +
+            '", "' +
+            req.params.shopID +
+            '", "' +
+            employee +
+            '", "' +
+            shopServiceID +
+            '", "' +
+            timeIn +
+            '", "' +
+            timeOut +
+            '", "' +
+            date +
+            '", "' +
+            amountDue +
+            '", 1, 0)'
+      );
+      res.redirect(
+         "/deskAccount/" +
+            req.params.employeeID +
+            "/" +
+            req.params.shopID +
+            +"/appointments"
+      );
+   }
+);
 
 //CANCEL APPOINTMENTS
-router.get("/:shopID/cancelAppt:id", async (req, res) => {
+router.get("/:employeeID/:shopID/cancelAppt:id", async (req, res) => {
    var id = req.params.id;
    acu.startConnection();
    await acu.updateSet(
@@ -684,11 +768,17 @@ router.get("/:shopID/cancelAppt:id", async (req, res) => {
       "appStatusID = 3",
       "AppointmentID = " + id
    );
-   res.redirect("/deskAccount/" + req.params.shopID + "/appointments");
+   res.redirect(
+      "/deskAccount/" +
+         req.params.employeeID +
+         "/" +
+         req.params.shopID +
+         "/appointments"
+   );
 });
 
 //COMPLETE APPOINTMENTS
-router.post("/:shopID/completeAppt:id", async (req, res) => {
+router.post("/:employeeID/:shopID/completeAppt:id", async (req, res) => {
    var id = req.params.id;
    var appointmentStatus = req.body.appointmentStatus;
    acu.startConnection();
@@ -763,20 +853,36 @@ router.post("/:shopID/completeAppt:id", async (req, res) => {
          );
       }
    }
-   res.redirect("/deskAccount/" + req.params.shopID + "/appointments");
+   res.redirect(
+      "/deskAccount/" +
+         req.params.employeeID +
+         "/" +
+         req.params.shopID +
+         "/appointments"
+   );
 });
 
 router
-   .route("/:shopID/appointments/generateCustomerVolumeReport")
+   .route("/:employeeID/:shopID/appointments/generateCustomerVolumeReport")
    .post(async (req, res) => {
       const { daterangeCustomerVolume } = req.body;
       var shopID = req.params.shopID;
+      var employeeID = req.params.employeeID;
+
+      //get desk name
+      acu.startConnection();
+      var a = await acu.getOneFromWhere(
+         "tblemployee",
+         "EmployeeID = " + employeeID
+      );
+      var author = a.firstName + " " + a.lastName;
       //FOR PDF GENERATION
       const stream = res.writeHead(200, {
          "Content-Type": "application/pdf",
          "Content-Disposition": "attatchment;filename=reports.pdf",
       });
       acu.generateCustomerVolumePDF(
+         author,
          shopID,
          daterangeCustomerVolume,
          (chunk) => stream.write(chunk),
@@ -785,16 +891,26 @@ router
    });
 
 router
-   .route("/:shopID/appointments/generateSalesReport")
+   .route("/:employeeID/:shopID/appointments/generateSalesReport")
    .post(async (req, res) => {
       const { daterangeSales } = req.body;
       var shopID = req.params.shopID;
+      var employeeID = req.params.employeeID;
+
+      //get desk name
+      acu.startConnection();
+      var a = await acu.getOneFromWhere(
+         "tblemployee",
+         "EmployeeID = " + employeeID
+      );
+      var author = a.firstName + " " + a.lastName;
       //FOR PDF GENERATION
       const stream = res.writeHead(200, {
          "Content-Type": "application/pdf",
          "Content-Disposition": "attatchment;filename=reports.pdf",
       });
       acu.generateSalesReportPDF(
+         author,
          shopID,
          daterangeSales,
          (chunk) => stream.write(chunk),
@@ -802,38 +918,62 @@ router
       );
    });
 
-router.route("/:shopID/appointments/generateSalaryReport").post((req, res) => {
-   var { employee, salaryType, salaryTypeValue, amount, monthPicker } =
-      req.body;
-   var shopID = req.params.shopID;
-   //FOR PDF GENERATION
-   const stream = res.writeHead(200, {
-      "Content-Type": "application/pdf",
-      "Content-Disposition": "attatchment;filename=reports.pdf",
-   });
-   acu.generateSalaryReportPDF(
-      shopID,
-      monthPicker,
-      employee,
-      salaryType,
-      salaryTypeValue,
-      amount,
-      (chunk) => stream.write(chunk),
-      () => stream.end()
-   );
-});
-
 router
-   .route("/:shopID/appointments/generateTransaction:transactionID")
-   .get((req, res) => {
-      shopID = req.params.shopID;
-      transID = req.params.transactionID;
+   .route("/:employeeID/:shopID/appointments/generateSalaryReport")
+   .post(async (req, res) => {
+      var { employee, salaryType, salaryTypeValue, amount, monthPicker } =
+         req.body;
+      var shopID = req.params.shopID;
+      var employeeID = req.params.employeeID;
+
+      //get desk name
+      var a = await acu.getOneFromWhere(
+         "tblemployee",
+         "EmployeeID = " + employeeID
+      );
+      var author = a.firstName + " " + a.lastName;
+
       //FOR PDF GENERATION
       const stream = res.writeHead(200, {
          "Content-Type": "application/pdf",
          "Content-Disposition": "attatchment;filename=reports.pdf",
       });
+      acu.generateSalaryReportPDF(
+         author,
+         shopID,
+         monthPicker,
+         employee,
+         salaryType,
+         salaryTypeValue,
+         amount,
+         (chunk) => stream.write(chunk),
+         () => stream.end()
+      );
+   });
+
+router
+   .route("/:employeeID/:shopID/appointments/generateTransaction:transactionID")
+   .get(async (req, res) => {
+      shopID = req.params.shopID;
+      transID = req.params.transactionID;
+      var employeeID = req.params.employeeID;
+
+      //get desk name
+      acu.startConnection();
+      var a = await acu.getOneFromWhere(
+         "tblemployee",
+         "EmployeeID = " + employeeID
+      );
+      var author = a.firstName + " " + a.lastName;
+
+      //FOR PDF GENERATION
+      const stream = res.writeHead(200, {
+         "Content-Type": "application/pdf",
+         "Content-Disposition": "attatchment;filename=reports.pdf",
+      });
+      console.log("this is shopID: " + shopID);
       acu.generateTransactionPDF(
+         author,
          shopID,
          transID,
          (chunk) => stream.write(chunk),

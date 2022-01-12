@@ -64,12 +64,23 @@ async function updateSet(table, values, where) {
    var rows = await connection.query(query);
 }
 
+var date = new Date();
+var m = date.getMonth() + 1;
+var d = date.getDate();
+var y = date.getFullYear();
+currentDate = m + "/" + d + "/" + y;
 async function generateCustomerVolumePDF(
+   author,
    shopID,
    daterangeCustomerVolume,
    startCallback,
    endCallback
 ) {
+   console.log(
+      "author : " + author,
+      "shopId : " + shopID,
+      "daterange: " + daterangeCustomerVolume
+   );
    var dateStart = daterangeCustomerVolume.substring(0, 10);
    var dateEnd = daterangeCustomerVolume.substring(
       13,
@@ -100,6 +111,13 @@ async function generateCustomerVolumePDF(
    doc.on("data", startCallback);
    doc.on("end", endCallback);
 
+   doc.image("public/permits/" + shop.imgfilename, 430, 15, {
+      fit: [100, 100],
+      align: "right",
+      valign: "right",
+   })
+      .rect(430, 15, 100, 100)
+      .stroke();
    doc.font("Times-Bold").text(shopName, {
       align: "center",
    });
@@ -156,10 +174,17 @@ async function generateCustomerVolumePDF(
 
       doc.moveDown();
    }
+   doc.font("Times-Bold")
+      .fontSize(12)
+      .text("Prepared By: " + author);
+   doc.font("Times-Bold")
+      .fontSize(12)
+      .text("Date: " + currentDate);
    doc.end();
 }
 
 async function generateSalesReportPDF(
+   author,
    shopID,
    daterangeSales,
    startCallback,
@@ -191,6 +216,14 @@ async function generateSalesReportPDF(
    const doc = new PDFDocument();
    doc.on("data", startCallback);
    doc.on("end", endCallback);
+
+   doc.image("public/permits/" + shop.imgfilename, 430, 15, {
+      fit: [100, 100],
+      align: "right",
+      valign: "right",
+   })
+      .rect(430, 15, 100, 100)
+      .stroke();
 
    doc.font("Times-Bold").text(shopName, {
       align: "center",
@@ -245,10 +278,18 @@ async function generateSalesReportPDF(
 
       doc.moveDown();
    }
+
+   doc.font("Times-Bold")
+      .fontSize(12)
+      .text("Prepared By: " + author);
+   doc.font("Times-Bold")
+      .fontSize(12)
+      .text("Date: " + currentDate);
    doc.end();
 }
 
 async function generateSalaryReportPDF(
+   author,
    shopID,
    month,
    employee,
@@ -269,6 +310,14 @@ async function generateSalaryReportPDF(
    const doc = new PDFDocument();
    doc.on("data", startCallback);
    doc.on("end", endCallback);
+
+   doc.image("public/permits/" + shop.imgfilename, 430, 15, {
+      fit: [100, 100],
+      align: "right",
+      valign: "right",
+   })
+      .rect(430, 15, 100, 100)
+      .stroke();
 
    doc.font("Times-Bold").text(shopName, {
       align: "center",
@@ -292,10 +341,17 @@ async function generateSalaryReportPDF(
    }
    doc.table(table);
    doc.moveDown();
+   doc.font("Times-Bold")
+      .fontSize(12)
+      .text("Prepared By: " + author);
+   doc.font("Times-Bold")
+      .fontSize(12)
+      .text("Date: " + currentDate);
    doc.end();
 }
 
 async function generateTransactionPDF(
+   author,
    shopID,
    transID,
    startCallback,
@@ -309,16 +365,6 @@ async function generateTransactionPDF(
       `transactionID = "${transID}"`
    );
 
-   function addZero(i) {
-      if (i < 10) {
-         return "0" + i;
-      }
-   }
-   /* var tempDate = new Date(transaction.Date);
-   var m = addZero(tempDate.getMonth() + 1);
-   var d = addZero(tempDate.getDate());
-   var y = tempDate.getFullYear(); */
-
    var name = "";
    transaction.customerName != null
       ? (name = transaction.customerName)
@@ -327,6 +373,14 @@ async function generateTransactionPDF(
    const doc = new PDFDocument();
    doc.on("data", startCallback);
    doc.on("end", endCallback);
+
+   doc.image("public/permits/" + shop.imgfilename, 430, 15, {
+      fit: [100, 100],
+      align: "right",
+      valign: "right",
+   })
+      .rect(430, 15, 100, 100)
+      .stroke();
 
    doc.font("Helvetica-Bold").text(shopName, {
       align: "center",
@@ -356,6 +410,12 @@ async function generateTransactionPDF(
    doc.table(table, options);
    doc.text("Amount Due: " + transaction.Amount, { align: "right" });
 
+   doc.font("Times-Bold")
+      .fontSize(12)
+      .text("Prepared By: " + author);
+   doc.font("Times-Bold")
+      .fontSize(12)
+      .text("Date: " + currentDate);
    doc.end();
 }
 

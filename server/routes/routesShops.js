@@ -985,6 +985,7 @@ router.post("/view:shopID/completeAppt:id", async (req, res) => {
 router
    .route("/view:shopID/generateCustomerVolumeReport")
    .post(async (req, res) => {
+      var author = "Administrator";
       const { daterangeCustomerVolume } = req.body;
       var shopID = req.params.shopID;
       //FOR PDF GENERATION
@@ -993,6 +994,7 @@ router
          "Content-Disposition": "attatchment;filename=reports.pdf",
       });
       acu.generateCustomerVolumePDF(
+         author,
          shopID,
          daterangeCustomerVolume,
          (chunk) => stream.write(chunk),
@@ -1003,12 +1005,14 @@ router
 router.route("/view:shopID/generateSalesReport").post(async (req, res) => {
    const { daterangeSales } = req.body;
    var shopID = req.params.shopID;
+   var author = "Administrator";
    //FOR PDF GENERATION
    const stream = res.writeHead(200, {
       "Content-Type": "application/pdf",
       "Content-Disposition": "attatchment;filename=reports.pdf",
    });
    acu.generateSalesReportPDF(
+      author,
       shopID,
       daterangeSales,
       (chunk) => stream.write(chunk),
@@ -1020,12 +1024,14 @@ router.route("/view:shopID/generateSalaryReport").post((req, res) => {
    var { employee, salaryType, salaryTypeValue, amount, monthPicker } =
       req.body;
    var shopID = req.params.shopID;
+   var author = "Administrator";
    //FOR PDF GENERATION
    const stream = res.writeHead(200, {
       "Content-Type": "application/pdf",
       "Content-Disposition": "attatchment;filename=reports.pdf",
    });
    acu.generateSalaryReportPDF(
+      author,
       shopID,
       monthPicker,
       employee,
@@ -1040,6 +1046,7 @@ router.route("/view:shopID/generateSalaryReport").post((req, res) => {
 router
    .route("/view:shopID/generateTransaction:transactionID")
    .get((req, res) => {
+      var author = "Administrator";
       shopID = req.params.shopID;
       transID = req.params.transactionID;
       //FOR PDF GENERATION
@@ -1048,6 +1055,7 @@ router
          "Content-Disposition": "attatchment;filename=reports.pdf",
       });
       acu.generateTransactionPDF(
+         author,
          shopID,
          transID,
          (chunk) => stream.write(chunk),
