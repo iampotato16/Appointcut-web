@@ -36,17 +36,17 @@
                <td class="align-middle">{{this.ownerContact}}</td>
                <td>
                   <button class="btn btn-dark btn-sm"
-                     onclick="toggleDialog('revealPermit{{this.shopApplicationID}}')"><i class="bi bi-eye"></i></button>
-                  <a type="button" class="btn btn-dark btn-sm" href="/barberApps/acceptApplication{{this.shopID}}"><i
+                     onclick="toggleDialog('revealPermit{{this.ShopApplicationID}}')"><i class="bi bi-eye"></i></button>
+                  <a type="button" class="btn btn-dark btn-sm" href="/barberApps/acceptApplication{{this.ShopID}}"><i
                         class="bi bi-check"></i></a>
-                  <a type="button" class="btn btn-dark btn-sm" href="/barberApps/rejectApplication{{this.shopID}}"><i
+                  <a type="button" class="btn btn-dark btn-sm" href="/barberApps/rejectApplication{{this.ShopID}}"><i
                         class="bi bi-x"></i></a>
                </td>
-               <div id="revealPermit{{this.shopApplicationID}}" class="dialog bg-black p-3"
+               <div id="revealPermit{{this.ShopApplicationID}}" class="dialog bg-black p-3"
                   style="display: none; width: 800px;">
                   <div class="p-1 position-relative">
                      <button class="position-absolute btn btn-link p-0" style="right: 0; top: 0;"
-                        onclick="toggleDialog('revealPermit{{this.shopApplicationID}}')"><i
+                        onclick="toggleDialog('revealPermit{{this.ShopApplicationID}}')"><i
                            class="bi bi-x"></i></button>
                      <h5 class="text-center">BUSINESS PERMITS</h5>
                   </div>

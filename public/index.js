@@ -325,7 +325,7 @@ async function setSalaryReport(el) {
                }
             });
          for (var x = 0; x < appointments.length; x++) {
-            wage += appointments[x].amountDue * multiplier;
+            wage += appointments[x].Amount * multiplier;
          }
 
          salaryInfo.push({
@@ -819,6 +819,7 @@ function toggleMultiForm(dialog, action, form) {
       for (i = 0; i < y.length; i++) {
          // If a field is empty...
          if (y[i].value == "") {
+            console.log("validate form: ", y[i].value, y[i].className)
             // add an "invalid" class to the field:
             y[i].className += " bg-warning";
             // and set the current valid status to false:

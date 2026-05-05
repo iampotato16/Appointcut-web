@@ -5,7 +5,7 @@
             {{#each shops}}
             <div class="col">
                 <div class="card">
-                    <img src="permits/{{this.ImageFileName}}" class="card-img-top" alt="...">
+                    <img src="permits/{{this.imgfilename}}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title text-center text-uppercase fw-bold">{{this.ShopName}}</h5>
                         <p class="card-text text-center fs-6">
@@ -37,14 +37,14 @@
                                             SHOP NAME:
                                         </legend>
 
-                                        <input type="text" name="shop" id="shop" value="{{this.ShopID}}"
+                                        <input type="text" name="shop" id="shop_{{this.ShopID}}" value="{{this.ShopID}}"
                                             style="display: none">
                                         <input type="text"
                                             class="form-control form-control-sm mb-2 font-small rounded-0"
                                             value="{{this.ShopName}}">
                                         <input type="text"
                                             class="form-control form-control-sm mb-2 font-small rounded-0" name="name"
-                                            id="name" placeholder="Name" required>
+                                            id="name_{{this.ShopID}}" placeholder="Name" required>
                                     </fieldset>
 
                                     {{!-- SERVICE DETAILS --}}
@@ -54,15 +54,15 @@
                                             SERVICE DETAILS:
                                         </legend>
                                         <select class="form-control form-control-sm mb-2 font-small rounded-0"
-                                            name="category" id="category" onchange="changeCustomerApptServices(this)">
+                                            name="category" id="category_{{this.ShopID}}" onchange="changeCustomerApptServices(this, '{{this.ShopID}}')">
                                             <option selected disabled hidden>Category</option>
                                             {{#each ../rowsCategory}}
                                             <option value="{{this.CategoryID}}">{{this.Name}}</option>
                                             {{/each}}
                                         </select>
                                         <select class="form-control form-control-sm mb-2 font-small rounded-0"
-                                            name="service" id="customerService"
-                                            onchange="changeEmployee(this, 'customerAttendingEmp')">
+                                            name="service" id="customerService_{{this.ShopID}}"
+                                            onchange="changeEmployee(this, 'customerAttendingEmp_{{this.ShopID}}', '{{this.ShopID}}')">
                                             <option selected disabled hidden>Service</option>
                                         </select>
                                         {{!-- <input class="form-control form-control-sm mb-2 font-small rounded-0"
@@ -76,22 +76,22 @@
                                             APPOINTMENT DETAILS:
                                         </legend>
                                         <select class="form-control form-control-sm mb-2 font-small rounded-0"
-                                            id="customerAttendingEmp" name="employee">
+                                            id="customerAttendingEmp_{{this.ShopID}}" name="employee" onchange="updateDatePicker(this.value, '{{this.ShopID}}')">
                                             <option selected disabled hidden>Attending Employee</option>
                                             {{#each rowsEmployee}}
-                                            {{#if (isBarber EmployeeTypeID)}}
+                                            {{#if (isBarber employeeTypeID)}}
                                             <option value="{{this.EmployeeID}}">{{this.FullName}}</option>
                                             {{/if}}
                                             {{/each}}
                                         </select>
                                         <input class="form-control form-control-sm mb-2 font-small rounded-0"
-                                            name="date" id="customerApptDate" type="date" placeholder="Date"
+                                            name="date" id="customerApptDate_{{this.ShopID}}" type="date" placeholder="Date"
                                             style="width: 300px;">
-                                        <input name="time" id="customerAppointmentTime" style="width: 300px;">
+                                        <input name="time" id="customerAppointmentTime_{{this.ShopID}}" style="width: 300px;">
                                     </fieldset>
                                     <div class="m-auto center-div pt-2" style="width: 300px;">
-                                        <button class="btn btn-warning col-6 rounded-0 me-1 fw-800"
-                                            onclick="document.getElementById('addCustomerAppointmentForm{{this.ShopID}}').submit()">
+                                        <button class="btn btn-warning col-6 rounded-0 me-1 fw-800" type="button"
+                                            onclick="submitAppointmentForm('{{this.ShopID}}')">
                                             <small>SAVE</small></button>
                                         <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
                                             onclick="toggleDialog('addAppointment{{this.ShopID}}')" type="button"
@@ -111,10 +111,9 @@
 </div>
 
 <script>
-    function changeCustomerApptServices(el) {
-        var shopId = $("#shop").val();
+    function changeCustomerApptServices(el, shopId) {
         var category = el.value;
-        var service = document.getElementById("customerService");
+        var service = document.getElementById("customerService_" + shopId);
         var services = [];
         fetch("/getInfo/shopservicesview")
             .then((res) => res.json())
@@ -141,10 +140,9 @@
             });
     }
 
-    function changeEmployee(el, id) {
+    function changeEmployee(el, id, shopId) {
         var employee = document.getElementById(id);
         var ableEmployees = [];
-        var shopId = $("#shop").val();
         fetch("/getInfo/employeeSpecialization")
             .then((res) => res.json())
             .then((data) => {
@@ -171,17 +169,7 @@
             });
     }
 
-    //FOR FLATPICKR -- For changing enabled dates per employee
-    //get select element that holds the barber list
-    const customerAttendingEmp = document.querySelector("#customerAttendingEmp");
-
-    //Listens to attendingEmp
-    customerAttendingEmp.onchange = function () {
-        const employee = customerAttendingEmp.value;
-        updateDatePicker(employee);
-    };
-
-    function updateDatePicker(employee) {
+    function updateDatePicker(employee, shopId) {
         var days = [
             "Sunday",
             "Monday",
@@ -228,7 +216,7 @@
             })
             //initializes datepicker with dynamic disabled days
             .then((data) => {
-                const myInput = document.querySelector("#customerApptDate");
+                const myInput = document.querySelector("#customerApptDate_" + shopId);
                 const fp = flatpickr(myInput, {
                     disable: [
                         function (date) {
@@ -284,8 +272,7 @@
                             }
                         }
                         //4. get chosen service and duration
-                        var shopId = $("#shop").val();
-                        var serviceId = document.getElementById("customerService").value;
+                        var serviceId = document.getElementById("customerService_" + shopId).value;
                         var duration = 0;
                         for (var i = 0; i < shopservices.length; i++) {
                             if (
@@ -294,7 +281,7 @@
                                 duration = shopservices[i].Duration;
                             }
                         }
-                        $("#customerAppointmentTime").timepicker({
+                        $("#customerAppointmentTime_" + shopId).timepicker({
                             minTime: daySchedTimeIn,
                             maxTime: daySchedTimeOut,
                             disableTimeRanges: occupiedTimeSlot,
@@ -311,11 +298,8 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
     var socket = io();
-    //var btnCancel = document.getElementById('btnCancel')
-    var shopID = document.getElementById('shop').value;
-    var form = document.getElementById('addCustomerAppointmentForm' + shopID);
-    form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        socket.emit('message', 'An appointment has been added!', shopID)
-    });
+    function submitAppointmentForm(shopId) {
+        socket.emit('message', 'An appointment has been added!', shopId);
+        document.getElementById('addCustomerAppointmentForm' + shopId).submit();
+    }
 </script>

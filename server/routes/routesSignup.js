@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
 // Init Upload
 const upload = multer({
    storage: storage,
-   limits: { fileSize: 1000000 },
+   limits: { fileSize: 10000000 }, // Increased to 10MB
    fileFilter: function (req, file, cb) {
       checkFileType(file, cb);
    },
@@ -68,19 +68,37 @@ router
    })
    .post(async (req, res) => {
       upload(req, res, async (err) => {
+         if (err) {
+            console.error("Upload error:", err);
+            return res.status(400).send(err);
+         }
+
          //OWNER
          var { firstName, lastName, email, password, contact } = req.body;
          //SHOP
          var { shopName, shopEmail, shopContact, brgy, city, street } =
             req.body;
          //SHOP APPLICATION
-         var { birPermit, busPermit, busImage } = req.files;
-         console.log(birPermit[0].path, busPermit[0].path);
-         acu.startConnection();
-         //Insert owner details into owner
-         var newOwner = await acu.insertInto(
-            "tblowner (firstName, lastName, email, password, contact, status)",
-            '( "' +
+         const files = req.files || {};
+         var birPermit = files.birPermit;
+         var busPermit = files.busPermit;
+         var busImage = files.busImage;
+
+         console.log("birpermin", birPermit);
+         console.log('busperm', busPermit);
+         console.log("busimage", busImage);
+
+         if (!birPermit || !busPermit || !busImage) {
+            console.error("Missing required files");
+            return res.status(400).send("Missing required files");
+         }
+
+         try {
+            acu.startConnection();
+            //Insert owner details into owner
+            var newOwner = await acu.insertInto(
+               "tblowner (firstName, lastName, email, password, contact, status)",
+               '( "' +
                firstName +
                '", "' +
                lastName +
@@ -91,11 +109,11 @@ router
                '","' +
                contact +
                '",1)'
-         );
-         //Insert shop details into shop table
-         var newShop = await acu.insertInto(
-            "tblshop (shopName, email, shopContact, cityID, barangayID, street, imgpath, imgfilename, appStatus)",
-            '( "' +
+            );
+            //Insert shop details into shop table
+            var newShop = await acu.insertInto(
+               "tblshop (shopName, email, shopContact, cityID, barangayID, street, imgpath, imgfilename, appStatus)",
+               '( "' +
                shopName +
                '", "' +
                shopEmail +
@@ -108,28 +126,28 @@ router
                '","' +
                street +
                '","' +
-               busImage[0].path +
+               busImage[0].path.replace(/\\/g, "/") +
                '","' +
                busImage[0].filename +
                '", 0)'
-         );
-         //Insert into shop application
-         var newOwnerID = newOwner.insertId;
-         var newShopID = newShop.insertId;
+            );
+            //Insert into shop application
+            var newOwnerID = newOwner.insertId;
+            var newShopID = newShop.insertId;
 
-         await acu.insertInto(
-            "tblshopownership (ownerID, shopID)",
-            '( "' + newOwnerID + '","' + newShopID + '")'
-         );
+            await acu.insertInto(
+               "tblshopownership (ownerID, shopID)",
+               '( "' + newOwnerID + '","' + newShopID + '")'
+            );
 
-         await acu.insertInto(
-            "tblshopapplication (bir_img, bir_fileName, bp_img, bp_fileName, shopID, ownerID)",
-            '( "' +
-               birPermit[0].path +
+            await acu.insertInto(
+               "tblshopapplication (bir_img, bir_fileName, bp_img, bp_fileName, shopID, ownerID)",
+               '( "' +
+               birPermit[0].path.replace(/\\/g, "/") +
                '", "' +
                birPermit[0].filename +
                '","' +
-               busPermit[0].path +
+               busPermit[0].path.replace(/\\/g, "/") +
                '","' +
                busPermit[0].filename +
                '","' +
@@ -137,9 +155,13 @@ router
                '","' +
                newOwnerID +
                '")'
-         );
+            );
+            res.redirect("/");
+         } catch (dbErr) {
+            console.error("Database error:", dbErr);
+            res.status(500).send("Internal Server Error");
+         }
       });
-      res.redirect("/");
    });
 
 module.exports = router;

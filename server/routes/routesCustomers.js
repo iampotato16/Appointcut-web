@@ -159,7 +159,7 @@ router.post("/view:id/addCustomerAppointment", async (req, res) => {
       ":" +
       (Math.floor(timeHolder.getTime() / 1000) % 60);
    await acu.insertInto(
-      "tblappointment (CustomerID, ShopID, EmployeeID, ShopServicesID, TimeIn, TimeOut, Date, AmountDue, AppStatusID, AppointmentType )",
+      "tblappointment (CustomersID, ShopID, EmployeeID, ShopServicesID, TimeIn, TimeOut, Date, AmountDue, AppStatusID, AppointmentType )",
       '( "' +
          customerID +
          '", "' +
@@ -187,9 +187,10 @@ router.get("/view:customerID/cancelAppt:id", async (req, res) => {
    acu.startConnection();
    await acu.updateSet(
       "tblappointment",
-      "appStatusID = 3",
+      "AppStatusID = 3",
       "AppointmentID = " + id
    );
    res.redirect("/customers/view" + req.params.customerID);
 });
 module.exports = router;
+ router;

@@ -525,7 +525,7 @@ router.post(
                timeOut +
                ", Status = " +
                status,
-            "shopSchedulesID = '" + req.params.schedID + "'"
+            "ScheduleID = '" + req.params.schedID + "'"
          );
       } else {
          await acu.updateSet(
@@ -538,7 +538,7 @@ router.post(
                timeOut +
                "', Status = " +
                status,
-            "shopSchedulesID = '" + req.params.schedID + "'"
+            "ScheduleID = '" + req.params.schedID + "'"
          );
       }
       res.redirect(
@@ -673,7 +673,7 @@ router.get("/:employeeID/:shopID/appointments", async (req, res) => {
       }
       await acu.updateSet(
          "tblappointment",
-         "appStatusID = 0",
+         "AppStatusID = 0",
          "AppointmentID = " + finishedAppts[i].AppointmentID
       );
    }
@@ -703,7 +703,7 @@ router.get(
       acu.startConnection();
       await acu.updateSet(
          "tblappointment",
-         "appStatusID = 3",
+         "AppStatusID = 3",
          "AppointmentID = " + id
       );
 
@@ -765,7 +765,7 @@ router.get("/:employeeID/:shopID/cancelAppt:id", async (req, res) => {
    acu.startConnection();
    await acu.updateSet(
       "tblappointment",
-      "appStatusID = 3",
+      "AppStatusID = 3",
       "AppointmentID = " + id
    );
    res.redirect(
@@ -786,7 +786,7 @@ router.post("/:employeeID/:shopID/completeAppt:id", async (req, res) => {
       "tblappointment",
       "AppointmentID = " + req.params.id
    );
-   var customerID = customer.CustomerID;
+   var customerID = customer.CustomersID;
    if (appointmentStatus == 0) {
       await acu.redTag(customerID);
    }
@@ -794,7 +794,7 @@ router.post("/:employeeID/:shopID/completeAppt:id", async (req, res) => {
    //update appointment first
    await acu.updateSet(
       "tblappointment",
-      "appStatusID = " + appointmentStatus,
+      "AppStatusID = " + appointmentStatus,
       "AppointmentID = " + id
    );
    if (appointmentStatus == 2) {
@@ -844,7 +844,7 @@ router.post("/:employeeID/:shopID/completeAppt:id", async (req, res) => {
                '", "' +
                req.params.shopID +
                '", "' +
-               appointment.amountDue +
+               appointment.AmountDue +
                '", "' +
                appointmentDate +
                '", "' +

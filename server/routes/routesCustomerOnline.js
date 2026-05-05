@@ -15,6 +15,11 @@ router
 
       var rowsCategory = await acu.getAllFrom("tblcategory");
 
+      var allEmployees = await acu.getAllFrom("appointcutdb.employee");
+      for (let i = 0; i < shops.length; i++) {
+         shops[i].rowsEmployee = allEmployees.filter(emp => emp.shopID == shops[i].ShopID);
+      }
+
       res.render("customerOnline", {
          layout: "customerOnline",
          title: title,
@@ -28,7 +33,7 @@ router
       //Para kumuha ng values sa loob ng shop services
       acu.startConnection();
       var ss = await acu.getOneFromWhere(
-         "tblshopservices",
+         "appointcutdb.shopservices",
          "shopServicesID =" + service
       );
       var amountDue = ss.Price;
@@ -46,22 +51,22 @@ router
       await acu.insertInto(
          "tblappointment (name, ShopID, EmployeeID, ShopServicesID, TimeIn, TimeOut, Date, AmountDue, AppStatusID, AppointmentType )",
          '( "' +
-            name +
-            '", "' +
-            shop +
-            '", "' +
-            employee +
-            '", "' +
-            service +
-            '", "' +
-            timeIn +
-            '", "' +
-            timeOut +
-            '", "' +
-            date +
-            '", "' +
-            amountDue +
-            '", 1, 1)'
+         name +
+         '", "' +
+         shop +
+         '", "' +
+         employee +
+         '", "' +
+         service +
+         '", "' +
+         timeIn +
+         '", "' +
+         timeOut +
+         '", "' +
+         date +
+         '", "' +
+         amountDue +
+         '", 1, 1)'
       );
       res.redirect("/customerOnline");
    });

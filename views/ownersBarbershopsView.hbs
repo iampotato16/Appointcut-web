@@ -73,7 +73,7 @@
                             <td class="align-middle">{{this.SalaryType}}</td>
                             <td class="align-middle">{{this.SalaryValue}}</td>
                             <td class="align-middle">
-                                {{#if this.Status}}
+                                {{#if this.status}}
                                 <a href="viewShop{{../shopID}}/setInactiveEmp{{this.EmployeeID}}"
                                     class="btn btn-sm btn-success" type="button"> ACTIVE</a>
                                 {{else}}
@@ -112,13 +112,12 @@
                                                         <p class="text-center"> <small> EMPLOYEE INFORMATION
                                                             </small>
                                                         </p>
-                                                        <input
-                                                            class="form-control form-control-sm mb-2 font-small rounded-0"
-                                                            name="firstName" type="text" value="{{this.firstName}}"
+                                                        <input class="form-control form-control-sm mb-2 font-small rounded-0"
+                                                            name="firstName" type="text" value="{{this.FirstName}}"
                                                             style="width: 300px;">
                                                         <input
                                                             class="form-control form-control-sm mb-2 font-small rounded-0"
-                                                            name="lastName" type="text" value="{{this.lastName}}"
+                                                            name="lastName" type="text" value="{{this.LastName}}"
                                                             style="width: 300px;">
                                                         <input
                                                             class="form-control form-control-sm mb-2 font-small rounded-0"
@@ -146,8 +145,9 @@
                                                             </select>
                                                         </div>
                                                         <div>
-                                                            <input type="text" style="display: none;"
-                                                                value="{{this.SalaryTypeID}}" name="salaryTypeHolder">
+                            <input type="text" style="display: none;"
+                                value="{{this.SalaryTypeID}}" 
+                                name="salaryTypeHolder">
                                                             <select
                                                                 class="form-control form-control-sm mb-2 font-small rounded-0"
                                                                 name="salaryType" style="width: 300px;">
@@ -169,7 +169,7 @@
                                             <div class="tab editEmp{{this.EmployeeID}}">
                                                 <p class="text-center"><small>EMPLOYEE SCHEDULE</small></p>
                                                 {{#each ../rowsEmpSchedule}}
-                                                {{#if (withinShop this.EmployeeID ../this.EmployeeID)}}
+                                                {{#if (withinShop this.employeeID ../this.EmployeeID)}}
                                                 {{#if this.dayStatus}}
                                                 <div class="row m-auto" style="width: 400px">
                                                     <div class="col-4">
@@ -232,13 +232,13 @@
                                                 {{#if (isBarber this.EmployeeTypeID)}}
                                                 <p class="text-center"><small>EMPLOYEE SPECIALIZATION</small></p>
                                                 {{#each ../rowsEmpSpecArray}}
-                                                {{#if (withinShop this.EmployeeID ../this.EmployeeID)}}
+                                                {{#if (withinShop this.employeeID ../this.EmployeeID)}}
                                                 <div>
-                                                    <input value={{this.ShopServicesID}}
+                                                    <input value={{this.shopServicesID}}
                                                         name="serviceName{{this.Index}}" style="display: none">
                                                     <input class="form-check-input" type="checkbox"
-                                                        name="service{{this.Index}}" value="{{this.Status}}" {{#if
-                                                        this.Status}} checked {{/if}}>
+                                                        name="service{{this.Index}}" value="{{this.status}}" {{#if
+                                                        this.status}} checked {{/if}}>
                                                     <label class="form-check-label" for="inlineCheckbox1">
                                                         <small>{{this.ServiceName}}</small></label>
                                                 </div>
@@ -312,7 +312,7 @@
                             <td class="align-middle">{{this.Duration}}</td>
                             <td class="align-middle">{{this.Price}}</td>
                             <td class="align-middle">
-                                {{#if this.Status}}
+                                {{#if this.status}}
                                 <a href="viewShop{{../shopID}}/setInactiveServ{{this.ID}}"
                                     class="btn btn-sm btn-success" type="button"> ACTIVE</a>
                                 {{else}}
@@ -392,7 +392,7 @@
         <div class="row px-3">
             <div class="bg-black px-4 py-2 d-flex justify-content-between align-items-center">
                 <div>
-                    <span class="me-2 fw-800"><small>BARBERSHOP SCHEDULE</small></span>
+                    <span class="me-2 fw-800"><small>neBARBERSHOP SCHEDULE</small></span>
                 </div>
             </div>
             <div class="bg-gray p-4 pt-2 mb-3">
@@ -418,11 +418,11 @@
                             {{/if}}
                             <td>
                                 <button class="btn btn-dark btn-sm"
-                                    onclick="toggleDialog('editShopSchedule{{this.shopSchedulesID}}')"><i
+                                    onclick="toggleDialog('editShopSchedule{{this.ScheduleID}}')"><i
                                         class=" bi bi-pencil"></i></button>
                             </td>
                         </tr>
-                        <div id="editShopSchedule{{this.shopSchedulesID}}" class="dialog bg-yellow m-auto"
+                        <div id="editShopSchedule{{this.ScheduleID}}" class="dialog bg-yellow m-auto"
                             style="display: none;">
                             <div>
                                 <div class="card p-4 bg-black">
@@ -433,7 +433,7 @@
                                     <div class="center-div pt-2">
                                         <div>
                                             <form
-                                                action="viewShop{{../shopID}}/editShopSchedule{{this.shopSchedulesID}}"
+                                                action="viewShop{{../shopID}}/editShopSchedule{{this.ScheduleID}}"
                                                 method="POST">
                                                 <input class="form-control form-control-sm mb-2 font-small rounded-0"
                                                     name="day" type="" value="{{this.Day}}"
@@ -446,7 +446,7 @@
                                                     style="width: 300px;">
                                                 <div>
                                                     <input class="form-check-input" type="checkbox" name="status"
-                                                        value="1" {{#if this.Status}} checked {{/if}}>
+                                                        value="1" {{#if this.status}} checked {{/if}}>
                                                     <label class="form-check-label" for="inlineCheckbox1">
                                                         <small>ACTIVE</small></label>
                                                 </div>
@@ -817,12 +817,16 @@
                             </select>
                         </div>
                         <div style="width: 300px;">
+                            <input type="text" style="display: none;"
+                                value="{{this.SalaryTypeID}}" 
+                                name="salaryTypeHolder">
                             <select class="form-control form-control-sm mb-2 font-small rounded-0" name="salaryType">
                                 <option selected disabled hidden>Salary Type...</option>
                                 {{#each rowsSalaryType}}
                                 <option value="{{this.SalaryTypeID}}">{{this.Name}}</option>
                                 {{/each}}
                             </select>
+    </input>
                         </div>
                         <input class="form-control form-control-sm mb-2 font-small rounded-0" name="salaryValue"
                             type="text" placeholder="salaryValue" style="width: 300px">
@@ -885,7 +889,7 @@
                                 style="display: none;">
                             <input class="form-check-input" type="checkbox" name="service{{this.Index}}" value="1">
                             <label class="form-check-label" for="inlineCheckbox1">
-                                <small>{{this.ServiceName}}</small></label>
+                                <small>{{this.Service}}</small></label>
                         </div>
                         {{/each}}
                     </div>
