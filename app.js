@@ -8,6 +8,8 @@ const io = new Server(server);
 const expressHbs = require("express-handlebars");
 
 require("dotenv").config();
+const acu = require("./AppointCutUtils");
+acu.startConnection();
 
 /* io.on("connection", (socket) => {
    console.log("a user connected");
@@ -42,6 +44,7 @@ var hbs = expressHbs.create({});
 hbs.handlebars.registerHelper(
    "withinShop",
    function (employeeID, employeeIDSched) {
+      console.log(employeeID, employeeIDSched)
       if (employeeID == employeeIDSched) {
          return true;
       }
