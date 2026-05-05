@@ -18,10 +18,14 @@
                         placeholder="Email Address" required autofocus>
                      <input name="password" type="password" id="inputPassword" class="form-control font-small rounded-0"
                         placeholder="Password" required>
+                     {{#if error}}
+                     <p id="alertHolder" class="text-danger mt-2 small">{{error}}</p>
+                     {{else}}
                      <p id="alertHolder"></p>
+                     {{/if}}
                      <div class="mt-0 mb-3 font-small"><a href="">Forgot Password?</a></div>
                      <div class="d-grid">
-                        <button type="button" onclick="validateLogin()"
+                        <button type="submit"
                            class="btn btn-lg btn-primary btn-custom-reg-log fw-bold font-small rounded-0">SIGN
                            IN</button>
                      </div>
@@ -34,41 +38,3 @@
    </div>
 </div>
 
-<script>
-   function validateLogin() {
-      var email = document.getElementById("inputEmail")
-      var password = document.getElementById("inputPassword")
-      var alertHolder = document.getElementById("alertHolder")
-      var loginForm = document.getElementById("loginForm");
-
-      if (email.value != '' && password.value != '') {
-         fetch("/getInfo/usersview")
-            .then((res) => res.json())
-            .then((data) => {
-               var noAccount = 0;
-               for (var i = 0; i < data.length; i++) {
-                  if (data[i].Email == email.value) {
-                     if (data[i].Password == password.value) {
-                        noAccount++;
-                        var userID = data[i].id
-                        loginForm.submit();
-                        return false;
-                     }
-                     else {
-                        alertHolder.innerHTML = "Incorrect password"
-                        return false;
-                     }
-                     noAccount++;
-                  }
-               }
-               if (noAccount == 0) {
-                  alertHolder.innerHTML = "No account found"
-               }
-            })
-      }
-      else {
-         alertHolder.innerHTML = "Missing password or email"
-      }
-
-   }
-</script>

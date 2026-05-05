@@ -6,11 +6,11 @@ let connection;
 function startConnection() {
    if (!connection) {
       connection = mysql2.createPool({
-         host: process.env.DB_HOST,
-         user: process.env.DB_USER,
-         port: process.env.DB_PORT,
-         password: process.env.DB_PASS,
-         database: process.env.DB_NAME,
+         host: process.env.DB_HOST || '0.0.0.0',
+         user: process.env.DB_USER || 'admin',
+         port: process.env.DB_PORT || 3306,
+         password: process.env.DB_PASS || 'admin',
+         database: process.env.DB_NAME || 'appointcutdb'
       });
    }
 }

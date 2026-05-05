@@ -106,18 +106,18 @@ router.post("/addBarbershop", async (req, res) => {
       var newShop = await acu.insertInto(
          "tblshop (shopName, email, shopContact, cityID, barangayID, street, appStatus)",
          '( "' +
-            shopName +
-            '", "' +
-            shopEmail +
-            '","' +
-            shopContact +
-            '","' +
-            city +
-            '","' +
-            barangay +
-            '","' +
-            street +
-            '", 0)'
+         shopName +
+         '", "' +
+         shopEmail +
+         '","' +
+         shopContact +
+         '","' +
+         city +
+         '","' +
+         barangay +
+         '","' +
+         street +
+         '", 0)'
       );
       //Insert into shop application
       var newOwnerID = shopOwner;
@@ -131,18 +131,18 @@ router.post("/addBarbershop", async (req, res) => {
       await acu.insertInto(
          "tblshopapplication (bir_img, bir_fileName, bp_img, bp_fileName, shopID, ownerID)",
          '( "' +
-            birPermit[0].path +
-            '", "' +
-            birPermit[0].filename +
-            '","' +
-            busPermit[0].path +
-            '","' +
-            busPermit[0].filename +
-            '","' +
-            newShopID +
-            '","' +
-            newOwnerID +
-            '")'
+         birPermit[0].path +
+         '", "' +
+         birPermit[0].filename +
+         '","' +
+         busPermit[0].path +
+         '","' +
+         busPermit[0].filename +
+         '","' +
+         newShopID +
+         '","' +
+         newOwnerID +
+         '")'
       );
    });
    res.redirect("/shops");
@@ -170,18 +170,18 @@ router.post("/edit:shopId", async (req, res) => {
    await acu.updateSet(
       "tblshop",
       'shopName = "' +
-         shopName +
-         '", email = "' +
-         email +
-         '", shopContact = "' +
-         contact +
-         '", cityID = "' +
-         city +
-         '", barangayID = "' +
-         barangay +
-         '", street = "' +
-         street +
-         '"',
+      shopName +
+      '", email = "' +
+      email +
+      '", shopContact = "' +
+      contact +
+      '", cityID = "' +
+      city +
+      '", barangayID = "' +
+      barangay +
+      '", street = "' +
+      street +
+      '"',
       "shopID = " + req.params.shopId
    );
    //add schedule
@@ -204,24 +204,24 @@ router.post("/edit:shopId", async (req, res) => {
             "tblshopschedules",
             "timeIn = null, timeOut = null, status = 0",
             'Day = "' +
-               dayName[i] +
-               '" AND shopID = "' +
-               req.params.shopId +
-               '"'
+            dayName[i] +
+            '" AND shopID = "' +
+            req.params.shopId +
+            '"'
          );
       } else {
          await acu.updateSet(
             "tblshopschedules",
             'timeIn = "' +
-               timeIn[i] +
-               '", timeOut = "' +
-               timeOut[i] +
-               '", status = 1',
+            timeIn[i] +
+            '", timeOut = "' +
+            timeOut[i] +
+            '", status = 1',
             'Day = "' +
-               dayName[i] +
-               '" AND shopID = "' +
-               req.params.shopId +
-               '"'
+            dayName[i] +
+            '" AND shopID = "' +
+            req.params.shopId +
+            '"'
          );
       }
    }
@@ -258,8 +258,8 @@ router.get("/view:id", async (req, res) => {
    //UNFINISHED APPTS AY YUNG MGA APPTS FOR THE DAY AND FORWARD LANG. DI KASAMA YUNG MGA APPTS BEFORE THE CURRENT DAY
    var shopID = req.params.id;
    const rowsApptApproved = await acu.getAllFromWhere(
-      "appointcutdb.appointment",
-      "shopID = " + shopID + ' AND appointmentstatus = "Approved"'
+      "appointment",
+      "ShopID = " + shopID + ' AND AppointmentStatus = "Approved"'
    );
 
    var date = new Date();
@@ -299,75 +299,74 @@ router.get("/view:id", async (req, res) => {
       }
       await acu.updateSet(
          "tblappointment",
-         "appStatusID = 0",
+         "AppStatusID = 0",
          "AppointmentID = " + finishedAppts[i].AppointmentID
       );
    }
 
    const rowsApptHistory = await acu.getAllFromWhere(
-      "appointcutdb.appointment",
-      "shopID = " + req.params.id + ' AND appointmentstatus != "Approved"'
+      "appointment",
+      "ShopID = " + req.params.id + ' AND AppointmentStatus != "Approved"'
    );
    const rows = await acu.getOneFromWhere(
-      "appointcutdb.shop",
+      "shop",
       "ShopID = " + req.params.id
    );
    const rowOwners = await acu.getAllFromWhere(
-      "appointcutdb.shopownership",
-      "ShopID = " + req.params.id
+      "(SELECT so.shopID, o.OwnerID, o.firstName AS FirstName, o.lastName AS LastName, o.email AS Email, o.contact AS Contact, o.status AS OwnerStatus, CONCAT(o.firstName, ' ', o.lastName) AS FullName FROM tblshopownership so JOIN tblowner o ON so.ownerID = o.OwnerID) AS sub",
+      "shopID = " + req.params.id
    );
    const rowEmp = await acu.getAllFromWhere(
-      "appointcutdb.employee",
-      "ShopID = " + req.params.id
+      "(SELECT e.EmployeeID, e.firstName AS FirstName, e.lastName AS LastName, e.email AS Email, e.contact AS Contact, e.status AS Status, e.employeeTypeID AS EmployeeTypeID, e.salaryTypeID AS SalaryTypeID, e.shopID, et.Name AS EmployeeType, st.Name AS SalaryType, e.salaryTypeValue AS SalaryValue, CONCAT(e.firstName, ' ', e.lastName) AS FullName FROM tblemployee e LEFT JOIN tblemployeetype et ON e.employeeTypeID = et.EmployeeTypeID LEFT JOIN tblsalarytype st ON e.salaryTypeID = st.SalaryTypeID) AS sub",
+      "shopID = " + req.params.id
    );
    const rowServ = await acu.getAllFromWhere(
-      "appointcutdb.shopservices",
-      "ShopID = " + req.params.id
+      "(SELECT ss.ShopServicesID AS ID, ss.shopID, ss.servicesID, ss.price AS Price, ss.duration AS Duration, ss.status AS Status, s.Name AS Service, c.Name AS CategoryName, c.CategoryID FROM tblshopservices ss JOIN tblservices s ON ss.servicesID = s.ServicesID JOIN tblcategory c ON s.CategoryID = c.CategoryID) AS sub",
+      "shopID = " + req.params.id
    );
    /* const rowsApptPending = await acu.getAllFromWhere(
       "appointcutdb.appointment",
       "shopID = " + req.params.id + ' AND appointmentstatus = "Pending"'
    ); */
    const rowsAppt = await acu.getAllFromWhere(
-      "appointcutdb.appointment",
-      "shopID = " + req.params.id + ' AND appointmentstatus != "Pending"'
+      "appointment",
+      "ShopID = " + req.params.id + ' AND AppointmentStatus != "Pending"'
    );
-   const rowsEmpSpec = await acu.getAllFrom(
-      "appointcutdb.employeespecialization"
+   const rowsEmpSpec = await acu.getAllFromWhere(
+      "(SELECT es.EmployeeSpecializationID, es.employeeID, es.shopServicesID, es.status AS Status, s.Name AS ServiceName FROM tblemployeespecialization es JOIN tblshopservices ss ON es.shopServicesID = ss.ShopServicesID JOIN tblservices s ON ss.servicesID = s.ServicesID) AS sub",
+      "EXISTS (SELECT 1 FROM tblshopservices ss2 WHERE ss2.ShopServicesID = sub.shopServicesID AND ss2.shopID = " + req.params.id + ")"
    );
 
    const rowsEmpSchedule = await acu.getAllFrom("tblschedule");
    var rowsEmpSpecArray = rowsEmpSpec;
-   var id = rowsEmpSpec[0].EmployeeID;
-   var counter = 0;
+   if (rowsEmpSpec.length > 0) {
+      var id = rowsEmpSpec[0].employeeID;
+      var counter = 0;
 
-   for (var i = 0; i < rowsEmpSpec.length; i++) {
-      //get initial EmpID, if EmpID changes, reset array
-      if (rowsEmpSpec[i].EmployeeID == id) {
-         rowsEmpSpecArray[i]["Index"] = counter;
-         counter++;
-      } else {
-         counter = 0;
-         rowsEmpSpecArray[i]["Index"] = counter;
-         counter++;
+      for (var i = 0; i < rowsEmpSpec.length; i++) {
+         //get initial EmpID, if EmpID changes, reset array
+         if (rowsEmpSpec[i].employeeID == id) {
+            rowsEmpSpecArray[i]["Index"] = counter;
+            counter++;
+         } else {
+            counter = 0;
+            rowsEmpSpecArray[i]["Index"] = counter;
+            counter++;
+         }
+         id = rowsEmpSpec[i].employeeID;
       }
-      id = rowsEmpSpec[i].EmployeeID;
    }
 
-   const rowsServ = await acu.getAllFromWhere(
-      "appointcutdb.services",
-      "shopID = " + req.params.id
-   );
-
-   var rowsServArray = rowsServ;
+   const rowsServArray = JSON.parse(JSON.stringify(rowServ));
    for (var i = 0; i < rowsServArray.length; i++) {
       rowsServArray[i]["Index"] = i;
    }
 
    const rowsDays = await acu.getAllFromWhere(
-      "tblshopschedules",
-      "ShopID = " + req.params.id
+      "(SELECT ScheduleID, Day, timeIn AS TimeIn, timeOut AS TimeOut, Status, shopID FROM tblshopschedules) AS sub",
+      "shopID = " + req.params.id
    );
+   console.log('rowsdays', rowsDays)
 
    const days = [
       { name: "Monday" },
@@ -383,7 +382,7 @@ router.get("/view:id", async (req, res) => {
    const rowsSalaryType = await acu.getAllFrom("tblsalarytype");
    const rowsServCategory = await acu.getAllFrom("tblcategory");
    const transactions = await acu.getAllFromWhere(
-      "appointcutdb.transactions",
+      "transactions",
       "ShopID = " + req.params.id
    );
    var title = rows.ShopName;
@@ -419,16 +418,16 @@ router.post("/view:shopID/addOwner", async (req, res) => {
    var newOwner = await acu.insertInto(
       "tblowner (firstName, lastName, email, password, contact, status)",
       '( "' +
-         firstName +
-         '", "' +
-         lastName +
-         '", "' +
-         email +
-         '", "' +
-         password +
-         '", "' +
-         contact +
-         '", 1 )'
+      firstName +
+      '", "' +
+      lastName +
+      '", "' +
+      email +
+      '", "' +
+      password +
+      '", "' +
+      contact +
+      '", 1 )'
    );
    await acu.insertInto(
       "tblshopownership (shopID, ownerID)",
@@ -444,14 +443,14 @@ router.post("/view:shopID/editOwner:ownerID", async (req, res) => {
    await acu.updateSet(
       "tblowner",
       'firstName = "' +
-         firstName +
-         '", lastName = "' +
-         lastName +
-         '", email = "' +
-         email +
-         '", contact = "' +
-         contact +
-         '"',
+      firstName +
+      '", lastName = "' +
+      lastName +
+      '", email = "' +
+      email +
+      '", contact = "' +
+      contact +
+      '"',
       "OwnerID = " + req.params.ownerID
    );
    res.redirect("/shops/view" + req.params.shopID);
@@ -495,24 +494,24 @@ router.post("/view:shopID/addEmployee", async (req, res) => {
    var newEmp = await acu.insertInto(
       "tblemployee (firstname, lastname, email, password, contact, employeeTypeID,  salaryTypeID, salaryTypeValue, status, balance, shopID)",
       '( "' +
-         firstName +
-         '", "' +
-         lastName +
-         '", "' +
-         email +
-         '", "' +
-         password +
-         '", "' +
-         contact +
-         '", "' +
-         employeeType +
-         '", "' +
-         salaryType +
-         '", "' +
-         salaryValue +
-         '", 1, 0, "' +
-         req.params.shopID +
-         '" )'
+      firstName +
+      '", "' +
+      lastName +
+      '", "' +
+      email +
+      '", "' +
+      password +
+      '", "' +
+      contact +
+      '", "' +
+      employeeType +
+      '", "' +
+      salaryType +
+      '", "' +
+      salaryValue +
+      '", 1, 0, "' +
+      req.params.shopID +
+      '" )'
    );
    //add schedule for the new employee
    var { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday } =
@@ -538,14 +537,14 @@ router.post("/view:shopID/addEmployee", async (req, res) => {
          await acu.insertInto(
             "tblschedule (employeeID, date, timeIn, timeOut)",
             '( "' +
-               newEmp.insertId +
-               '", "' +
-               dayName[i] +
-               '", "' +
-               timeIn[i] +
-               '", "' +
-               timeOut[i] +
-               '" )'
+            newEmp.insertId +
+            '", "' +
+            dayName[i] +
+            '", "' +
+            timeIn[i] +
+            '", "' +
+            timeOut[i] +
+            '" )'
          );
       }
    }
@@ -571,12 +570,12 @@ router.post("/view:shopID/addEmployee", async (req, res) => {
          await acu.insertInto(
             "tblemployeespecialization (shopServicesID, employeeID, status)",
             '( "' +
-               eval("serviceName" + i) +
-               '", "' +
-               newEmp.insertId +
-               '", "' +
-               status +
-               '")'
+            eval("serviceName" + i) +
+            '", "' +
+            newEmp.insertId +
+            '", "' +
+            status +
+            '")'
          );
       }
    }
@@ -606,22 +605,22 @@ router.post("/view:shopID/editEmployee:empID", async (req, res) => {
    await acu.updateSet(
       "tblemployee",
       'firstName = "' +
-         firstName +
-         '", lastName = "' +
-         lastName +
-         '", email = "' +
-         email +
-         '", contact = "' +
-         contact +
-         '", employeeTypeID = "' +
-         employeeType +
-         '", salaryTypeID = "' +
-         salaryType +
-         '", salaryTypeValue = "' +
-         salaryValue +
-         '", shopID = "' +
-         req.params.shopID +
-         '"',
+      firstName +
+      '", lastName = "' +
+      lastName +
+      '", email = "' +
+      email +
+      '", contact = "' +
+      contact +
+      '", employeeTypeID = "' +
+      employeeType +
+      '", salaryTypeID = "' +
+      salaryType +
+      '", salaryTypeValue = "' +
+      salaryValue +
+      '", shopID = "' +
+      req.params.shopID +
+      '"',
       "employeeID = " + req.params.empID
    );
 
@@ -645,20 +644,20 @@ router.post("/view:shopID/editEmployee:empID", async (req, res) => {
             "tblschedule",
             "timeIn = null, timeOut = null",
             'Date = "' +
-               dayName[i] +
-               '" AND EmployeeID = "' +
-               req.params.empID +
-               '"'
+            dayName[i] +
+            '" AND EmployeeID = "' +
+            req.params.empID +
+            '"'
          );
       } else {
          await acu.updateSet(
             "tblschedule",
             'timeIn = "' + timeIn[i] + '", timeOut = "' + timeOut[i] + '"',
             'Date = "' +
-               dayName[i] +
-               '" AND EmployeeID = "' +
-               req.params.empID +
-               '"'
+            dayName[i] +
+            '" AND EmployeeID = "' +
+            req.params.empID +
+            '"'
          );
       }
    }
@@ -681,20 +680,20 @@ router.post("/view:shopID/editEmployee:empID", async (req, res) => {
             "tblemployeespecialization",
             "shopServicesID = '" + eval("serviceName" + i) + "', status = 1",
             'EmployeeID = "' +
-               req.params.empID +
-               '" AND EmployeeSpecializationID = "' +
-               rowsEmpSpec[i].EmployeeSpecializationID +
-               '"'
+            req.params.empID +
+            '" AND EmployeeSpecializationID = "' +
+            rowsEmpSpec[i].EmployeeSpecializationID +
+            '"'
          );
       } else {
          await acu.updateSet(
             "tblemployeespecialization",
             "shopServicesID = " + eval("serviceName" + i) + ", status = 0",
             'EmployeeID = "' +
-               req.params.empID +
-               '" AND EmployeeSpecializationID = "' +
-               rowsEmpSpec[i].EmployeeSpecializationID +
-               '"'
+            req.params.empID +
+            '" AND EmployeeSpecializationID = "' +
+            rowsEmpSpec[i].EmployeeSpecializationID +
+            '"'
          );
       }
    }
@@ -727,14 +726,14 @@ router.post("/view:shopID/addService", async (req, res) => {
    var newService = await acu.insertInto(
       "tblshopservices (shopID, servicesID, price, duration)",
       "(" +
-         req.params.shopID +
-         ", " +
-         service90 +
-         ", " +
-         price +
-         ", " +
-         duration +
-         ")"
+      req.params.shopID +
+      ", " +
+      service90 +
+      ", " +
+      price +
+      ", " +
+      duration +
+      ")"
    );
    var shopServicesID = newService.insertId;
    var employeeList = await acu.getAllFromWhere(
@@ -761,14 +760,14 @@ router.post("/view:shopID/editService:serviceID", async (req, res) => {
    await acu.updateSet(
       "tblshopservices",
       'shopID = "' +
-         req.params.shopID +
-         '", servicesID = "' +
-         editService +
-         '", price = "' +
-         editPrice +
-         '", duration = "' +
-         editDuration +
-         '"',
+      req.params.shopID +
+      '", servicesID = "' +
+      editService +
+      '", price = "' +
+      editPrice +
+      '", duration = "' +
+      editDuration +
+      '"',
       " ShopServicesID = " + req.params.serviceID
    );
    res.redirect("/shops/view" + req.params.shopID);
@@ -809,27 +808,27 @@ router.post(
          await acu.updateSet(
             "tblshopschedules",
             "shopID = '" +
-               req.params.shopID +
-               "', TimeIn = " +
-               timeIn +
-               ", TimeOut = " +
-               timeOut +
-               ", Status = " +
-               status,
-            "shopSchedulesID = '" + req.params.shopScheduleID + "'"
+            req.params.shopID +
+            "', TimeIn = " +
+            timeIn +
+            ", TimeOut = " +
+            timeOut +
+            ", Status = " +
+            status,
+            "ScheduleID = '" + req.params.shopScheduleID + "'"
          );
       } else {
          await acu.updateSet(
             "tblshopschedules",
             "shopID = '" +
-               req.params.shopID +
-               "', TimeIn = '" +
-               timeIn +
-               "', TimeOut = '" +
-               timeOut +
-               "', Status = " +
-               status,
-            "shopSchedulesID = '" + req.params.shopScheduleID + "'"
+            req.params.shopID +
+            "', TimeIn = '" +
+            timeIn +
+            "', TimeOut = '" +
+            timeOut +
+            "', Status = " +
+            status,
+            "ScheduleID = '" + req.params.shopScheduleID + "'"
          );
       }
       res.redirect("/shops/view" + req.params.shopID);
@@ -872,22 +871,22 @@ router.post("/view:shopID/addAppointment", async (req, res) => {
    await acu.insertInto(
       "tblappointment (Name, ShopID, EmployeeID, ShopServicesID, TimeIn, TimeOut, Date, AmountDue, AppStatusID, appointmentType )",
       '( "' +
-         name +
-         '", "' +
-         req.params.shopID +
-         '", "' +
-         employee +
-         '", "' +
-         shopServiceID +
-         '", "' +
-         timeIn +
-         '", "' +
-         timeOut +
-         '", "' +
-         date +
-         '", "' +
-         amountDue +
-         '", 1, 0)'
+      name +
+      '", "' +
+      req.params.shopID +
+      '", "' +
+      employee +
+      '", "' +
+      shopServiceID +
+      '", "' +
+      timeIn +
+      '", "' +
+      timeOut +
+      '", "' +
+      date +
+      '", "' +
+      amountDue +
+      '", 1, 0)'
    );
    res.redirect("/shops/view" + req.params.shopID);
 });
@@ -897,7 +896,7 @@ router.get("/view:shopID/cancelAppt:apptID", async (req, res) => {
    acu.startConnection();
    await acu.updateSet(
       "tblappointment",
-      "appStatusID = 3",
+      "AppStatusID = 3",
       "AppointmentID = " + req.params.apptID
    );
    res.redirect("/shops/view" + req.params.shopID);
@@ -912,7 +911,7 @@ router.post("/view:shopID/completeAppt:id", async (req, res) => {
       "tblappointment",
       "AppointmentID = " + req.params.id
    );
-   var customerID = customer.CustomerID;
+   var customerID = customer.CustomersID;
    if (appointmentStatus == 0) {
       await acu.redTag(customerID);
    }
@@ -920,7 +919,7 @@ router.post("/view:shopID/completeAppt:id", async (req, res) => {
    //update appointment first
    await acu.updateSet(
       "tblappointment",
-      "appStatusID = " + appointmentStatus,
+      "AppStatusID = " + appointmentStatus,
       "AppointmentID = " + id
    );
    if (appointmentStatus == 2) {
@@ -957,25 +956,25 @@ router.post("/view:shopID/completeAppt:id", async (req, res) => {
          await acu.insertInto(
             "tbltransactions (TransactionID, AppointmentID, ShopID, Amount, Date, Time)",
             '( "' +
-               "W" +
-               appointment.AppointmentID +
-               "-" +
-               req.params.shopID +
-               "-" +
-               appointmentDate +
-               "-" +
-               time +
-               '", "' +
-               req.params.id +
-               '", "' +
-               req.params.shopID +
-               '", "' +
-               appointment.amountDue +
-               '", "' +
-               appointmentDate +
-               '", "' +
-               time +
-               '" )'
+            "W" +
+            appointment.AppointmentID +
+            "-" +
+            req.params.shopID +
+            "-" +
+            appointmentDate +
+            "-" +
+            time +
+            '", "' +
+            req.params.id +
+            '", "' +
+            req.params.shopID +
+            '", "' +
+            appointment.AmountDue +
+            '", "' +
+            appointmentDate +
+            '", "' +
+            time +
+            '" )'
          );
       }
    }

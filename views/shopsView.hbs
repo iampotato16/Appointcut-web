@@ -91,16 +91,16 @@
                                             <form action="/shops/view{{../rows.ShopID}}/editOwner{{this.OwnerID}}"
                                                 id="editOwnerInfoForm{{this.OwnerID}}" method="POST">
                                                 <input class="form-control form-control-sm mb-2 font-small rounded-0"
-                                                    name="firstName" type="text" value="{{this.FirstName}}"
+                                                    name="firstName" type="text" value="{{this.firstName}}"
                                                     name="firstName" style="width: 300px;">
                                                 <input class="form-control form-control-sm mb-2 font-small rounded-0"
-                                                    name="lastName" type="text" value="{{this.LastName}}"
+                                                    name="lastName" type="text" value="{{this.lastName}}"
                                                     name="lastName" style="width: 300px;">
                                                 <input class="form-control form-control-sm mb-2 font-small rounded-0"
-                                                    name="email" type="text" value="{{this.Email}}" name="email"
+                                                    name="email" type="text" value="{{this.email}}" name="email"
                                                     style="width: 300px;">
                                                 <input class="form-control form-control-sm mb-2 font-small rounded-0"
-                                                    name="contact" type="text" value="{{this.Contact}}" name="contact"
+                                                    name="contact" type="text" value="{{this.contact}}" name="contact"
                                                     style="width: 300px;">
                                             </form>
                                             <div class="center-div pt-2" style="width: 300px;">
@@ -508,22 +508,22 @@
                             {{/if}}
                             <td>
                                 <button class="btn btn-dark btn-sm"
-                                    onclick="toggleDialog('editShopSchedule{{this.shopSchedulesID}}')"><i
+                                    onclick="toggleDialog('editShopSchedule{{this.ScheduleID}}')"><i
                                         class=" bi bi-pencil"></i></button>
                             </td>
                         </tr>
-                        <div id="editShopSchedule{{this.shopSchedulesID}}" class="dialog bg-yellow m-auto"
+                        <div id="editShopSchedule{{this.ScheduleID}}" class="dialog bg-yellow m-auto"
                             style="display: none;">
                             <div>
                                 <div class="card p-4 bg-black">
                                     <div class="text-center">
-                                        <h6 class="fw-800"> EDIT SCHEDULE </h6>
+                                        <h6 class="fw-800"> TESTEDIT SCHEDULE </h6>
                                         <hr>
                                     </div>
                                     <div class="center-div pt-2">
                                         <div>
                                             <form
-                                                action="/shops/view{{../rows.ShopID}}/editShopSchedule{{this.shopSchedulesID}}"
+                                                action="/shops/view{{../rows.ShopID}}/editShopSchedule{{this.ScheduleID}}"
                                                 method="POST">
                                                 <input class="form-control form-control-sm mb-2 font-small rounded-0"
                                                     name="day" type="" value="{{this.Day}}"
@@ -546,7 +546,7 @@
                                                         <small>SAVE</small></button>
                                                     <button class="btn btn-outline-warning col-6 rounded-0 fw-800"
                                                         type="button"
-                                                        onclick="toggleDialog('editShopSchedule{{this.shopSchedulesID}}')">
+                                                        onclick="toggleDialog('editShopSchedule{{this.ShopSchedulesID}}')">
                                                         <small>CANCEL</small></button>
                                                 </div>
                                             </form>
