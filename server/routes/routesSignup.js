@@ -73,6 +73,34 @@ router
             return res.status(400).send(err);
          }
 
+         const { role } = req.body;
+
+         if (role === "customer") {
+            const { firstName, lastName, email, password, contact } = req.body;
+            try {
+               acu.startConnection();
+               await acu.insertInto(
+                  "tblcustomers (firstName, lastName, email, password, contact, status)",
+                  '( "' +
+                     firstName +
+                     '", "' +
+                     lastName +
+                     '","' +
+                     email +
+                     '","' +
+                     password +
+                     '","' +
+                     contact +
+                     '", 1)'
+               );
+               res.redirect("/");
+            } catch (dbErr) {
+               console.error("Database error:", dbErr);
+               res.status(500).send("Internal Server Error");
+            }
+            return;
+         }
+
          //OWNER
          var { firstName, lastName, email, password, contact } = req.body;
          //SHOP

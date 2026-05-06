@@ -3,10 +3,25 @@
    <div class="container center-div">
       <div class="card bg-black pt-3 pb-3" id="card-signup">
          <div class="card-header text-center pb-1">
-            <h1 class="h1 font-weight-bold header-letter-space">CREATE AN ACCOUNT</h1>
+            <h1 class="h1 font-weight-bold header-letter-space" id="signup-title">CREATE AN ACCOUNT</h1>
          </div>
          <div class="card-body" id="card-body-signup">
-            <form class="row center-div p-0" action="/signup" id="signup" method="POST" enctype="multipart/form-data">
+            
+            <!-- Choice Step -->
+            <div id="signup-choice" class="text-center py-4">
+                <p class="mb-4">How would you like to join AppointCut?</p>
+                <div class="d-flex justify-content-center flex-wrap gap-3">
+                    <button class="btn btn-lg btn-primary btn-custom-reg-log font-weight-bold font-small rounded-0 px-5 mb-2" onclick="showForm('owner')">SHOP OWNER</button>
+                    <button class="btn btn-lg btn-primary btn-custom-reg-log font-weight-bold font-small rounded-0 px-5 mb-2" onclick="showForm('customer')">CUSTOMER</button>
+                </div>
+                <div class="mt-4">
+                    <a href="/" class="text-white font-small">Already have an account? Sign in</a>
+                </div>
+            </div>
+
+            <!-- Owner Signup Form (Hidden by default) -->
+            <form class="row center-div p-0 d-none" action="/signup" id="signup-owner" method="POST" enctype="multipart/form-data">
+               <input type="hidden" name="role" value="owner">
                <div class="col-sm-6">
                   <!-- nagdefine ng height para pumantay sila sa isat isa  -->
                   <div class="form-group">
@@ -89,12 +104,44 @@
                      </div>
                   </div>
                   <div class="text-center mt-2">
-                     <button onclick="document.getElementById('signup').submit()"
+                     <button onclick="document.getElementById('signup-owner').submit()"
                         class="btn btn-lg btn-primary btn-custom-reg-log font-weight-bold font-small rounded-0 pl-5 pr-5"
                         type="submit">SIGN UP</button>
                      <p class="font-smaller m-0 mt-2">By signing up you agree to the</p>
-                     <a class="font-smaller" onclick="showTC()">Terms & Conditions</a>
+                     <a class="font-smaller text-white" style="cursor: pointer" onclick="showTC()">Terms & Conditions</a>
+                     <div class="mt-2 text-center">
+                        <a href="javascript:void(0)" onclick="resetSignup()" class="text-white font-small">Back</a>
+                     </div>
                   </div>
+               </div>
+            </form>
+
+            <!-- Customer Signup Form (Hidden by default) -->
+            <form class="center-div p-0 d-none" action="/signup" id="signup-customer" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="role" value="customer">
+                <div style="width: 100%; max-width: 400px;">
+                    <p class="text-center mb-3"><span>CUSTOMER INFORMATION</span></p>
+                    <div class="row no-gutters">
+                        <div class="col-sm-6" id="xxr3" style="padding-right: 0.125rem;">
+                           <input type="text" class="form-control font-small mb-2 rounded-0" name="firstName" placeholder="First Name" required>
+                        </div>
+                        <div class="col-sm-6" id="xxl3" style="padding-left: 0.125rem;">
+                           <input type="text" class="form-control font-small mb-2 rounded-0" name="lastName" placeholder="Last Name" required>
+                        </div>
+                     </div>
+                     <input type="email" class="form-control font-small mb-2 rounded-0" name="email" placeholder="Email" required>
+                     <input type="password" class="form-control font-small mb-2 rounded-0" name="password" placeholder="Password" required>
+                     <input type="text" class="form-control font-small mb-4 rounded-0" name="contact" placeholder="Contact Number" required>
+                     
+                     <div class="text-center">
+                        <button class="btn btn-lg btn-primary btn-custom-reg-log font-weight-bold font-small rounded-0 px-5 mb-3" type="submit">SIGN UP</button>
+                        <p class="font-smaller m-0">By signing up you agree to the</p>
+                        <a class="font-smaller text-white" style="cursor: pointer" onclick="showTC()">Terms & Conditions</a>
+                        <div class="mt-3">
+                           <a href="javascript:void(0)" onclick="resetSignup()" class="text-white font-small">Back</a>
+                        </div>
+                     </div>
+                </div>
             </form>
          </div>
       </div>
@@ -102,6 +149,24 @@
 </div>
 
 <script>
+   function showForm(role) {
+       document.getElementById('signup-choice').classList.add('d-none');
+       if (role === 'owner') {
+           document.getElementById('signup-owner').classList.remove('d-none');
+           document.getElementById('card-body-signup').style.padding = '2rem 9rem';
+       } else {
+           document.getElementById('signup-customer').classList.remove('d-none');
+           document.getElementById('card-body-signup').style.padding = '2rem 2rem';
+       }
+   }
+
+   function resetSignup() {
+       document.getElementById('signup-choice').classList.remove('d-none');
+       document.getElementById('signup-owner').classList.add('d-none');
+       document.getElementById('signup-customer').classList.add('d-none');
+       document.getElementById('card-body-signup').style.padding = '2rem 9rem';
+   }
+
    var newWindow;
    var w,
       h = 0;

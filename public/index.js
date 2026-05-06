@@ -145,9 +145,9 @@ function updateDatePickerResched(el, service) {
                //4. get chosen service and duration
                var loc = window.location.href;
                // regex to get shopID from url
-               var r = /\d+/g;
-               // regex returns array of found integers, it returns '3000' and shopiD
-               var shopId = loc.match(r)[1];
+               var r = /\/(\d+)(?:\/|$)/g;
+               var matches = [...loc.matchAll(r)];
+               var shopId = matches.length > 0 ? matches[matches.length - 1][1] : null;
                var serviceId = document.getElementById(service).value;
                var duration = 15;
                for (var i = 0; i < shopservices.length; i++) {
@@ -737,7 +737,7 @@ function toggleMultiForm(dialog, action, form) {
          z,
          a,
          valid = true;
-      y = x[i].querySelectorAll("input[type=text]");
+      y = x[i].querySelectorAll("input[type=text], input[type=password]");
       a = x[i].querySelectorAll("input[type=checkbox]");
 
       // A loop that checks every input field in the current tab:
@@ -755,12 +755,8 @@ function toggleMultiForm(dialog, action, form) {
 
       //Removes all 'finish' classes
       var step = document.getElementsByClassName("step " + action);
-      for (var g = 0; i < step.length; i++) {
+      for (var g = 0; g < step.length; g++) {
          step[g].classList.remove("finish");
-         //bakit kelangan ng return true?? Kasi nagrereturn ata sya ng false pag di nya nagagawa yung line of code above
-         //this means na wala syang mahanap na finish class
-         //also di kasi naeexecute yung pag hide at pag unvalidate ng forms pag wala to. aaaa
-         return true;
       }
    }
 
@@ -787,7 +783,6 @@ function toggleMultiForm(dialog, action, form) {
    function nextPrev(n) {
       // This function will figure out which tab to display
       var x = document.getElementsByClassName("tab " + action);
-      console.log(n, validateForm());
       // Exit the function if any field in the current tab is invalid:
       if (n == 1 && !validateForm()) return false;
       // Hide the current tab:
@@ -814,9 +809,12 @@ function toggleMultiForm(dialog, action, form) {
          i,
          valid = true;
       x = document.getElementsByClassName("tab " + action);
-      y = x[currentTab].querySelectorAll("input[type=text]");
+      y = x[currentTab].querySelectorAll("input[type=text], input[type=password]");
       // A loop that checks every input field in the current tab:
       for (i = 0; i < y.length; i++) {
+         // Skip hidden fields
+         if (y[i].offsetParent === null) continue;
+
          // If a field is empty...
          if (y[i].value == "") {
             console.log("validate form: ", y[i].value, y[i].className)
