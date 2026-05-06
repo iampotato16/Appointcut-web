@@ -239,7 +239,7 @@
                                 }
                                 var m = newDate.getMonth() + 1;
                                 if (m < 10) {
-                                    m = '' + newDate.getMonth() + 1;
+                                    m = '0' + m;
                                 }
                                 var currentDate =
                                     newDate.getFullYear() +
@@ -273,12 +273,12 @@
                         }
                         //4. get chosen service and duration
                         var serviceId = document.getElementById("customerService_" + shopId).value;
-                        var duration = 0;
+                        var duration = 15;
                         for (var i = 0; i < shopservices.length; i++) {
                             if (
                                 shopservices[i].shopServicesID == serviceId
                             ) {
-                                duration = shopservices[i].Duration;
+                                duration = shopservices[i].duration || shopservices[i].Duration || 15;
                             }
                         }
                         $("#customerAppointmentTime_" + shopId).timepicker({

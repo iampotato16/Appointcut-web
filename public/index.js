@@ -110,10 +110,14 @@ function updateDatePickerResched(el, service) {
                      if (date < 10) {
                         date = "0" + newDate.getDate();
                      }
+                     var month = newDate.getMonth() + 1;
+                     if (month < 10) {
+                        month = "0" + month;
+                     }
                      var currentDate =
                         newDate.getFullYear() +
                         "-" +
-                        (newDate.getMonth() + 1) +
+                        month +
                         "-" +
                         date;
                      if (currentDate == dateStr) {
@@ -155,7 +159,7 @@ function updateDatePickerResched(el, service) {
                      shopservices[i].shopID == shopId &&
                      shopservices[i].shopServicesID == serviceId
                   ) {
-                     duration = shopservices[i].Duration;
+                     duration = shopservices[i].duration || shopservices[i].Duration || 15;
                   }
                }
                var pls = $("#apptTimeResched");
@@ -860,9 +864,9 @@ checkDays.forEach((element, index) => {
 });
 
 function enableTime() {
-   for (var i = 0; i, checkDays.length; i++) {
-      if (!checkDays.checked) {
-         console.log(checkDays);
+   for (var i = 0; i < checkDays.length; i++) {
+      if (!checkDays[i].checked) {
+         console.log(checkDays[i]);
          timeIn[i].disabled = true;
          timeOut[i].disabled = true;
       }
@@ -893,7 +897,10 @@ var myVar = setInterval(myTimer, 1000);
 
 function myTimer() {
    var d = new Date();
-   document.getElementById("datetime").innerHTML = d.toLocaleString();
+   var el = document.getElementById("datetime");
+   if (el) {
+      el.innerHTML = d.toLocaleString();
+   }
    checkStartAppointments(d);
    checkEndAppointments(d);
 }
